@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "CustomLookAndFeel.h"
 
 //==============================================================================
 /*
@@ -22,6 +23,8 @@ private:
     //==============================================================================
     // Your private member variables go here...
 
+    // Create pointer for CustomLookAndFeel object
+    std::unique_ptr<CustomLookAndFeel> customLookAndFeel{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

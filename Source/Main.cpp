@@ -64,17 +64,26 @@ public:
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons)
         {
-            setUsingNativeTitleBar (true);
+            setUsingNativeTitleBar (false);
             setContentOwned (new MainComponent(), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
            #else
-            setResizable (true, true);
+            
+            // Custom title bar to get ColourScheme::widgetBackground from class CustomLookAndFeel constructor
+            customLookAndFeelForTitleBar = std::make_unique<CustomLookAndFeel>();
+            setLookAndFeel(customLookAndFeelForTitleBar.get());
+            setTitleBarHeight(30);
+            setContentOwned(new MainComponent(), true);
+
+            setResizable (true, false);              // put this to (false, false) not works
+            setResizeLimits (800, 540, 800, 540);    // use this as limit.
             centreWithSize (getWidth(), getHeight());
            #endif
 
             setVisible (true);
+
         }
 
         void closeButtonPressed() override
@@ -93,6 +102,8 @@ public:
         */
 
     private:
+        std::unique_ptr<CustomLookAndFeel> customLookAndFeelForTitleBar{};
+
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
