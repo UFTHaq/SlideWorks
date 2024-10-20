@@ -17,9 +17,9 @@ void MainComponent::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(customLookAndFeel->getColorCustomDarkGrey());
 
-    g.setFont (juce::FontOptions (16.0f));
-    g.setColour (juce::Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), juce::Justification::centred, true);
+    g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(20.0F));
+    g.setColour(juce::Colours::white);
+    g.drawText("DRAG DROP HERE", getLocalBounds(), juce::Justification::centred, true);
 }
 
 void MainComponent::resized()

@@ -1818,6 +1818,7 @@
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_gui_extra\juce_gui_extra.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_core.cpp">
       <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -2665,9 +2666,12 @@
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_gui_extra\misc\juce_WebControlRelays.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_gui_extra\native\juce_NSViewFrameWatcher_mac.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf"/>
+    <None Include="..\..\Resources\Fonts\Roboto_Mono\static\RobotoMono-Medium.ttf"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\javascript\choc\JUCE_CHANGES.txt"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\javascript\choc\LICENSE.md"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\native\java\README.txt"/>
