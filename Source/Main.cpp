@@ -75,10 +75,9 @@ public:
             customLookAndFeelForTitleBar = std::make_unique<CustomLookAndFeel>();
             setLookAndFeel(customLookAndFeelForTitleBar.get());
             setTitleBarHeight(30);
-            setContentOwned(new MainComponent(), true);
 
-            setResizable (true, false);              // put this to (false, false) not works
-            setResizeLimits (800, 540, 800, 540);    // use this as limit.
+            setResizable (false, false);               // put this to (false, false) not works
+            setResizeLimits (800, 540, 800, 540);      // use this as limit.
             centreWithSize (getWidth(), getHeight());
            #endif
 

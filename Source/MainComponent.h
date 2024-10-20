@@ -9,7 +9,8 @@
     your controls and content.
 */
 class MainComponent  : public juce::Component,
-                       public juce::Timer
+                       public juce::Timer,
+                       public juce::Button::Listener
 {
 public:
     //==============================================================================
@@ -20,8 +21,10 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void timerCallback() override;
+    void buttonClicked(juce::Button* button) override;
 
-    bool inputPathEmptyCheck();
+    bool getInputPathState();
+    bool checkInputPathState();
     void setupButtons();
     void setupKnobToggleButton();
     void setupSliderToggleButton();
@@ -32,7 +35,7 @@ public:
 
 
     /////////////////////////  DEBUG  ////////////////////////////
-    int debugInterval{ 250 };
+    int debugInterval{ 1000 };
     int debugTime{ 0 };
 
 private:
@@ -42,7 +45,7 @@ private:
     // Create pointer for CustomLookAndFeel object
     std::unique_ptr<CustomLookAndFeel> customLookAndFeel{};
 
-    bool isInputPathEmpty{};
+    bool inputPathState{};
 
     juce::Rectangle<int> baseSlideWorks{};
     juce::Rectangle<int> baseWorkSpace{};
@@ -57,6 +60,8 @@ private:
     juce::String inputPathSliderTrack{};
     juce::String inputPathSliderThumb{};
     juce::String inputPathSliderScale{};
+
+    std::unique_ptr<juce::FileChooser> fileChooser{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

@@ -3,6 +3,8 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    setSize(800, 540);   // This is mandatory to not trigger error in debug mode
+
     // Assign the pointer of customLookAndFeel
     customLookAndFeel = std::make_unique<CustomLookAndFeel>();
 
@@ -22,9 +24,7 @@ void MainComponent::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(customLookAndFeel->getColorCustomDarkGrey());
 
-    //isInputPathEmpty = inputPathEmptyCheck();
-
-    if (isInputPathEmpty) 
+    if (getInputPathState() == false)
     {
         g.setColour(customLookAndFeel->getColorCustomLightGrey());
         g.fillRoundedRectangle(baseWorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
@@ -33,6 +33,7 @@ void MainComponent::paint (juce::Graphics& g)
         g.setColour(customLookAndFeel->getColorCustomDarkGrey());
         g.drawText("DRAG DROP HERE", baseWorkSpace, juce::Justification::centred, true);
     }
+
 }
 
 void MainComponent::resized()
@@ -75,12 +76,15 @@ void MainComponent::resized()
 void MainComponent::timerCallback()
 {
     debugTime += debugInterval;
+    DBG("debugTime: " << debugTime);
 
-    if (debugTime >= 2000)
+    if (debugTime % 5000 == 0)
     {
         DBG("Should toggling the isInputEmpty");
-        isInputPathEmpty = !isInputPathEmpty;
+        inputPathState = checkInputPathState();
         debugTime = 0;
+        inputPathKnob = "";
+        inputPathSliderTrack = "";
         updateUI();
 
         repaint();
@@ -89,28 +93,73 @@ void MainComponent::timerCallback()
 }
 
 
+void MainComponent::buttonClicked(juce::Button* button)
+{
+    if (button == &browseButton)
+    {
+        fileChooser.reset(new juce::FileChooser("Select a file", juce::File(), "*.png"));
+
+        auto fileChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+
+        fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& chooser)
+            {
+                juce::File selectedFile = chooser.getResult();
+                if (selectedFile.existsAsFile())
+                {
+                    juce::String path = selectedFile.getFullPathName();
+                    DBG("Selected file: " << path);
+
+                    if (knobToggleWorksButton.getToggleState())
+                    {
+                        inputPathKnob = path;
+                        DBG("inpuPath: " << inputPathKnob);
+                    }
+
+                    if (sliderToggleWorksButton.getToggleState())
+                    {
+                        inputPathSliderTrack = path;
+                        DBG("inpuPath: " << inputPathSliderTrack);
+                    }
+
+                    auto text = "empty";
+                    auto tes = getInputPathState();
+                    if (tes) text = "true";
+                    else text = "false";
+
+                    DBG("getInputPathState: " << text);
+
+                }
+                else
+                {
+                    DBG("No file selected");
+                }
+            }
+        );
+    }
+}
+
+
+
 /////////////////////////////////////////////////////////////////////
 
-bool MainComponent::inputPathEmptyCheck()
+bool MainComponent::checkInputPathState()
 {
     // TODO: Check if input path for knobs and slider with their derivatives has VALID image path.
     if (knobToggleWorksButton.getToggleState())
     {
-        if (inputPathKnob.isNotEmpty() || inputPathKnobScale.isNotEmpty()) {
-            isInputPathEmpty = false;
-            return isInputPathEmpty;
-        }
+        return inputPathKnob.isNotEmpty() || inputPathKnobScale.isNotEmpty();
     }
     else if (sliderToggleWorksButton.getToggleState())
     {
-        if (inputPathSliderTrack.isNotEmpty() || inputPathSliderThumb.isNotEmpty() || inputPathSliderScale.isNotEmpty())
-        {
-            isInputPathEmpty = false;
-            return isInputPathEmpty;
-        }
+        return inputPathSliderTrack.isNotEmpty() || inputPathSliderThumb.isNotEmpty() || inputPathSliderScale.isNotEmpty();
     }
 
-    return true;
+    return false;
+}
+
+bool MainComponent::getInputPathState()
+{
+    return inputPathState;
 }
 
 void MainComponent::setupButtons()
@@ -124,7 +173,7 @@ void MainComponent::setupKnobToggleButton()
 {
     knobToggleWorksButton.setButtonText("KNOB");
     knobToggleWorksButton.setName("knobWorks");
-    knobToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    knobToggleWorksButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     knobToggleWorksButton.onClick = [this]() { toggleButtons(knobToggleWorksButton, sliderToggleWorksButton); };
     addAndMakeVisible(knobToggleWorksButton);
 }
@@ -142,7 +191,7 @@ void MainComponent::setupBrowseButton()
 {
     browseButton.setButtonText("BROWSE");
     browseButton.setName("BROWSE");
-    browseButton.onClick = [this]() {}; // TODO: Add browse functionality.
+    browseButton.onClick = [this]() { buttonClicked(&browseButton); }; // TODO: Add browse functionality.
     addAndMakeVisible(browseButton);
 }
 
@@ -154,7 +203,7 @@ void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButt
 
 void MainComponent::updateUI()
 {
-    if (!isInputPathEmpty) 
+    if (getInputPathState()) 
     {
         browseButton.setEnabled(false);
         browseButton.setVisible(false);
