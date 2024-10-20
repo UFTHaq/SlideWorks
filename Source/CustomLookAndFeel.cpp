@@ -71,6 +71,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		if (shouldDrawButtonAsDown)
 		{
 			fillColor = getColorCustomLightGrey().darker(0.2F);
+			fillColor = juce::Colours::royalblue;
 		} 
 		else if (shouldDrawButtonAsHighlighted)
 		{

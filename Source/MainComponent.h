@@ -8,7 +8,8 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent  : public juce::Component
+class MainComponent  : public juce::Component,
+                       public juce::Timer
 {
 public:
     //==============================================================================
@@ -18,6 +19,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void timerCallback() override;
 
     bool inputPathEmptyCheck();
     void setupButtons();
@@ -25,6 +27,13 @@ public:
     void setupSliderToggleButton();
     void setupBrowseButton();
     void toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
+
+    void updateUI();
+
+
+    /////////////////////////  DEBUG  ////////////////////////////
+    int debugInterval{ 250 };
+    int debugTime{ 0 };
 
 private:
     //==============================================================================

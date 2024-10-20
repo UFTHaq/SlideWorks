@@ -7,10 +7,13 @@ MainComponent::MainComponent()
     customLookAndFeel = std::make_unique<CustomLookAndFeel>();
 
     setupButtons();
+
+    startTimer(debugInterval);
 }
 
 MainComponent::~MainComponent()
 {
+    stopTimer();
 }
 
 //==============================================================================
@@ -19,7 +22,7 @@ void MainComponent::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(customLookAndFeel->getColorCustomDarkGrey());
 
-    isInputPathEmpty = inputPathEmptyCheck();
+    //isInputPathEmpty = inputPathEmptyCheck();
 
     if (isInputPathEmpty) 
     {
@@ -68,11 +71,46 @@ void MainComponent::resized()
     repaint();
 }
 
+
+void MainComponent::timerCallback()
+{
+    debugTime += debugInterval;
+
+    if (debugTime >= 2000)
+    {
+        DBG("Should toggling the isInputEmpty");
+        isInputPathEmpty = !isInputPathEmpty;
+        debugTime = 0;
+        updateUI();
+
+        repaint();
+    }
+
+}
+
+
+/////////////////////////////////////////////////////////////////////
+
 bool MainComponent::inputPathEmptyCheck()
 {
-    // Check if input path for knobs and slider with their derivatives has valid image path.
-    return true;
+    // TODO: Check if input path for knobs and slider with their derivatives has VALID image path.
+    if (knobToggleWorksButton.getToggleState())
+    {
+        if (inputPathKnob.isNotEmpty() || inputPathKnobScale.isNotEmpty()) {
+            isInputPathEmpty = false;
+            return isInputPathEmpty;
+        }
+    }
+    else if (sliderToggleWorksButton.getToggleState())
+    {
+        if (inputPathSliderTrack.isNotEmpty() || inputPathSliderThumb.isNotEmpty() || inputPathSliderScale.isNotEmpty())
+        {
+            isInputPathEmpty = false;
+            return isInputPathEmpty;
+        }
+    }
 
+    return true;
 }
 
 void MainComponent::setupButtons()
@@ -112,4 +150,18 @@ void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButt
 {
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+}
+
+void MainComponent::updateUI()
+{
+    if (!isInputPathEmpty) 
+    {
+        browseButton.setEnabled(false);
+        browseButton.setVisible(false);
+    }
+    else
+    {
+        browseButton.setEnabled(true);
+        browseButton.setVisible(true);
+    }
 }
