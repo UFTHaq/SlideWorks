@@ -32,8 +32,89 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 
 	// Draw and coloring the title text
 	g.setColour(getColorFontTitleBar());
-	g.setFont(getFontRobotoMono().withHeight(20.0F));
+	g.setFont(getFontRobotoMono().withHeight(getFontSizeTitle()));
 	g.drawText(window.getName(), juce::Rectangle{ 0, 0, w, h }.toFloat(), juce::Justification::centred, true);
+}
+
+void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour& backgroundColor, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
+{
+	(void)backgroundColor;
+
+	const juce::String buttonName = button.getName();
+	juce::Colour fillColor{};
+
+	if (buttonName == "knobWorks" || buttonName == "sliderWorks")
+	{
+		if (button.getToggleState() == 1)
+		{
+			fillColor = getColorCustomLightGrey();
+
+		} 
+		else if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomLightGrey().darker(0.2F);
+		}
+		else
+		{
+			fillColor = getColorCustomGrey();
+
+			if (shouldDrawButtonAsHighlighted)
+			{
+				fillColor = getColorCustomGrey().brighter(0.2F);
+			}
+		}
+	}
+	else if (buttonName == "BROWSE")
+	{
+		fillColor = getColorCustomLightGrey();
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomLightGrey().darker(0.2F);
+		} 
+		else if (shouldDrawButtonAsHighlighted)
+		{
+			fillColor = fillColor.brighter(0.2F);
+		}
+	}
+
+	g.setColour(fillColor);
+	g.fillRoundedRectangle(button.getLocalBounds().toFloat(), getRoundedCornerSize());
+}
+
+void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
+{
+	const juce::String buttonText = button.getButtonText();
+	juce::Colour textColor{};
+
+	if (buttonText == "KNOB" || buttonText == "SLIDER")
+	{
+		if (button.getToggleState() == 1)
+		{
+			textColor = getColorCustomDarkest();
+		}
+		else
+		{
+			textColor = getColorCustomWhite();
+		}
+	}
+	else if (buttonText == "BROWSE")
+	{
+		textColor = getColorCustomDarkest();
+
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
+		}
+		else if (isMouseOver)
+		{
+			textColor = textColor;
+		}
+	}
+
+	g.setFont(getFontRobotoCondensed().withHeight(getFontSizeRegular()));
+	g.setColour(textColor);
+	g.drawFittedText(buttonText, button.getLocalBounds(), juce::Justification::centred, 1);
 }
 
 
@@ -80,6 +161,11 @@ const juce::Colour CustomLookAndFeel::getColorCustomGrey()
 	return colorCustomGrey;
 }
 
+const juce::Colour CustomLookAndFeel::getColorCustomLightGrey()
+{
+	return colorCustomLightGrey;
+}
+
 const juce::Colour CustomLookAndFeel::getColorCustomWhite()
 {
 	return colorCustomWhite;
@@ -94,4 +180,22 @@ const juce::Font CustomLookAndFeel::getFontRobotoMono()
 const juce::Font CustomLookAndFeel::getFontRobotoCondensed()
 {
 	return fontRobotoCondensed;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+const float CustomLookAndFeel::getRoundedCornerSize()
+{
+	return roundedCornerSize;
+}
+
+const float CustomLookAndFeel::getFontSizeTitle()
+{
+	return fontSizeTitle;
+}
+
+const float CustomLookAndFeel::getFontSizeRegular()
+{
+	return fontSizeRegular;
 }
