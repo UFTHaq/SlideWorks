@@ -138,7 +138,43 @@ void MainComponent::buttonClicked(juce::Button* button)
     }
 }
 
+bool MainComponent::isInterestedInFileDrag(const juce::StringArray& files)  // This should be called in everycallback but not.
+{
+    for (auto& file : files)
+    {
+        if (file.endsWith(".png")) return true;
+    }
+    return false;
+}
 
+void MainComponent::filesDropped(const juce::StringArray& files, int x, int y)
+{
+    if (files.size() > 0)
+    {
+        juce::File selectedFile = juce::File(files[0]);
+        if (selectedFile.existsAsFile())
+        {
+            juce::String path = selectedFile.getFullPathName();
+            DBG("Dropped file: " << path);
+
+            if (knobToggleWorksButton.getToggleState())
+            {
+                inputPathKnob = path;
+            }
+            else {
+                inputPathSliderTrack = path;
+            }
+
+            updateUI();
+            repaint();
+
+            DBG("getInputPathState: " << (getInputPathState() ? "true" : "false"));
+        }
+    }
+
+    juce::MouseCursor normalCursor = juce::MouseCursor(juce::MouseCursor::StandardCursorType::NormalCursor);
+    juce::Desktop::getInstance().getMainMouseSource().showMouseCursor(normalCursor);
+}
 
 /////////////////////////////////////////////////////////////////////
 

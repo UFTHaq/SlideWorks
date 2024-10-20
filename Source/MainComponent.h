@@ -10,7 +10,9 @@
 */
 class MainComponent  : public juce::Component,
                        public juce::Timer,
-                       public juce::Button::Listener
+                       public juce::Button::Listener,
+                       public juce::FileDragAndDropTarget,
+                       public juce::DragAndDropContainer
 {
 public:
     //==============================================================================
@@ -22,6 +24,8 @@ public:
     void resized() override;
     void timerCallback() override;
     void buttonClicked(juce::Button* button) override;
+    bool isInterestedInFileDrag(const juce::StringArray& files) override;
+    void filesDropped(const juce::StringArray& files, int x, int y) override;
 
     bool getInputPathState();
     bool checkInputPathState();
