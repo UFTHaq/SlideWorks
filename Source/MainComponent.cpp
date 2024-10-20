@@ -6,24 +6,7 @@ MainComponent::MainComponent()
     // Assign the pointer of customLookAndFeel
     customLookAndFeel = std::make_unique<CustomLookAndFeel>();
 
-    knobToggleWorksButton.setButtonText("KNOB");
-    knobToggleWorksButton.setName("knobWorks");
-    knobToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-
-    sliderToggleWorksButton.setButtonText("SLIDER");
-    sliderToggleWorksButton.setName("sliderWorks");
-    sliderToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-
-    knobToggleWorksButton.onClick   = [this]() { toggleButtons(knobToggleWorksButton, sliderToggleWorksButton); };
-    sliderToggleWorksButton.onClick = [this]() { toggleButtons(sliderToggleWorksButton, knobToggleWorksButton); };
-
-    addAndMakeVisible(knobToggleWorksButton);
-    addAndMakeVisible(sliderToggleWorksButton);
-
-    browseButton.setButtonText("BROWSE");
-    browseButton.setName("BROWSE");
-    browseButton.onClick = [this]() {}; // TODO: Add browse functionality.
-    addAndMakeVisible(browseButton);
+    setupButtons();
 }
 
 MainComponent::~MainComponent()
@@ -90,6 +73,39 @@ bool MainComponent::inputPathEmptyCheck()
     // Check if input path for knobs and slider with their derivatives has valid image path.
     return true;
 
+}
+
+void MainComponent::setupButtons()
+{
+    setupKnobToggleButton();
+    setupSliderToggleButton();
+    setupBrowseButton();
+}
+
+void MainComponent::setupKnobToggleButton()
+{
+    knobToggleWorksButton.setButtonText("KNOB");
+    knobToggleWorksButton.setName("knobWorks");
+    knobToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    knobToggleWorksButton.onClick = [this]() { toggleButtons(knobToggleWorksButton, sliderToggleWorksButton); };
+    addAndMakeVisible(knobToggleWorksButton);
+}
+
+void MainComponent::setupSliderToggleButton()
+{
+    sliderToggleWorksButton.setButtonText("SLIDER");
+    sliderToggleWorksButton.setName("sliderWorks");
+    sliderToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    sliderToggleWorksButton.onClick = [this]() { toggleButtons(sliderToggleWorksButton, knobToggleWorksButton); };
+    addAndMakeVisible(sliderToggleWorksButton);
+}
+
+void MainComponent::setupBrowseButton()
+{
+    browseButton.setButtonText("BROWSE");
+    browseButton.setName("BROWSE");
+    browseButton.onClick = [this]() {}; // TODO: Add browse functionality.
+    addAndMakeVisible(browseButton);
 }
 
 void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)

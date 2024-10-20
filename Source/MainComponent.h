@@ -20,6 +20,10 @@ public:
     void resized() override;
 
     bool inputPathEmptyCheck();
+    void setupButtons();
+    void setupKnobToggleButton();
+    void setupSliderToggleButton();
+    void setupBrowseButton();
     void toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
 
 private:
