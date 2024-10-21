@@ -35,12 +35,22 @@ public:
     void setupBrowseButton();
     void toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
 
+    void setupAddKnobButton();
+    void setupAddKnobScaleButton();
+    void setupAddSliderTrackButton();
+    void setupAddSliderThumbButton();
+    void setupAddSliderScaleButton();
+
+    void fileChooserWindows();
     void updateUI();
 
 
     /////////////////////////  DEBUG  ////////////////////////////
     int debugInterval{ 1000 };
     int debugTime{ 0 };
+
+    void showModalPopup();
+    void closeModalPopup();
 
 private:
     //==============================================================================
@@ -51,8 +61,10 @@ private:
 
     bool inputPathState{};
 
-    juce::Rectangle<int> baseSlideWorks{};
-    juce::Rectangle<int> baseWorkSpace{};
+    juce::Rectangle<int> base_SlideWorks{};
+    juce::Rectangle<int> base_WorkSpace{};
+    juce::Rectangle<int> base_openAddImage_Dialog1{};
+    juce::Rectangle<int> base_openAddImage_Dialog2{};
 
     juce::TextButton knobToggleWorksButton{};
     juce::TextButton sliderToggleWorksButton{};
@@ -66,6 +78,19 @@ private:
     juce::String inputPathSliderScale{};
 
     std::unique_ptr<juce::FileChooser> fileChooser{};
+
+    juce::TextButton addKnob{};
+    juce::TextButton addKnobScale{};
+    juce::TextButton addSliderTrack{};
+    juce::TextButton addSliderThumb{};
+    juce::TextButton addSliderScale{};
+
+    bool openAddImage_Dialog1{};
+    bool openAddImage_Dialog2{};
+
+    std::unique_ptr<juce::DialogWindow> dialog1{};
+    std::unique_ptr<juce::Component> popup1{};
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

@@ -27,13 +27,36 @@ void MainComponent::paint (juce::Graphics& g)
     if (getInputPathState() == false)
     {
         g.setColour(customLookAndFeel->getColorCustomLightGrey());
-        g.fillRoundedRectangle(baseWorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
+        g.fillRoundedRectangle(base_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
 
         g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeTitle()));
         g.setColour(customLookAndFeel->getColorCustomDarkGrey());
-        g.drawText("DRAG DROP HERE", baseWorkSpace, juce::Justification::centred, true);
+        g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
     }
 
+    if (openAddImage_Dialog1 == true)
+    {
+        DBG("OPEN DIALOG1");
+
+        auto base_width = 250;
+        auto base_height = 250;
+
+        // MANUALLY CENTER
+        //base_openAddImage_Dialog1 = {
+        //    base_WorkSpace.getX() + (base_WorkSpace.getWidth() - base_width) / 2,
+        //    base_WorkSpace.getY() + (base_WorkSpace.getHeight() - base_height) / 2,
+        //    base_width,
+        //    base_height
+        //};
+
+        // AUTOMATIC CENTER
+        //base_openAddImage_Dialog1 = { base_WorkSpace.withSize(base_width, base_height).withCentre(base_WorkSpace.getCentre()) };
+        //base_openAddImage_Dialog1 = base_WorkSpace.withSizeKeepingCentre(base_width, base_height);
+
+        //g.setColour(customLookAndFeel->getColorCustomGrey());
+        //g.fillRoundedRectangle(base_openAddImage_Dialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
+
+    }
 }
 
 void MainComponent::resized()
@@ -42,10 +65,10 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
 
-    baseSlideWorks = getLocalBounds().reduced(10);
+    base_SlideWorks = getLocalBounds().reduced(10);
 
     //juce::Rectangle<int> knobButtonPage{ baseSlideWorks.getX(), baseSlideWorks.getY(), 75, 25 };
-    knobToggleWorksButton.setBounds({ baseSlideWorks.getX(), baseSlideWorks.getY(), 75, 25 });
+    knobToggleWorksButton.setBounds({ base_SlideWorks.getX(), base_SlideWorks.getY(), 75, 25 });
     
     sliderToggleWorksButton.setBounds(
         {
@@ -58,16 +81,15 @@ void MainComponent::resized()
 
     browseButton.setBounds(
         {
-            baseSlideWorks.getRight() - knobToggleWorksButton.getWidth(),
+            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
             knobToggleWorksButton.getY(),
             knobToggleWorksButton.getWidth(),
             knobToggleWorksButton.getHeight()
         }
     );
 
-    baseWorkSpace = baseSlideWorks;
-    baseWorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
-
+    base_WorkSpace = base_SlideWorks;
+    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
 
     repaint();
 }
@@ -97,44 +119,20 @@ void MainComponent::buttonClicked(juce::Button* button)
 {
     if (button == &browseButton)
     {
-        fileChooser.reset(new juce::FileChooser("Select a file", juce::File(), "*.png"));
+        //fileChooserWindows();
 
-        auto fileChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+        /////////////// HOW CONTROL THIS IF OPEN WINDOW DIALOG
+        //openAddImage_Dialog1 = true;
+        //DBG("SHOULD BE OPEN DIALOG1");
 
-        fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& chooser)
-            {
-                juce::File selectedFile = chooser.getResult();
-                if (selectedFile.existsAsFile())
-                {
-                    juce::String path = selectedFile.getFullPathName();
-                    DBG("Selected file: " << path);
 
-                    if (knobToggleWorksButton.getToggleState())
-                    {
-                        inputPathKnob = path;
-                        DBG("inpuPath: " << inputPathKnob);
-                    }
+        // THIS POPUP CAN BE OUTSIDE OF WINDOW, WHICH NOT WHAT I WANT, BUT GOOD TO KNOW THIS.
+        //auto contentComp = std::make_unique<juce::Component>();
+        //contentComp->setSize(250, 250);
+        //juce::Rectangle<int> area = base_WorkSpace.withSizeKeepingCentre(250, 250);
+        //juce::CallOutBox::launchAsynchronously(std::move(contentComp), area, nullptr);
 
-                    if (sliderToggleWorksButton.getToggleState())
-                    {
-                        inputPathSliderTrack = path;
-                        DBG("inpuPath: " << inputPathSliderTrack);
-                    }
-
-                    auto text = "empty";
-                    auto tes = getInputPathState();
-                    if (tes) text = "true";
-                    else text = "false";
-
-                    DBG("getInputPathState: " << text);
-
-                }
-                else
-                {
-                    DBG("No file selected");
-                }
-            }
-        );
+        showModalPopup();
     }
 }
 
@@ -203,6 +201,12 @@ void MainComponent::setupButtons()
     setupKnobToggleButton();
     setupSliderToggleButton();
     setupBrowseButton();
+
+    setupAddKnobButton();
+    setupAddKnobScaleButton();
+    setupAddSliderTrackButton();
+    setupAddSliderThumbButton();
+    setupAddSliderScaleButton();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -237,6 +241,89 @@ void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButt
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
 }
 
+
+void MainComponent::setupAddKnobButton()
+{
+    addKnob.setButtonText("KNOB");
+    addKnob.setName("addKnob");
+    addKnob.onClick = [this]() {};
+    addAndMakeVisible(addKnob);
+}
+
+void MainComponent::setupAddKnobScaleButton() 
+{
+    addKnobScale.setButtonText("SCALE");
+    addKnobScale.setName("addKnobScale");
+    addKnobScale.onClick = [this]() {};
+    addAndMakeVisible(addKnobScale);
+}
+
+void MainComponent::setupAddSliderTrackButton() 
+{
+    addSliderTrack.setButtonText("TRACK");
+    addSliderTrack.setName("addSliderTrack");
+    addSliderTrack.onClick = [this]() {};
+    addAndMakeVisible(addSliderTrack);
+}
+void MainComponent::setupAddSliderThumbButton() 
+{
+    addSliderThumb.setButtonText("THUMB");
+    addSliderThumb.setName("addSliderThumb");
+    addSliderThumb.onClick = [this]() {};
+    addAndMakeVisible(addSliderThumb);
+}
+void MainComponent::setupAddSliderScaleButton() 
+{
+    addSliderScale.setButtonText("SCALE");
+    addSliderScale.setName("addSliderScale");
+    addSliderScale.onClick = [this]() {};
+    addAndMakeVisible(addSliderScale);
+}
+
+
+
+void MainComponent::fileChooserWindows()
+{
+    fileChooser.reset(new juce::FileChooser("Select a file", juce::File(), "*.png"));
+
+    auto fileChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+
+    fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& chooser)
+        {
+            juce::File selectedFile = chooser.getResult();
+            if (selectedFile.existsAsFile())
+            {
+                juce::String path = selectedFile.getFullPathName();
+                DBG("Selected file: " << path);
+
+                if (knobToggleWorksButton.getToggleState())
+                {
+                    inputPathKnob = path;
+                    DBG("inpuPath: " << inputPathKnob);
+                }
+
+                if (sliderToggleWorksButton.getToggleState())
+                {
+                    inputPathSliderTrack = path;
+                    DBG("inpuPath: " << inputPathSliderTrack);
+                }
+
+                auto text = "empty";
+                auto tes = getInputPathState();
+                if (tes) text = "true";
+                else text = "false";
+
+                DBG("getInputPathState: " << text);
+
+            }
+            else
+            {
+                DBG("No file selected");
+            }
+        }
+    );
+}
+
 void MainComponent::updateUI()
 {
     if (getInputPathState()) 
@@ -248,5 +335,44 @@ void MainComponent::updateUI()
     {
         browseButton.setEnabled(true);
         browseButton.setVisible(true);
+    }
+}
+
+
+void MainComponent::showModalPopup()
+{
+    popup1 = std::make_unique<juce::Component>();
+    popup1->setSize(250, 250);
+
+    auto button1 = std::make_unique<juce::TextButton>("KNOB");
+    button1->onClick = [this]() {DBG("BROWSE KNOB"); };
+    popup1->addAndMakeVisible(*button1);
+
+    auto button2 = std::make_unique<juce::TextButton>("SLIDER");
+    button1->onClick = [this]() {DBG("BROWSE SLIDER"); };
+    popup1->addAndMakeVisible(*button2);
+
+    // Layout buttons in the popup
+    button1->setBounds(20, 30, 100, 30);
+    button2->setBounds(20, 80, 100, 30);
+
+    dialog1 = std::make_unique<juce::DialogWindow>("BROWSING", juce::Colours::lightgrey, true);
+    dialog1->setContentOwned(popup1.release(), true);
+    dialog1->setAlwaysOnTop(true);
+    dialog1->escapeKeyPressed();
+    dialog1->centreAroundComponent(this, 250, 250);
+
+    dialog1->setVisible(true);
+
+    dialog1->closeButton;
+    dialog1->closeButtonPressed();
+
+}
+void MainComponent::closeModalPopup()
+{
+    if (dialog1)
+    {
+        dialog1->closeButtonPressed();
+        dialog1.reset();
     }
 }
