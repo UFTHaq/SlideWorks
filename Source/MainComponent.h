@@ -44,13 +44,7 @@ public:
     void fileChooserWindows();
     void updateUI();
 
-
-    /////////////////////////  DEBUG  ////////////////////////////
-    int debugInterval{ 1000 };
-    int debugTime{ 0 };
-
-    void showModalPopup();
-    void closeModalPopup();
+    void openDialog1(juce::Graphics&);
 
 private:
     //==============================================================================
@@ -63,8 +57,8 @@ private:
 
     juce::Rectangle<int> base_SlideWorks{};
     juce::Rectangle<int> base_WorkSpace{};
-    juce::Rectangle<int> base_openAddImage_Dialog1{};
-    juce::Rectangle<int> base_openAddImage_Dialog2{};
+    //juce::Rectangle<int> base_openAddImage_Dialog1{};
+    //juce::Rectangle<int> base_openAddImage_Dialog2{};
 
     juce::TextButton knobToggleWorksButton{};
     juce::TextButton sliderToggleWorksButton{};
@@ -88,8 +82,7 @@ private:
     bool openAddImage_Dialog1{};
     bool openAddImage_Dialog2{};
 
-    std::unique_ptr<juce::DialogWindow> dialog1{};
-    std::unique_ptr<juce::Component> popup1{};
+    juce::GroupComponent groupDialog1{};
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

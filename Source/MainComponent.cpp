@@ -10,7 +10,13 @@ MainComponent::MainComponent()
 
     setupButtons();
 
-    startTimer(debugInterval);
+    updateUI();
+
+    groupDialog1.setName("DIALOG1");
+    groupDialog1.setText("IMAGES");
+    groupDialog1.setTextLabelPosition(juce::Justification::centred);
+    groupDialog1.setColour(juce::GroupComponent::outlineColourId, customLookAndFeel->getColorCustomLightGrey());
+    addAndMakeVisible(groupDialog1);
 }
 
 MainComponent::~MainComponent()
@@ -36,26 +42,9 @@ void MainComponent::paint (juce::Graphics& g)
 
     if (openAddImage_Dialog1 == true)
     {
-        DBG("OPEN DIALOG1");
+        openDialog1(g);
 
-        auto base_width = 250;
-        auto base_height = 250;
-
-        // MANUALLY CENTER
-        //base_openAddImage_Dialog1 = {
-        //    base_WorkSpace.getX() + (base_WorkSpace.getWidth() - base_width) / 2,
-        //    base_WorkSpace.getY() + (base_WorkSpace.getHeight() - base_height) / 2,
-        //    base_width,
-        //    base_height
-        //};
-
-        // AUTOMATIC CENTER
-        //base_openAddImage_Dialog1 = { base_WorkSpace.withSize(base_width, base_height).withCentre(base_WorkSpace.getCentre()) };
-        //base_openAddImage_Dialog1 = base_WorkSpace.withSizeKeepingCentre(base_width, base_height);
-
-        //g.setColour(customLookAndFeel->getColorCustomGrey());
-        //g.fillRoundedRectangle(base_openAddImage_Dialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
-
+        repaint();
     }
 }
 
@@ -97,20 +86,6 @@ void MainComponent::resized()
 
 void MainComponent::timerCallback()
 {
-    debugTime += debugInterval;
-    DBG("debugTime: " << debugTime);
-
-    if (debugTime % 5000 == 0)
-    {
-        DBG("Should toggling the isInputEmpty");
-        inputPathState = checkInputPathState();
-        debugTime = 0;
-        inputPathKnob = "";
-        inputPathSliderTrack = "";
-        updateUI();
-
-        repaint();
-    }
 
 }
 
@@ -131,8 +106,6 @@ void MainComponent::buttonClicked(juce::Button* button)
         //contentComp->setSize(250, 250);
         //juce::Rectangle<int> area = base_WorkSpace.withSizeKeepingCentre(250, 250);
         //juce::CallOutBox::launchAsynchronously(std::move(contentComp), area, nullptr);
-
-        showModalPopup();
     }
 }
 
@@ -231,7 +204,7 @@ void MainComponent::setupBrowseButton()
 {
     browseButton.setButtonText("BROWSE");
     browseButton.setName("BROWSE");
-    browseButton.onClick = [this]() { buttonClicked(&browseButton); }; // TODO: Add browse functionality.
+    browseButton.onClick = [this]() { openAddImage_Dialog1 = true; }; // TODO: Add browse functionality.
     addAndMakeVisible(browseButton);
 }
 
@@ -326,6 +299,32 @@ void MainComponent::fileChooserWindows()
 
 void MainComponent::updateUI()
 {
+    base_SlideWorks = getLocalBounds().reduced(10);
+
+    knobToggleWorksButton.setBounds({ base_SlideWorks.getX(), base_SlideWorks.getY(), 75, 25 });
+
+    sliderToggleWorksButton.setBounds(
+        {
+            knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
+            knobToggleWorksButton.getY(),
+            knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getHeight()
+        }
+    );
+
+    browseButton.setBounds(
+        {
+            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getY(),
+            knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getHeight()
+        }
+    );
+
+    base_WorkSpace = base_SlideWorks;
+    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
+
+
     if (getInputPathState()) 
     {
         browseButton.setEnabled(false);
@@ -339,40 +338,19 @@ void MainComponent::updateUI()
 }
 
 
-void MainComponent::showModalPopup()
+void MainComponent::openDialog1(juce::Graphics& g)
 {
-    popup1 = std::make_unique<juce::Component>();
-    popup1->setSize(250, 250);
+    DBG("OPEN DIALOG1");
 
-    auto button1 = std::make_unique<juce::TextButton>("KNOB");
-    button1->onClick = [this]() {DBG("BROWSE KNOB"); };
-    popup1->addAndMakeVisible(*button1);
+    auto base_width = 225;
+    auto base_height = 250;
 
-    auto button2 = std::make_unique<juce::TextButton>("SLIDER");
-    button1->onClick = [this]() {DBG("BROWSE SLIDER"); };
-    popup1->addAndMakeVisible(*button2);
+    // AUTOMATIC CENTER
+    auto baseOpenDialog1{ base_WorkSpace.withSizeKeepingCentre(base_width, base_height) };
 
-    // Layout buttons in the popup
-    button1->setBounds(20, 30, 100, 30);
-    button2->setBounds(20, 80, 100, 30);
+    g.setColour(customLookAndFeel->getColorCustomGrey());
+    g.fillRoundedRectangle(baseOpenDialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
 
-    dialog1 = std::make_unique<juce::DialogWindow>("BROWSING", juce::Colours::lightgrey, true);
-    dialog1->setContentOwned(popup1.release(), true);
-    dialog1->setAlwaysOnTop(true);
-    dialog1->escapeKeyPressed();
-    dialog1->centreAroundComponent(this, 250, 250);
+    groupDialog1.setBounds(baseOpenDialog1.reduced(10));
 
-    dialog1->setVisible(true);
-
-    dialog1->closeButton;
-    dialog1->closeButtonPressed();
-
-}
-void MainComponent::closeModalPopup()
-{
-    if (dialog1)
-    {
-        dialog1->closeButtonPressed();
-        dialog1.reset();
-    }
 }
