@@ -13,10 +13,22 @@ MainComponent::MainComponent()
     updateUI();
 
     groupDialog1.setName("DIALOG1");
-    groupDialog1.setText("IMAGES");
+    groupDialog1.setText("ADD IMAGES");
     groupDialog1.setTextLabelPosition(juce::Justification::centred);
     groupDialog1.setColour(juce::GroupComponent::outlineColourId, customLookAndFeel->getColorCustomLightGrey());
     addAndMakeVisible(groupDialog1);
+
+    groupDialog1Test.setName("DIALOG1");
+    groupDialog1Test.setText("ADD IMAGES");
+    groupDialog1Test.setTextLabelPosition(juce::Justification::centred);
+    groupDialog1Test.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupDialog1Test.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
+    groupDialog1Test.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupDialog1Test.setCornerSize(10.0F);
+    groupDialog1Test.setIndentation(3);
+    groupDialog1Test.setTextLineGap(8.0F);
+    groupDialog1Test.setLineThickness(3.0F);
+    addAndMakeVisible(groupDialog1Test);
 }
 
 MainComponent::~MainComponent()
@@ -37,7 +49,11 @@ void MainComponent::paint (juce::Graphics& g)
 
         g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeTitle()));
         g.setColour(customLookAndFeel->getColorCustomDarkGrey());
-        g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
+
+        if (!openAddImage_Dialog1)
+        {
+            g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
+        }
     }
 
     if (openAddImage_Dialog1 == true)
@@ -79,6 +95,7 @@ void MainComponent::resized()
 
     base_WorkSpace = base_SlideWorks;
     base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
+
 
     repaint();
 }
@@ -342,15 +359,32 @@ void MainComponent::openDialog1(juce::Graphics& g)
 {
     DBG("OPEN DIALOG1");
 
-    auto base_width = 225;
-    auto base_height = 250;
+    auto base_width = 200;
+    auto base_height = 280;
 
     // AUTOMATIC CENTER
     auto baseOpenDialog1{ base_WorkSpace.withSizeKeepingCentre(base_width, base_height) };
 
-    g.setColour(customLookAndFeel->getColorCustomGrey());
-    g.fillRoundedRectangle(baseOpenDialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
+    //g.setColour(customLookAndFeel->getColorCustomLightGrey());
+    //g.fillRoundedRectangle(baseOpenDialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
 
-    groupDialog1.setBounds(baseOpenDialog1.reduced(10));
+    g.setColour(customLookAndFeel->getColorCustomLightGrey().brighter());
+    g.drawRoundedRectangle(baseOpenDialog1.toFloat(), 10.0F, 4.0F);
 
+    auto groupDialog1Area = baseOpenDialog1.reduced(10);
+    groupDialog1Area.removeFromBottom(30);
+    groupDialog1.setBounds(groupDialog1Area);
+
+    //g.setColour(juce::Colours::ghostwhite);
+    //g.fillRoundedRectangle(groupDialog1Area.toFloat(), 5.0F);
+
+    ////auto dialog1Close{ baseOpenDialog1.withSizeKeepingCentre(100,30).translated(0, baseOpenDialog1.getHeight()/2-15) };
+    //auto dialog1Close{ baseOpenDialog1.withSize(100,30).withBottom(30)};
+    //g.setColour(customLookAndFeel->getColorCustomDarkGrey());
+    //g.drawRoundedRectangle(dialog1Close.toFloat(), customLookAndFeel->getRoundedCornerSize() * 3, 2.0F);
+
+    groupDialog1Test.setBounds(groupDialog1Area);
+    groupDialog1Test.paint(g);
+
+    repaint();
 }

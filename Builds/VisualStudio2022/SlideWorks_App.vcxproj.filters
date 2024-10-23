@@ -334,6 +334,9 @@
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
       <Filter>SlideWorks\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\CustomGroupComponent.cpp">
+      <Filter>SlideWorks\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <Filter>JUCE Modules\juce_core\containers</Filter>
     </ClCompile>
@@ -2152,6 +2155,9 @@
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
+      <Filter>SlideWorks\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomGroupComponent.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h">

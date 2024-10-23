@@ -53,6 +53,6 @@ private:
 
 	float roundedCornerSize{ 2.5F };
 	float fontSizeTitle{ 21.0F };
-	float fontSizeRegular{ 16.0F };
+	float fontSizeRegular{ 16.50F };
 };
 

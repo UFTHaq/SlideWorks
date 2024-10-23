@@ -9,10 +9,14 @@
       <FILE id="fBYcnJ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="jvpGiL" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
-      <FILE id="Oe9LDj" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="Source/CustomLookAndFeel.cpp"/>
       <FILE id="SbD3b9" name="CustomLookAndFeel.h" compile="0" resource="0"
             file="Source/CustomLookAndFeel.h"/>
+      <FILE id="Oe9LDj" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+            file="Source/CustomLookAndFeel.cpp"/>
+      <FILE id="jYyAT3" name="CustomGroupComponent.h" compile="0" resource="0"
+            file="Source/CustomGroupComponent.h"/>
+      <FILE id="v9loTb" name="CustomGroupComponent.cpp" compile="1" resource="0"
+            file="Source/CustomGroupComponent.cpp"/>
     </GROUP>
     <FILE id="bbBBjQ" name="RobotoCondensed-SemiBold.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-SemiBold.ttf"/>

@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "CustomLookAndFeel.h"
+#include "CustomGroupComponent.h"
 
 //==============================================================================
 /*
@@ -84,6 +85,7 @@ private:
 
     juce::GroupComponent groupDialog1{};
 
+    CustomGroupComponent groupDialog1Test{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

@@ -144,6 +144,7 @@
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\CustomGroupComponent.cpp"/>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1838,6 +1839,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
     <ClInclude Include="..\..\Source\CustomLookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\CustomGroupComponent.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>
