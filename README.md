@@ -1,2 +1,2 @@
 # SlideWorks
- Filmstrip knob & slider generator
+ Filmstrip (knob & slider) generator
