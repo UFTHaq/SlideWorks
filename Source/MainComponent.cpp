@@ -9,26 +9,9 @@ MainComponent::MainComponent()
     customLookAndFeel = std::make_unique<CustomLookAndFeel>();
 
     setupButtons();
+    setupCustomGroupComponents();
 
     updateUI();
-
-    groupDialog1.setName("DIALOG1");
-    groupDialog1.setText("ADD IMAGES");
-    groupDialog1.setTextLabelPosition(juce::Justification::centred);
-    groupDialog1.setColour(juce::GroupComponent::outlineColourId, customLookAndFeel->getColorCustomLightGrey());
-    addAndMakeVisible(groupDialog1);
-
-    groupDialog1Test.setName("DIALOG1");
-    groupDialog1Test.setText("ADD IMAGES");
-    groupDialog1Test.setTextLabelPosition(juce::Justification::centred);
-    groupDialog1Test.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupDialog1Test.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
-    groupDialog1Test.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
-    groupDialog1Test.setCornerSize(10.0F);
-    groupDialog1Test.setIndentation(3);
-    groupDialog1Test.setTextLineGap(8.0F);
-    groupDialog1Test.setLineThickness(3.0F);
-    addAndMakeVisible(groupDialog1Test);
 }
 
 MainComponent::~MainComponent()
@@ -109,6 +92,7 @@ void MainComponent::timerCallback()
 
 void MainComponent::buttonClicked(juce::Button* button)
 {
+    // THIS buttonClicked methods is kinda obsolete now according to chatGPT, so will delete it later. and use lambda + function.
     if (button == &browseButton)
     {
         //fileChooserWindows();
@@ -197,6 +181,7 @@ void MainComponent::setupButtons()
     setupAddSliderTrackButton();
     setupAddSliderThumbButton();
     setupAddSliderScaleButton();
+    setupCloseDialog1Button();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -220,8 +205,15 @@ void MainComponent::setupSliderToggleButton()
 void MainComponent::setupBrowseButton()
 {
     browseButton.setButtonText("BROWSE");
-    browseButton.setName("BROWSE");
-    browseButton.onClick = [this]() { openAddImage_Dialog1 = true; }; // TODO: Add browse functionality.
+    browseButton.setName("browseButton");
+    browseButton.onClick = [this]() 
+        { 
+            openAddImage_Dialog1 = true;
+
+            closeDialog1.setVisible(true);
+            closeDialog1.setEnabled(true);
+
+        };
     addAndMakeVisible(browseButton);
 }
 
@@ -236,7 +228,10 @@ void MainComponent::setupAddKnobButton()
 {
     addKnob.setButtonText("KNOB");
     addKnob.setName("addKnob");
-    addKnob.onClick = [this]() {};
+    addKnob.onClick = [this]() 
+        {
+            fileChooserWindows();
+        };
     addAndMakeVisible(addKnob);
 }
 
@@ -244,7 +239,10 @@ void MainComponent::setupAddKnobScaleButton()
 {
     addKnobScale.setButtonText("SCALE");
     addKnobScale.setName("addKnobScale");
-    addKnobScale.onClick = [this]() {};
+    addKnobScale.onClick = [this]() 
+        {
+            fileChooserWindows();
+        };
     addAndMakeVisible(addKnobScale);
 }
 
@@ -252,24 +250,74 @@ void MainComponent::setupAddSliderTrackButton()
 {
     addSliderTrack.setButtonText("TRACK");
     addSliderTrack.setName("addSliderTrack");
-    addSliderTrack.onClick = [this]() {};
+    addSliderTrack.onClick = [this]() 
+        {
+            fileChooserWindows();
+        };
     addAndMakeVisible(addSliderTrack);
 }
 void MainComponent::setupAddSliderThumbButton() 
 {
     addSliderThumb.setButtonText("THUMB");
     addSliderThumb.setName("addSliderThumb");
-    addSliderThumb.onClick = [this]() {};
+    addSliderThumb.onClick = [this]() 
+        {
+            fileChooserWindows();
+        };
     addAndMakeVisible(addSliderThumb);
 }
 void MainComponent::setupAddSliderScaleButton() 
 {
     addSliderScale.setButtonText("SCALE");
     addSliderScale.setName("addSliderScale");
-    addSliderScale.onClick = [this]() {};
+    addSliderScale.onClick = [this]() 
+        {
+            fileChooserWindows();
+        };
     addAndMakeVisible(addSliderScale);
 }
+void MainComponent::setupCloseDialog1Button()
+{
+    closeDialog1.setButtonText("CLOSE");
+    closeDialog1.setName("closeDialog1");
+    closeDialog1.onClick = [this]() 
+        { 
+            openAddImage_Dialog1 = false;
 
+            addKnob.setVisible(false);
+            addKnob.setEnabled(false);
+
+            addKnobScale.setVisible(false);
+            addKnobScale.setEnabled(false);
+
+            addSliderTrack.setVisible(false);
+            addSliderTrack.setEnabled(false);
+
+            addSliderThumb.setVisible(false);
+            addSliderThumb.setEnabled(false);
+
+            addSliderScale.setVisible(false);
+            addSliderScale.setEnabled(false);
+
+            closeDialog1.setVisible(false);
+            closeDialog1.setEnabled(false);
+        };
+    addAndMakeVisible(closeDialog1);
+}
+void MainComponent::setupCustomGroupComponents()
+{
+    groupDialog1.setName("DIALOG1");
+    groupDialog1.setText("ADD IMAGES");
+    groupDialog1.setTextLabelPosition(juce::Justification::centred);
+    groupDialog1.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupDialog1.setFontColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupDialog1.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupDialog1.setCornerSize(10.0F);
+    groupDialog1.setIndentation(3);
+    groupDialog1.setTextLineGap(8.0F);
+    groupDialog1.setLineThickness(2.0F);
+    addAndMakeVisible(groupDialog1);
+}
 
 
 void MainComponent::fileChooserWindows()
@@ -283,6 +331,8 @@ void MainComponent::fileChooserWindows()
             juce::File selectedFile = chooser.getResult();
             if (selectedFile.existsAsFile())
             {
+                // TODO: Need to implement added image path string for each buttons (knob, knobScale, sliderTrack, sliderThumb, sliderScale).
+
                 juce::String path = selectedFile.getFullPathName();
                 DBG("Selected file: " << path);
 
@@ -357,34 +407,112 @@ void MainComponent::updateUI()
 
 void MainComponent::openDialog1(juce::Graphics& g)
 {
-    DBG("OPEN DIALOG1");
+    //DBG("OPEN DIALOG1");
 
     auto base_width = 200;
-    auto base_height = 280;
+    auto base_height = 200;
+
+    if (knobToggleWorksButton.getToggleState() == true)        base_height = 205;
+    else if (sliderToggleWorksButton.getToggleState() == true) base_height = 260;
 
     // AUTOMATIC CENTER
     auto baseOpenDialog1{ base_WorkSpace.withSizeKeepingCentre(base_width, base_height) };
 
-    //g.setColour(customLookAndFeel->getColorCustomLightGrey());
-    //g.fillRoundedRectangle(baseOpenDialog1.toFloat(), customLookAndFeel->getRoundedCornerSize());
-
-    g.setColour(customLookAndFeel->getColorCustomLightGrey().brighter());
-    g.drawRoundedRectangle(baseOpenDialog1.toFloat(), 10.0F, 4.0F);
+    //g.setColour(customLookAndFeel->getColorCustomLightGrey().brighter());
+    //g.drawRoundedRectangle(baseOpenDialog1.toFloat(), 10.0F, 4.0F);
 
     auto groupDialog1Area = baseOpenDialog1.reduced(10);
-    groupDialog1Area.removeFromBottom(30);
+    groupDialog1Area.removeFromBottom(40);
     groupDialog1.setBounds(groupDialog1Area);
+    groupDialog1.paint(g);
 
-    //g.setColour(juce::Colours::ghostwhite);
-    //g.fillRoundedRectangle(groupDialog1Area.toFloat(), 5.0F);
+    auto dialog1ButtonsArea = groupDialog1Area;
+    dialog1ButtonsArea.removeFromTop(15);
+    dialog1ButtonsArea = dialog1ButtonsArea.reduced(3); // 3 is indentation value of groupComponent line
+    dialog1ButtonsArea = dialog1ButtonsArea.reduced(7);
 
-    ////auto dialog1Close{ baseOpenDialog1.withSizeKeepingCentre(100,30).translated(0, baseOpenDialog1.getHeight()/2-15) };
-    //auto dialog1Close{ baseOpenDialog1.withSize(100,30).withBottom(30)};
-    //g.setColour(customLookAndFeel->getColorCustomDarkGrey());
-    //g.drawRoundedRectangle(dialog1Close.toFloat(), customLookAndFeel->getRoundedCornerSize() * 3, 2.0F);
+    auto pad = 5;
+    auto buttonW = 100 + (pad * 2);
+    dialog1ButtonsArea = dialog1ButtonsArea.withSizeKeepingCentre(buttonW, dialog1ButtonsArea.getHeight());
 
-    groupDialog1Test.setBounds(groupDialog1Area);
-    groupDialog1Test.paint(g);
+    auto dialog1ButtonArea2 = dialog1ButtonsArea;
+
+    if (knobToggleWorksButton.getToggleState() == true)
+    {
+        auto buttonHeight     = dialog1ButtonArea2.getHeight() / 2;
+        DBG("buttonHeight: " << buttonHeight);
+        auto addKnobRect      = dialog1ButtonArea2.removeFromTop(buttonHeight);
+        auto addKnobScaleRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
+
+        addKnob.setBounds(addKnobRect.reduced(pad));
+        addKnobScale.setBounds(addKnobScaleRect.reduced(pad));
+
+        {
+            addKnob.setVisible(true);
+            addKnob.setEnabled(true);
+
+            addKnobScale.setVisible(true);
+            addKnobScale.setEnabled(true);
+
+            addSliderTrack.setVisible(false);
+            addSliderTrack.setEnabled(false);
+
+            addSliderThumb.setVisible(false);
+            addSliderThumb.setEnabled(false);
+
+            addSliderScale.setVisible(false);
+            addSliderScale.setEnabled(false);
+        }
+
+    }
+    else if (sliderToggleWorksButton.getToggleState() == true)
+    {
+        auto buttonHeight       = dialog1ButtonArea2.getHeight() / 3;
+        DBG("buttonHeight: " << buttonHeight);
+        auto addSliderTrackRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
+        auto addSliderThumbRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
+        auto addSliderScaleRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
+
+        addSliderTrack.setBounds(addSliderTrackRect.reduced(pad));
+        addSliderThumb.setBounds(addSliderThumbRect.reduced(pad));
+        addSliderScale.setBounds(addSliderScaleRect.reduced(pad));
+
+        {
+            addKnob.setVisible(false);
+            addKnob.setEnabled(false);
+
+            addKnobScale.setVisible(false);
+            addKnobScale.setEnabled(false);
+
+            addSliderTrack.setVisible(true);
+            addSliderTrack.setEnabled(true);
+
+            addSliderThumb.setVisible(true);
+            addSliderThumb.setEnabled(true);
+
+            addSliderScale.setVisible(true);
+            addSliderScale.setEnabled(true);
+        }
+    }
+
+    //g.setColour(customLookAndFeel->getColorCustomGrey());
+    //g.drawRoundedRectangle(dialog1ButtonsArea.toFloat(), 10.0F, 2.0);
+
+    {
+        // CLOSE BUTTON
+        auto w = 100;
+        auto h = 30;
+        juce::Rectangle dialog1Close{
+            baseOpenDialog1.getX() + (baseOpenDialog1.getWidth() - w) / 2,
+            baseOpenDialog1.getBottom() - h - 10,
+            w,
+            h
+        };
+        //g.setColour(customLookAndFeel->getColorCustomDarkGrey());
+        //g.drawRoundedRectangle(dialog1Close.toFloat(), 5.0F, 2.0F);
+        closeDialog1.setBounds(dialog1Close);
+    }
+
 
     repaint();
 }

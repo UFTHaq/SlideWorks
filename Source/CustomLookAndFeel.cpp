@@ -42,9 +42,13 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 
 	const juce::String buttonName = button.getName();
 	juce::Colour fillColor{};
+	juce::Colour outlineColor{};
+	float cornerSize{};
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks")
 	{
+		cornerSize = getRoundedCornerSize();
+
 		if (button.getToggleState() == 1)
 		{
 			fillColor = getColorCustomLightGrey();
@@ -64,8 +68,10 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			}
 		}
 	}
-	else if (buttonName == "BROWSE")
+	else if (buttonName == "browseButton")
 	{
+		cornerSize = getRoundedCornerSize();
+		
 		fillColor = getColorCustomLightGrey();
 
 		if (shouldDrawButtonAsDown)
@@ -78,17 +84,53 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = fillColor.brighter(0.2F);
 		}
 	}
+	else if (buttonName == "addKnob" || buttonName == "addKnobScale" || buttonName == "addSliderTrack" || buttonName == "addSliderThumb" || buttonName == "addSliderScale")
+	{
+		cornerSize = getRoundedCornerSize() * 2;
+
+		fillColor    = getColorCustomLightGrey();
+		outlineColor = getColorCustomDarkGrey();
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomLightGrey().darker(0.2F);
+		}
+		else if (shouldDrawButtonAsHighlighted)
+		{
+			fillColor = getColorCustomLightGrey().brighter();
+		}
+	}
+	else if (buttonName == "closeDialog1")
+	{
+		cornerSize = getRoundedCornerSize() * 2;
+
+		fillColor    = getColorCustomLightGrey();
+		outlineColor = getColorCustomDarkGrey();
+		
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomLightGrey().darker(0.2F);
+		}
+		else if (shouldDrawButtonAsHighlighted)
+		{
+			fillColor = getColorCustomLightGrey().brighter();
+		}
+	}
 
 	g.setColour(fillColor);
-	g.fillRoundedRectangle(button.getLocalBounds().toFloat(), getRoundedCornerSize());
+	g.fillRoundedRectangle(button.getLocalBounds().toFloat(), cornerSize);
+
+	g.setColour(outlineColor);
+	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(1.1F), cornerSize, 2.0F);
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
 {
+	const juce::String buttonName = button.getName();
 	const juce::String buttonText = button.getButtonText();
 	juce::Colour textColor{};
 
-	if (buttonText == "KNOB" || buttonText == "SLIDER")
+	if (buttonName == "knobWorks" || buttonName == "sliderWorks")
 	{
 		if (button.getToggleState() == 1)
 		{
@@ -99,7 +141,7 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getColorCustomWhite();
 		}
 	}
-	else if (buttonText == "BROWSE")
+	else if (buttonName == "browseButton")
 	{
 		textColor = getColorCustomDarkest();
 
@@ -110,6 +152,24 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		else if (isMouseOver)
 		{
 			textColor = textColor;
+		}
+	}
+	else if (buttonName == "addKnob" || buttonName == "addKnobScale" || buttonName == "addSliderTrack" || buttonName == "addSliderThumb" || buttonName == "addSliderScale")
+	{
+		textColor = getColorCustomDarkGrey();
+
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
+		}
+	}
+	else if (buttonName == "closeDialog1")
+	{
+		textColor = getColorCustomDarkGrey();
+
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
 		}
 	}
 

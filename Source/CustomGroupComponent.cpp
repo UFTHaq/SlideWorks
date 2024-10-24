@@ -12,7 +12,7 @@ CustomGroupComponent::~CustomGroupComponent()
 
 void CustomGroupComponent::paint(juce::Graphics& g)
 {
-	DBG("CustomGroupComponent paint called");
+	//DBG("CustomGroupComponent paint called");
 
 	const float textH = getFont().getHeight(); // Height of the text
 	const float indent = getIndentation(); // Indentation for the outline
@@ -21,6 +21,8 @@ void CustomGroupComponent::paint(juce::Graphics& g)
 	auto width  = getBounds().getWidth();
 	auto height = getBounds().getHeight();
 	auto text = getText();
+
+	g.saveState();
 
 	g.setOrigin(groupBounds.getX(), groupBounds.getY());
 
@@ -78,7 +80,8 @@ void CustomGroupComponent::paint(juce::Graphics& g)
 	g.drawText(text, juce::roundToInt(x + textX), 0, juce::roundToInt(textWidth), juce::roundToInt(textH), juce::Justification::centred, true);
 
 
-
+	// Make it normal again
+	g.restoreState();
 }
 
 const juce::String CustomGroupComponent::getName()

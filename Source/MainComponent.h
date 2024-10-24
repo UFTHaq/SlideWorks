@@ -41,6 +41,8 @@ public:
     void setupAddSliderTrackButton();
     void setupAddSliderThumbButton();
     void setupAddSliderScaleButton();
+    void setupCloseDialog1Button();
+    void setupCustomGroupComponents();
 
     void fileChooserWindows();
     void updateUI();
@@ -74,8 +76,6 @@ private:
 
     std::unique_ptr<juce::FileChooser> fileChooser{};
 
-    juce::TextButton addKnob{};
-    juce::TextButton addKnobScale{};
     juce::TextButton addSliderTrack{};
     juce::TextButton addSliderThumb{};
     juce::TextButton addSliderScale{};
@@ -83,9 +83,10 @@ private:
     bool openAddImage_Dialog1{};
     bool openAddImage_Dialog2{};
 
-    juce::GroupComponent groupDialog1{};
-
-    CustomGroupComponent groupDialog1Test{};
+    CustomGroupComponent groupDialog1{};
+    juce::TextButton addKnob{};
+    juce::TextButton addKnobScale{};
+    juce::TextButton closeDialog1{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
