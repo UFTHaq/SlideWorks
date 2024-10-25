@@ -5,13 +5,14 @@ MainComponent::MainComponent()
 {
     setSize(800, 540);   // This is mandatory to not trigger error in debug mode
 
+
     // Assign the pointer of customLookAndFeel
     customLookAndFeel = std::make_unique<CustomLookAndFeel>();
 
+    setupLayoutUI();
     setupButtons();
     setupCustomGroupComponents();
 
-    updateUI();
 }
 
 MainComponent::~MainComponent()
@@ -25,26 +26,34 @@ void MainComponent::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(customLookAndFeel->getColorCustomDarkGrey());
 
-    if (getInputPathState() == false)
+    if (SlideWorksPage == PAGE1)
     {
         g.setColour(customLookAndFeel->getColorCustomLightGrey());
         g.fillRoundedRectangle(base_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
 
-        g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeTitle()));
-        g.setColour(customLookAndFeel->getColorCustomDarkGrey());
-
-        if (!openAddImage_Dialog1)
+        if (openAddImage_Dialog1 == false)
         {
+            g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeTitle()));
+            g.setColour(customLookAndFeel->getColorCustomDarkGrey());
+
             g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
         }
-    }
 
-    if (openAddImage_Dialog1 == true)
+        if (openAddImage_Dialog1 == true)
+        {
+            openDialog1(g);
+        }
+    }
+    
+    if (SlideWorksPage == PAGE2)
     {
-        openDialog1(g);
+        g.setColour(customLookAndFeel->getColorCustomLightGrey());
 
-        repaint();
+        g.fillRoundedRectangle(left_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
+        g.fillRoundedRectangle(right_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
     }
+
+
 }
 
 void MainComponent::resized()
@@ -53,34 +62,7 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
 
-    base_SlideWorks = getLocalBounds().reduced(10);
-
-    //juce::Rectangle<int> knobButtonPage{ baseSlideWorks.getX(), baseSlideWorks.getY(), 75, 25 };
-    knobToggleWorksButton.setBounds({ base_SlideWorks.getX(), base_SlideWorks.getY(), 75, 25 });
-    
-    sliderToggleWorksButton.setBounds(
-        {
-            knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
-
-    browseButton.setBounds(
-        {
-            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
-
-    base_WorkSpace = base_SlideWorks;
-    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
-
-
-    repaint();
+    setupLayoutUI();
 }
 
 
@@ -96,17 +78,6 @@ void MainComponent::buttonClicked(juce::Button* button)
     if (button == &browseButton)
     {
         //fileChooserWindows();
-
-        /////////////// HOW CONTROL THIS IF OPEN WINDOW DIALOG
-        //openAddImage_Dialog1 = true;
-        //DBG("SHOULD BE OPEN DIALOG1");
-
-
-        // THIS POPUP CAN BE OUTSIDE OF WINDOW, WHICH NOT WHAT I WANT, BUT GOOD TO KNOW THIS.
-        //auto contentComp = std::make_unique<juce::Component>();
-        //contentComp->setSize(250, 250);
-        //juce::Rectangle<int> area = base_WorkSpace.withSizeKeepingCentre(250, 250);
-        //juce::CallOutBox::launchAsynchronously(std::move(contentComp), area, nullptr);
     }
 }
 
@@ -138,7 +109,6 @@ void MainComponent::filesDropped(const juce::StringArray& files, int x, int y)
             }
 
             updateUI();
-            repaint();
 
             DBG("getInputPathState: " << (getInputPathState() ? "true" : "false"));
         }
@@ -149,20 +119,64 @@ void MainComponent::filesDropped(const juce::StringArray& files, int x, int y)
 }
 
 /////////////////////////////////////////////////////////////////////
-
-bool MainComponent::checkInputPathState()
+void MainComponent::setupLayoutUI()
 {
-    // TODO: Check if input path for knobs and slider with their derivatives has VALID image path.
-    if (knobToggleWorksButton.getToggleState())
-    {
-        return inputPathKnob.isNotEmpty() || inputPathKnobScale.isNotEmpty();
-    }
-    else if (sliderToggleWorksButton.getToggleState())
-    {
-        return inputPathSliderTrack.isNotEmpty() || inputPathSliderThumb.isNotEmpty() || inputPathSliderScale.isNotEmpty();
-    }
+    ///////////////// PAGE 1 COMPONENT /////////////////
+    base_SlideWorks = getLocalBounds().reduced(10);
 
-    return false;
+    knobToggleWorksButton.setBounds(
+        { base_SlideWorks.getX(), 
+        base_SlideWorks.getY(), 
+        75, 25 
+        }
+    );
+    sliderToggleWorksButton.setBounds(
+        {
+            knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
+            knobToggleWorksButton.getY(),
+            knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getHeight()
+        }
+    );
+    browseButton.setBounds(
+        {
+            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getY(),
+            knobToggleWorksButton.getWidth(),
+            knobToggleWorksButton.getHeight()
+        }
+    );
+
+    base_WorkSpace = base_SlideWorks;
+    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
+
+    ///////////////// PAGE 2 COMPONENT /////////////////
+    auto area = base_WorkSpace;
+    left_WorkSpace = area.removeFromLeft(275);
+    area.removeFromLeft(5);
+    right_WorkSpace = area;
+
+    auto left_area = left_WorkSpace.reduced(10);
+
+
+}
+
+void MainComponent::checkInputPathState()
+{
+    if (inputPathKnob.isNotEmpty() ||
+        inputPathKnobScale.isNotEmpty() ||
+        inputPathSliderTrack.isNotEmpty() ||
+        inputPathSliderThumb.isNotEmpty() ||
+        inputPathSliderScale.isNotEmpty()
+        )
+    {
+        SlideWorksPage = PAGE2;
+
+    }
+    else
+    {
+        SlideWorksPage = PAGE1;
+    }
 }
 
 bool MainComponent::getInputPathState()
@@ -230,7 +244,7 @@ void MainComponent::setupAddKnobButton()
     addKnob.setName("addKnob");
     addKnob.onClick = [this]() 
         {
-            fileChooserWindows();
+            fileChooserWindows(inputPathKnob);
         };
     addAndMakeVisible(addKnob);
 }
@@ -241,7 +255,7 @@ void MainComponent::setupAddKnobScaleButton()
     addKnobScale.setName("addKnobScale");
     addKnobScale.onClick = [this]() 
         {
-            fileChooserWindows();
+            fileChooserWindows(inputPathKnobScale);
         };
     addAndMakeVisible(addKnobScale);
 }
@@ -252,7 +266,7 @@ void MainComponent::setupAddSliderTrackButton()
     addSliderTrack.setName("addSliderTrack");
     addSliderTrack.onClick = [this]() 
         {
-            fileChooserWindows();
+            fileChooserWindows(inputPathSliderTrack);
         };
     addAndMakeVisible(addSliderTrack);
 }
@@ -262,7 +276,7 @@ void MainComponent::setupAddSliderThumbButton()
     addSliderThumb.setName("addSliderThumb");
     addSliderThumb.onClick = [this]() 
         {
-            fileChooserWindows();
+            fileChooserWindows(inputPathSliderThumb);
         };
     addAndMakeVisible(addSliderThumb);
 }
@@ -272,7 +286,8 @@ void MainComponent::setupAddSliderScaleButton()
     addSliderScale.setName("addSliderScale");
     addSliderScale.onClick = [this]() 
         {
-            fileChooserWindows();
+            fileChooserWindows(inputPathSliderScale);
+
         };
     addAndMakeVisible(addSliderScale);
 }
@@ -284,26 +299,11 @@ void MainComponent::setupCloseDialog1Button()
         { 
             openAddImage_Dialog1 = false;
 
-            addKnob.setVisible(false);
-            addKnob.setEnabled(false);
-
-            addKnobScale.setVisible(false);
-            addKnobScale.setEnabled(false);
-
-            addSliderTrack.setVisible(false);
-            addSliderTrack.setEnabled(false);
-
-            addSliderThumb.setVisible(false);
-            addSliderThumb.setEnabled(false);
-
-            addSliderScale.setVisible(false);
-            addSliderScale.setEnabled(false);
-
-            closeDialog1.setVisible(false);
-            closeDialog1.setEnabled(false);
+            resetDialog1();
         };
     addAndMakeVisible(closeDialog1);
 }
+
 void MainComponent::setupCustomGroupComponents()
 {
     groupDialog1.setName("DIALOG1");
@@ -319,80 +319,80 @@ void MainComponent::setupCustomGroupComponents()
     addAndMakeVisible(groupDialog1);
 }
 
-
-void MainComponent::fileChooserWindows()
+void MainComponent::resetDialog1()
 {
+    knobToggleWorksButton.setEnabled(true);
+    sliderToggleWorksButton.setEnabled(true);
+
+    addKnob.setVisible(false);
+    addKnob.setEnabled(false);
+
+    addKnobScale.setVisible(false);
+    addKnobScale.setEnabled(false);
+
+    addSliderTrack.setVisible(false);
+    addSliderTrack.setEnabled(false);
+
+    addSliderThumb.setVisible(false);
+    addSliderThumb.setEnabled(false);
+
+    addSliderScale.setVisible(false);
+    addSliderScale.setEnabled(false);
+
+    closeDialog1.setVisible(false);
+    closeDialog1.setEnabled(false);
+}
+
+
+void MainComponent::fileChooserWindows(juce::String& inputPath)
+{
+
     fileChooser.reset(new juce::FileChooser("Select a file", juce::File(), "*.png"));
 
     auto fileChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
 
-    fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& chooser)
+    fileChooser->launchAsync(fileChooserFlags, [this, &inputPath](const juce::FileChooser& chooser)
         {
             juce::File selectedFile = chooser.getResult();
+
             if (selectedFile.existsAsFile())
             {
-                // TODO: Need to implement added image path string for each buttons (knob, knobScale, sliderTrack, sliderThumb, sliderScale).
+                inputPath = selectedFile.getFullPathName();
 
-                juce::String path = selectedFile.getFullPathName();
-                DBG("Selected file: " << path);
-
-                if (knobToggleWorksButton.getToggleState())
+                if (selectedFile.hasFileExtension(".png"))
                 {
-                    inputPathKnob = path;
-                    DBG("inpuPath: " << inputPathKnob);
+                    DBG("Selected file is a valid PNG: " << inputPath);
                 }
-
-                if (sliderToggleWorksButton.getToggleState())
+                else
                 {
-                    inputPathSliderTrack = path;
-                    DBG("inpuPath: " << inputPathSliderTrack);
+                    DBG("Selected file is NOT a PNG: " << inputPath);
+                    inputPath.clear();  // Optionally clear the path if not valid
                 }
-
-                auto text = "empty";
-                auto tes = getInputPathState();
-                if (tes) text = "true";
-                else text = "false";
-
-                DBG("getInputPathState: " << text);
-
             }
             else
             {
                 DBG("No file selected");
+                inputPath.clear();      // better than inputPath = "";
             }
+
+            // Set openAddImage_Dialog1 to false after file selection
+            openAddImage_Dialog1 = false;
+
+            SlideWorksPage = PAGE2;
+
+            resetDialog1();
+
+            updateUI();
         }
     );
 }
 
 void MainComponent::updateUI()
 {
-    base_SlideWorks = getLocalBounds().reduced(10);
 
-    knobToggleWorksButton.setBounds({ base_SlideWorks.getX(), base_SlideWorks.getY(), 75, 25 });
+    checkInputPathState();
 
-    sliderToggleWorksButton.setBounds(
-        {
-            knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
-
-    browseButton.setBounds(
-        {
-            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
-
-    base_WorkSpace = base_SlideWorks;
-    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
-
-
-    if (getInputPathState()) 
+    if (SlideWorksPage == PAGE2) 
     {
         browseButton.setEnabled(false);
         browseButton.setVisible(false);
@@ -402,7 +402,23 @@ void MainComponent::updateUI()
         browseButton.setEnabled(true);
         browseButton.setVisible(true);
     }
+
+
+    // SYSTEM INI PERLU DIPERBAIKI
+    {
+        // Set openAddImage_Dialog1 to false after file selection
+        openAddImage_Dialog1 = false;
+
+        if (openAddImage_Dialog1 == false)
+        {
+            resetDialog1();
+        }
+    }
+
+    repaint();
 }
+
+
 
 
 void MainComponent::openDialog1(juce::Graphics& g)
@@ -448,6 +464,8 @@ void MainComponent::openDialog1(juce::Graphics& g)
         addKnobScale.setBounds(addKnobScaleRect.reduced(pad));
 
         {
+            sliderToggleWorksButton.setEnabled(false);
+
             addKnob.setVisible(true);
             addKnob.setEnabled(true);
 
@@ -478,6 +496,8 @@ void MainComponent::openDialog1(juce::Graphics& g)
         addSliderScale.setBounds(addSliderScaleRect.reduced(pad));
 
         {
+            knobToggleWorksButton.setEnabled(false);
+
             addKnob.setVisible(false);
             addKnob.setEnabled(false);
 

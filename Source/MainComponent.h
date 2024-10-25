@@ -28,8 +28,9 @@ public:
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;
 
+    void setupLayoutUI();
     bool getInputPathState();
-    bool checkInputPathState();
+    void checkInputPathState();
     void setupButtons();
     void setupKnobToggleButton();
     void setupSliderToggleButton();
@@ -43,9 +44,11 @@ public:
     void setupAddSliderScaleButton();
     void setupCloseDialog1Button();
     void setupCustomGroupComponents();
+    void resetDialog1();
 
-    void fileChooserWindows();
+    void fileChooserWindows(juce::String& inputPath);
     void updateUI();
+
 
     void openDialog1(juce::Graphics&);
 
@@ -56,12 +59,20 @@ private:
     // Create pointer for CustomLookAndFeel object
     std::unique_ptr<CustomLookAndFeel> customLookAndFeel{};
 
+    enum PageState
+    {
+        PAGE1,
+        PAGE2
+    };
+
+    PageState SlideWorksPage{ PAGE1 };
+
     bool inputPathState{};
 
-    juce::Rectangle<int> base_SlideWorks{};
+    juce::Rectangle<int> base_SlideWorks{};     // maybe change the name to page1_base_SlideWorks
     juce::Rectangle<int> base_WorkSpace{};
-    //juce::Rectangle<int> base_openAddImage_Dialog1{};
-    //juce::Rectangle<int> base_openAddImage_Dialog2{};
+    juce::Rectangle<int> left_WorkSpace{};
+    juce::Rectangle<int> right_WorkSpace{};     // page2_right_WorksSpace
 
     juce::TextButton knobToggleWorksButton{};
     juce::TextButton sliderToggleWorksButton{};
@@ -69,7 +80,6 @@ private:
 
     juce::String inputPathKnob{};
     juce::String inputPathKnobScale{};
-
     juce::String inputPathSliderTrack{};
     juce::String inputPathSliderThumb{};
     juce::String inputPathSliderScale{};
@@ -87,6 +97,45 @@ private:
     juce::TextButton addKnob{};
     juce::TextButton addKnobScale{};
     juce::TextButton closeDialog1{};
+
+    ////////////////----------- PAGE 2 -----------////////////////
+    juce::TextButton simulationButton{};
+    juce::TextButton previewButton{};
+    juce::TextButton resizeButton{};
+
+    //////////----- LEFT WORKSPACE -----//////////
+
+    /////--- FILMSTRIP BUTTONS ---/////
+
+    // TOTAL FRAMES
+    CustomGroupComponent groupTotalFrames{};
+    int filmstripTotalFrames{};
+
+    // ORIENTATION
+    CustomGroupComponent groupOrientation{};
+    juce::TextButton horizontalButton{};
+    juce::TextButton verticalButton{};
+    bool filmstripIsVertical{};
+
+    // ANGLES KNOB
+    CustomGroupComponent groupKnobAngles{};
+    int minAngleDegree{};
+    int maxAngleDegree{};
+
+    // THUMB POSITION
+    CustomGroupComponent groupSliderThumbPositions{};
+    int minThumbPosition{};
+    int maxThumbPosition{};
+
+    // EXPORT
+    juce::TextButton exportButton{};
+    bool isExportBundleWithScale{};
+
+    //////////----- RIGHT WORKSPACE -----//////////
+    juce::TextButton editButton{};
+
+
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
