@@ -193,6 +193,11 @@ void MainComponent::setupLayoutUI()
     groupTotalFrames.setBounds(groupTotalFramesArea);
     left_area.removeFromTop(spacing);
 
+    auto control1Area = groupTotalFramesArea;
+    control1Area.removeFromTop(int(spacing * 0.8F));
+    control1Area = control1Area.withSizeKeepingCentre(int(control1Area.getWidth() * 0.775F), control1Area.getHeight());
+    sliderTotalFrames.setBounds(control1Area);
+
     //auto groupOrientationArea = left_area.removeFromTop(95);
     auto groupOrientationArea = left_area.removeFromTop(int(left_area_H * 0.225F));
     groupOrientation.setBounds(groupOrientationArea);
@@ -248,6 +253,8 @@ void MainComponent::setupButtons()
     setupAddSliderThumbButton();
     setupAddSliderScaleButton();
     setupCloseDialog1Button();
+
+    setupFilmstripControls();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -431,6 +438,27 @@ void MainComponent::setupCustomGroupComponents()
     addAndMakeVisible(groupSliderThumbPositions);
 }
 
+void MainComponent::setupFilmstripControls()
+{
+    sliderTotalFrames.setName("sliderTotalFrames");
+    sliderTotalFrames.setRange(3.0, 128.0, 1.0);
+    sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
+    sliderTotalFrames.setValue(69.0);
+    sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
+    sliderTotalFrames.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    sliderTotalFrames.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomDarkGrey());
+    sliderTotalFrames.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomWhite());
+    sliderTotalFrames.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+    sliderTotalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomWhite());
+    sliderTotalFrames.setMouseClickGrabsKeyboardFocus(false);
+    sliderTotalFrames.setTextBoxIsEditable(true);
+    sliderTotalFrames.onValueChange = [this]() 
+        {
+            filmstripTotalFrames = int(sliderTotalFrames.getValue()); 
+        };
+    addAndMakeVisible(sliderTotalFrames);
+}
+
 void MainComponent::resetDialog1()
 {
     knobToggleWorksButton.setEnabled(true);
@@ -512,6 +540,9 @@ void MainComponent::updateUI()
 
         exportButton.setEnabled(false);
         exportButton.setVisible(false);
+
+        sliderTotalFrames.setEnabled(false);
+        sliderTotalFrames.setVisible(false);
     }
     else
     {
@@ -520,6 +551,9 @@ void MainComponent::updateUI()
 
         exportButton.setEnabled(true);
         exportButton.setVisible(true);
+
+        sliderTotalFrames.setEnabled(true);
+        sliderTotalFrames.setVisible(true);
     }
 
 

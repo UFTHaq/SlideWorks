@@ -45,6 +45,7 @@ public:
     void setupAddSliderScaleButton();
     void setupCloseDialog1Button();
     void setupCustomGroupComponents();
+    void setupFilmstripControls();
     void resetDialog1();
 
     void fileChooserWindows(juce::String& inputPath);
@@ -111,6 +112,7 @@ private:
     // TOTAL FRAMES
     CustomGroupComponent groupTotalFrames{};
     int filmstripTotalFrames{};
+    juce::Slider sliderTotalFrames{};
 
     // ORIENTATION
     CustomGroupComponent groupOrientation{};
