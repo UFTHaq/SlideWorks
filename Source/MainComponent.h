@@ -35,6 +35,7 @@ public:
     void setupKnobToggleButton();
     void setupSliderToggleButton();
     void setupBrowseButton();
+    void setupExportButton();
     void toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
 
     void setupAddKnobButton();
@@ -48,7 +49,6 @@ public:
 
     void fileChooserWindows(juce::String& inputPath);
     void updateUI();
-
 
     void openDialog1(juce::Graphics&);
 
@@ -106,6 +106,7 @@ private:
     //////////----- LEFT WORKSPACE -----//////////
 
     /////--- FILMSTRIP BUTTONS ---/////
+    juce::Rectangle<int> filmstripBanner{};
 
     // TOTAL FRAMES
     CustomGroupComponent groupTotalFrames{};

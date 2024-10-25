@@ -13,6 +13,7 @@ MainComponent::MainComponent()
     setupButtons();
     setupCustomGroupComponents();
 
+    updateUI();
 }
 
 MainComponent::~MainComponent()
@@ -51,6 +52,27 @@ void MainComponent::paint (juce::Graphics& g)
 
         g.fillRoundedRectangle(left_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
         g.fillRoundedRectangle(right_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
+
+        g.setColour(customLookAndFeel->getColorCustomDarkGrey());
+        g.fillRoundedRectangle(filmstripBanner.toFloat(), customLookAndFeel->getRoundedCornerSize());
+
+        g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(18));
+        g.setColour(customLookAndFeel->getColorCustomWhite());
+        g.drawText("FILMSTRIP", filmstripBanner, juce::Justification::centred, true);
+
+        if (knobToggleWorksButton.getToggleState())
+        {
+            groupTotalFrames.paint(g);
+            groupOrientation.paint(g);
+            groupKnobAngles.paint(g);
+        }
+
+        if (sliderToggleWorksButton.getToggleState())
+        {
+            groupTotalFrames.paint(g);
+            groupOrientation.paint(g);
+            groupSliderThumbPositions.paint(g);
+        }
     }
 
 
@@ -152,12 +174,41 @@ void MainComponent::setupLayoutUI()
 
     ///////////////// PAGE 2 COMPONENT /////////////////
     auto area = base_WorkSpace;
-    left_WorkSpace = area.removeFromLeft(275);
+    //left_WorkSpace = area.removeFromLeft(275);
+    left_WorkSpace = area.removeFromLeft(int(area.getWidth() * 0.35F));
     area.removeFromLeft(5);
     right_WorkSpace = area;
 
-    auto left_area = left_WorkSpace.reduced(10);
+    auto left_area = left_WorkSpace.reduced(5);
+    auto left_area_H = left_area.getHeight();
+    //auto spacing = 15;
+    auto spacing = int(left_area_H * 0.035F);
 
+    filmstripBanner = left_area.removeFromTop(25);
+    left_area = left_area.withSizeKeepingCentre(left_area.getWidth() - 25, left_area.getHeight());
+    left_area.removeFromTop(int(spacing * 1.5));
+
+    //auto groupTotalFramesArea = left_area.removeFromTop(75);
+    auto groupTotalFramesArea = left_area.removeFromTop(int(left_area_H * 0.180F));
+    groupTotalFrames.setBounds(groupTotalFramesArea);
+    left_area.removeFromTop(spacing);
+
+    //auto groupOrientationArea = left_area.removeFromTop(95);
+    auto groupOrientationArea = left_area.removeFromTop(int(left_area_H * 0.225F));
+    groupOrientation.setBounds(groupOrientationArea);
+    left_area.removeFromTop(spacing);
+
+    //auto groupAnglesArea = left_area.removeFromTop(160);
+    auto groupAnglesArea = left_area.removeFromTop(int(left_area_H * 0.35F));
+    groupKnobAngles.setBounds(groupAnglesArea);
+
+    auto groupThumbPosArea = groupAnglesArea;
+    groupSliderThumbPositions.setBounds(groupThumbPosArea);
+
+    left_area.removeFromTop(spacing/2);
+
+    auto exportButtonArea = left_area.withSizeKeepingCentre(100, 25);
+    exportButton.setBounds(exportButtonArea);
 
 }
 
@@ -189,6 +240,7 @@ void MainComponent::setupButtons()
     setupKnobToggleButton();
     setupSliderToggleButton();
     setupBrowseButton();
+    setupExportButton();
 
     setupAddKnobButton();
     setupAddKnobScaleButton();
@@ -231,10 +283,20 @@ void MainComponent::setupBrowseButton()
     addAndMakeVisible(browseButton);
 }
 
+void MainComponent::setupExportButton()
+{
+    exportButton.setButtonText("EXPORT");
+    exportButton.setName("exportButton");
+    exportButton.onClick = [this]() {};
+    addAndMakeVisible(exportButton);
+}
+
 void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)
 {
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+
+    repaint();
 }
 
 
@@ -317,6 +379,56 @@ void MainComponent::setupCustomGroupComponents()
     groupDialog1.setTextLineGap(8.0F);
     groupDialog1.setLineThickness(2.0F);
     addAndMakeVisible(groupDialog1);
+
+    auto indentation = 5.0F;
+    auto gap = 6.0F;
+    groupTotalFrames.setName("TOTAL FRAMES");
+    groupTotalFrames.setText("TOTAL FRAMES");
+    groupTotalFrames.setTextLabelPosition(juce::Justification::centred);
+    groupTotalFrames.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupTotalFrames.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
+    groupTotalFrames.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupTotalFrames.setCornerSize(10.0F);
+    groupTotalFrames.setIndentation(indentation);
+    groupTotalFrames.setTextLineGap(gap);
+    groupTotalFrames.setLineThickness(2.0F);
+    addAndMakeVisible(groupTotalFrames);
+
+    groupOrientation.setName("ORIENTATION");
+    groupOrientation.setText("ORIENTATION");
+    groupOrientation.setTextLabelPosition(juce::Justification::centred);
+    groupOrientation.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupOrientation.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
+    groupOrientation.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupOrientation.setCornerSize(10.0F);
+    groupOrientation.setIndentation(indentation);
+    groupOrientation.setTextLineGap(gap);
+    groupOrientation.setLineThickness(2.0F);
+    addAndMakeVisible(groupOrientation);
+
+    groupKnobAngles.setName("ANGLES");
+    groupKnobAngles.setText("ANGLES");
+    groupKnobAngles.setTextLabelPosition(juce::Justification::centred);
+    groupKnobAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupKnobAngles.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
+    groupKnobAngles.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupKnobAngles.setCornerSize(10.0F);
+    groupKnobAngles.setIndentation(indentation);
+    groupKnobAngles.setTextLineGap(gap);
+    groupKnobAngles.setLineThickness(2.0F);
+    addAndMakeVisible(groupKnobAngles);
+
+    groupSliderThumbPositions.setName("THUMB POSITION");
+    groupSliderThumbPositions.setText("THUMB POSITION");
+    groupSliderThumbPositions.setTextLabelPosition(juce::Justification::centred);
+    groupSliderThumbPositions.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
+    groupSliderThumbPositions.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
+    groupSliderThumbPositions.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupSliderThumbPositions.setCornerSize(10.0F);
+    groupSliderThumbPositions.setIndentation(indentation);
+    groupSliderThumbPositions.setTextLineGap(gap);
+    groupSliderThumbPositions.setLineThickness(2.0F);
+    addAndMakeVisible(groupSliderThumbPositions);
 }
 
 void MainComponent::resetDialog1()
@@ -383,6 +495,7 @@ void MainComponent::fileChooserWindows(juce::String& inputPath)
             resetDialog1();
 
             updateUI();
+
         }
     );
 }
@@ -392,15 +505,21 @@ void MainComponent::updateUI()
 
     checkInputPathState();
 
-    if (SlideWorksPage == PAGE2) 
-    {
-        browseButton.setEnabled(false);
-        browseButton.setVisible(false);
-    }
-    else
+    if (SlideWorksPage == PAGE1) 
     {
         browseButton.setEnabled(true);
         browseButton.setVisible(true);
+
+        exportButton.setEnabled(false);
+        exportButton.setVisible(false);
+    }
+    else
+    {
+        browseButton.setEnabled(false);
+        browseButton.setVisible(false);
+
+        exportButton.setEnabled(true);
+        exportButton.setVisible(true);
     }
 
 

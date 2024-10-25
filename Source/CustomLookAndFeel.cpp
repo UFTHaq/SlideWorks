@@ -100,6 +100,22 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getColorCustomLightGrey().brighter();
 		}
 	}
+	else if (buttonName == "exportButton")
+	{
+		cornerSize = getRoundedCornerSize();
+
+		fillColor = getColorCustomDarkGrey();
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomDarkGrey().brighter();
+			fillColor = juce::Colours::royalblue;
+		}
+		else if (shouldDrawButtonAsHighlighted)
+		{
+			fillColor = getColorCustomDarkGrey().brighter(0.2F);
+		}
+	}
 	else if (buttonName == "closeDialog1")
 	{
 		cornerSize = getRoundedCornerSize() * 2;
@@ -162,6 +178,16 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		{
 			textColor = getColorCustomWhite();
 		}
+	}
+	else if (buttonName == "exportButton")
+	{
+		textColor = getColorCustomWhite();
+
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
+		}
+
 	}
 	else if (buttonName == "closeDialog1")
 	{
