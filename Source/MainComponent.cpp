@@ -77,6 +77,8 @@ void MainComponent::paint (juce::Graphics& g)
         // debug only
         g.setColour(customLookAndFeel->getColorCustomGrey());
         //g.drawRoundedRectangle(debugOutline.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
+        //g.drawRoundedRectangle(debugOutlineLeft.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
+        //g.drawRoundedRectangle(debugOutlineRight.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
     }
 
 
@@ -201,8 +203,21 @@ void MainComponent::setupLayoutUI()
     control1Area.removeFromTop(int(spacing * 0.70F));
     control1Area = control1Area.withSizeKeepingCentre(int(control1Area.getWidth() * 0.825F), control1Area.getHeight());
     debugOutline = control1Area;
-    control1Area.removeFromRight(int(control1Area.getWidth() * 0.075F));
-    sliderTotalFrames.setBounds(control1Area);
+
+    auto sliderH = int(control1Area.getHeight() * 0.35F);
+    auto control1AreaLeft = control1Area;
+    auto ratio = 0.20F;
+    control1AreaLeft.removeFromRight(int(control1Area.getWidth() * ratio));
+    debugOutlineLeft = control1AreaLeft;
+    control1AreaLeft = control1AreaLeft.withSizeKeepingCentre(control1AreaLeft.getWidth(), sliderH);
+    sliderTotalFrames.setBounds(control1AreaLeft);
+
+    auto control1AreaRight = control1Area;
+    control1AreaRight = control1AreaRight.removeFromRight(int(control1AreaRight.getWidth() * ratio));
+    debugOutlineRight = control1AreaRight;
+    control1AreaRight.removeFromLeft(int(control1AreaRight.getWidth() * 0.1F));  // For spacing to left a bit.
+    control1AreaRight = control1AreaRight.withSizeKeepingCentre(control1AreaRight.getWidth(), sliderH);
+    labelBoxTotalFrames.setBounds(control1AreaRight);
 
     //auto groupOrientationArea = left_area.removeFromTop(95);
     auto groupOrientationArea = left_area.removeFromTop(int(left_area_H * 0.225F));
@@ -451,18 +466,45 @@ void MainComponent::setupFilmstripControls()
     sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
     sliderTotalFrames.setValue(69.0);
     sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
-    sliderTotalFrames.setTextBoxStyle(juce::Slider::TextBoxRight, true, 40, 20);
+    sliderTotalFrames.setTextBoxStyle(juce::Slider::NoTextBox, true, 40, 20);
     sliderTotalFrames.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderTotalFrames.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomWhite());
     sliderTotalFrames.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderTotalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
     sliderTotalFrames.setMouseClickGrabsKeyboardFocus(false);
-    sliderTotalFrames.setTextBoxIsEditable(true);
+    sliderTotalFrames.setTextBoxIsEditable(false);
     sliderTotalFrames.onValueChange = [this]() 
         {
-            filmstripTotalFrames = int(sliderTotalFrames.getValue()); 
+            auto value = int(sliderTotalFrames.getValue());
+            filmstripTotalFrames = value;
+            labelBoxTotalFrames.setText(std::to_string(value), juce::dontSendNotification);
         };
     addAndMakeVisible(sliderTotalFrames);
+
+    labelBoxTotalFrames.setName("labelBoxTotalFrames");
+    labelBoxTotalFrames.setText(std::to_string(sliderTotalFrames.getValue()), juce::dontSendNotification);
+    labelBoxTotalFrames.setColour(juce::Label::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+    labelBoxTotalFrames.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
+    labelBoxTotalFrames.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+    labelBoxTotalFrames.setLookAndFeel(customLookAndFeel.get());
+    labelBoxTotalFrames.setEditable(true, true, false);
+    labelBoxTotalFrames.onTextChange = [this]() 
+        {
+            auto newValue = labelBoxTotalFrames.getText().getIntValue();
+
+            if (newValue <= sliderTotalFrames.getMinimum())
+            {
+                newValue = int(sliderTotalFrames.getMinimum());
+            }
+            else if (newValue >= sliderTotalFrames.getMaximum())
+            {
+                newValue = int(sliderTotalFrames.getMaximum());
+            }
+
+            sliderTotalFrames.setValue(newValue, juce::sendNotification);
+            filmstripTotalFrames = newValue;
+        };
+    addAndMakeVisible(labelBoxTotalFrames);
 }
 
 void MainComponent::resetDialog1()
@@ -549,6 +591,9 @@ void MainComponent::updateUI()
 
         sliderTotalFrames.setEnabled(false);
         sliderTotalFrames.setVisible(false);
+
+        labelBoxTotalFrames.setEnabled(false);
+        labelBoxTotalFrames.setVisible(false);
     }
     else
     {
@@ -560,6 +605,9 @@ void MainComponent::updateUI()
 
         sliderTotalFrames.setEnabled(true);
         sliderTotalFrames.setVisible(true);
+
+        labelBoxTotalFrames.setEnabled(true);
+        labelBoxTotalFrames.setVisible(true);
     }
 
 

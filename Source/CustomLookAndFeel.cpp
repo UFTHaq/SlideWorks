@@ -274,14 +274,15 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	juce::Colour thumbColour = getColorCustomLightGrey().brighter();
 
 	// Draw track
-	float trackHeight = float(height * 0.325F);
+	float trackHeight = float(height * 1.F);
 	float thumbSizeW  = float(trackHeight * 0.6F);
 	float pad = float(trackHeight * 0.10F);
 
 	//juce::Rectangle<int> track{ x, y + ((height - trackHeight) / 2), width, trackHeight };
-	juce::Rectangle<float> track{ x - (thumbSizeW / 2) - pad, y + ((height - trackHeight) / 2), width + (pad * 2) + thumbSizeW, trackHeight };
+	//juce::Rectangle<float> track{ x - (thumbSizeW / 2) - pad, y + ((height - trackHeight) / 2), width + (pad * 2) + thumbSizeW, trackHeight };
+	juce::Rectangle<float> track{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
 	g.setColour(trackColour);
-	g.fillRoundedRectangle(track.toFloat(), getRoundedCornerSize());
+	g.fillRoundedRectangle(track, getRoundedCornerSize());
 
 	// Draw thumb
 	float thumbWidth  = thumbSizeW;
@@ -289,7 +290,21 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	float thumbX      = float(sliderPos - (thumbWidth / 2));
 	juce::Rectangle<float> thumb{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
 	g.setColour(thumbColour);
-	g.fillRoundedRectangle(thumb.toFloat(), getRoundedCornerSize());
+	g.fillRoundedRectangle(thumb, getRoundedCornerSize());
+}
+
+void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
+{
+	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
+	
+	//g.fillAll(getColorCustomDarkGrey());
+	g.setColour(getColorCustomDarkGrey());
+	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 3.0F);		
+
+	// Set the text color and draw the text
+	g.setColour(label.findColour(juce::Label::textColourId));
+	g.setFont(getFontRobotoCondensed().withHeight(17.50F));
+	g.drawText(label.getText(), label.getLocalBounds(), juce::Justification::centred, true);
 }
 
 ////////////////////////// ========= LOAD FONTS ========= //////////////////////////
@@ -373,3 +388,4 @@ const float CustomLookAndFeel::getFontSizeRegular()
 {
 	return fontSizeRegular;
 }
+

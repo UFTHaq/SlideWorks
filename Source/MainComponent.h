@@ -113,7 +113,10 @@ private:
     CustomGroupComponent groupTotalFrames{};
     int filmstripTotalFrames{};
     juce::Slider sliderTotalFrames{};
+    juce::Label labelBoxTotalFrames{};
     juce::Rectangle<int> debugOutline{};       // only for debugging UI position of TotalFrames.
+    juce::Rectangle<int> debugOutlineLeft{};
+    juce::Rectangle<int> debugOutlineRight{};
 
     // ORIENTATION
     CustomGroupComponent groupOrientation{};

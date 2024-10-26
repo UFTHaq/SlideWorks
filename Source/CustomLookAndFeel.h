@@ -22,6 +22,8 @@ public:
 	void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider) override;
 	//void drawTextBox(juce::Graphics& g, float width, float height, bool isHover, bool isActive, juce::TextEditor& textEditor) override;
 
+	void drawLabel(juce::Graphics& g, juce::Label& label) override;
+
 	// Load all fonts
 	void LoadFonts();
 
