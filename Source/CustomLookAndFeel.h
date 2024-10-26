@@ -19,6 +19,9 @@ public:
 
 	void drawGroupComponentOutline(juce::Graphics& g, int width, int height, const juce::String& text, const juce::Justification& position, juce::GroupComponent& group) override;
 
+	void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider) override;
+	//void drawTextBox(juce::Graphics& g, float width, float height, bool isHover, bool isActive, juce::TextEditor& textEditor) override;
+
 	// Load all fonts
 	void LoadFonts();
 

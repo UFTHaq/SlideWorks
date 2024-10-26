@@ -268,6 +268,26 @@ void CustomLookAndFeel::drawGroupComponentOutline(juce::Graphics& g, int width, 
 	}
 }
 
+void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider)
+{
+	juce::Colour trackColour = getColorCustomDarkGrey();
+	juce::Colour thumbColour = getColorCustomLightGrey().brighter();
+
+	// Draw track
+	int trackHeight = int(height * 0.3F);
+	juce::Rectangle<int> track{ x, y + ((height - trackHeight) / 2), width, trackHeight };
+	g.setColour(trackColour);
+	g.fillRoundedRectangle(track.toFloat(), getRoundedCornerSize());
+
+	// Draw thumb
+	int thumbWidth  = int(trackHeight * 0.8F);
+	int thumbHeight = int(trackHeight * 0.8F);
+	int thumbX = int(sliderPos - (thumbWidth / 2));
+	juce::Rectangle<int> thumb{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
+	g.setColour(thumbColour);
+	g.fillRoundedRectangle(thumb.toFloat(), getRoundedCornerSize());
+}
+
 ////////////////////////// ========= LOAD FONTS ========= //////////////////////////
 void CustomLookAndFeel::LoadFonts()
 {
