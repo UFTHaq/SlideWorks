@@ -76,9 +76,13 @@ void MainComponent::paint (juce::Graphics& g)
 
         // debug only
         g.setColour(customLookAndFeel->getColorCustomGrey());
-        //g.drawRoundedRectangle(debugOutline.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
-        //g.drawRoundedRectangle(debugOutlineLeft.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
-        //g.drawRoundedRectangle(debugOutlineRight.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
+        //g.drawRoundedRectangle(debugOutlineTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineLeftTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineRightTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+
+        //g.drawRoundedRectangle(debugOutlineOrientation.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineOrientationHorizontal.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineOrientationVertical.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
     }
 
 
@@ -187,14 +191,13 @@ void MainComponent::setupLayoutUI()
 
     auto left_area = left_WorkSpace.reduced(5);
     auto left_area_H = left_area.getHeight();
-    //auto spacing = 15;
     auto spacing = int(left_area_H * 0.035F);
 
     filmstripBanner = left_area.removeFromTop(25);
     left_area = left_area.withSizeKeepingCentre(left_area.getWidth() - 25, left_area.getHeight());
     left_area.removeFromTop(int(spacing * 1.5));
 
-    //auto groupTotalFramesArea = left_area.removeFromTop(75);
+    ////////------------ TOTAL FRAMES ------------////////
     auto groupTotalFramesArea = left_area.removeFromTop(int(left_area_H * 0.160F));
     groupTotalFrames.setBounds(groupTotalFramesArea);
     left_area.removeFromTop(spacing);
@@ -202,29 +205,50 @@ void MainComponent::setupLayoutUI()
     auto control1Area = groupTotalFramesArea;
     control1Area.removeFromTop(int(spacing * 0.70F));
     control1Area = control1Area.withSizeKeepingCentre(int(control1Area.getWidth() * 0.825F), control1Area.getHeight());
-    debugOutline = control1Area;
+    debugOutlineTotalFrames = control1Area;
 
     auto sliderH = int(control1Area.getHeight() * 0.35F);
     auto control1AreaLeft = control1Area;
     auto ratio = 0.20F;
     control1AreaLeft.removeFromRight(int(control1Area.getWidth() * ratio));
-    debugOutlineLeft = control1AreaLeft;
+    debugOutlineLeftTotalFrames = control1AreaLeft;
     control1AreaLeft = control1AreaLeft.withSizeKeepingCentre(control1AreaLeft.getWidth(), sliderH);
     sliderTotalFrames.setBounds(control1AreaLeft);
 
     auto control1AreaRight = control1Area;
     control1AreaRight = control1AreaRight.removeFromRight(int(control1AreaRight.getWidth() * ratio));
-    debugOutlineRight = control1AreaRight;
+    debugOutlineRightTotalFrames = control1AreaRight;
     control1AreaRight.removeFromLeft(int(control1AreaRight.getWidth() * 0.1F));  // For spacing to left a bit.
     control1AreaRight = control1AreaRight.withSizeKeepingCentre(control1AreaRight.getWidth(), sliderH);
     labelBoxTotalFrames.setBounds(control1AreaRight);
 
-    //auto groupOrientationArea = left_area.removeFromTop(95);
+    ////////------------ ORIENTATION ------------////////
     auto groupOrientationArea = left_area.removeFromTop(int(left_area_H * 0.225F));
     groupOrientation.setBounds(groupOrientationArea);
     left_area.removeFromTop(spacing);
 
-    //auto groupAnglesArea = left_area.removeFromTop(160);
+    auto orientationArea = groupOrientationArea;
+    orientationArea.removeFromTop(int(spacing * 0.70F));
+    orientationArea = orientationArea.withSizeKeepingCentre(int(orientationArea.getWidth() * 0.825F), orientationArea.getHeight());
+    debugOutlineOrientation = orientationArea;
+
+    auto buttonH = int(orientationArea.getHeight() * 0.55F);
+    auto orientationAreaLeft = orientationArea;
+    ratio = 0.5F;
+    orientationAreaLeft.removeFromRight(int(orientationArea.getWidth() * ratio));
+    debugOutlineOrientationHorizontal = orientationAreaLeft;
+    orientationAreaLeft = orientationAreaLeft.withSizeKeepingCentre(orientationAreaLeft.getWidth(), buttonH);
+    orientationAreaLeft.removeFromRight(int(orientationAreaLeft.getWidth() * 0.065F));
+    horizontalButton.setBounds(orientationAreaLeft);
+
+    auto orientationAreaRight = orientationArea;
+    orientationAreaRight = orientationAreaRight.removeFromRight(int(orientationAreaRight.getWidth() * ratio));
+    debugOutlineOrientationVertical = orientationAreaRight;
+    orientationAreaRight = orientationAreaRight.withSizeKeepingCentre(orientationAreaRight.getWidth(), buttonH);
+    orientationAreaRight.removeFromLeft(int(orientationAreaRight.getWidth() * 0.065F));
+    verticalButton.setBounds(orientationAreaRight);
+
+    ////////------------ ANGLES ------------////////
     auto groupAnglesArea = left_area.removeFromTop(int(left_area_H * 0.370F));
     groupKnobAngles.setBounds(groupAnglesArea);
 
@@ -276,6 +300,7 @@ void MainComponent::setupButtons()
     setupCloseDialog1Button();
 
     setupFilmstripControls();
+    setupOrientationButtons();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -283,7 +308,7 @@ void MainComponent::setupKnobToggleButton()
     knobToggleWorksButton.setButtonText("KNOB");
     knobToggleWorksButton.setName("knobWorks");
     knobToggleWorksButton.setToggleState(true, juce::NotificationType::dontSendNotification);
-    knobToggleWorksButton.onClick = [this]() { toggleButtons(knobToggleWorksButton, sliderToggleWorksButton); };
+    knobToggleWorksButton.onClick = [this]() { togglingButtons(knobToggleWorksButton, sliderToggleWorksButton); };
     addAndMakeVisible(knobToggleWorksButton);
 }
 
@@ -292,7 +317,7 @@ void MainComponent::setupSliderToggleButton()
     sliderToggleWorksButton.setButtonText("SLIDER");
     sliderToggleWorksButton.setName("sliderWorks");
     sliderToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-    sliderToggleWorksButton.onClick = [this]() { toggleButtons(sliderToggleWorksButton, knobToggleWorksButton); };
+    sliderToggleWorksButton.onClick = [this]() { togglingButtons(sliderToggleWorksButton, knobToggleWorksButton); };
     addAndMakeVisible(sliderToggleWorksButton);
 }
 
@@ -319,7 +344,7 @@ void MainComponent::setupExportButton()
     addAndMakeVisible(exportButton);
 }
 
-void MainComponent::toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)
+void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)
 {
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
@@ -512,6 +537,29 @@ void MainComponent::setupFilmstripControls()
     addAndMakeVisible(labelBoxTotalFrames);
 }
 
+void MainComponent::setupOrientationButtons()
+{
+    horizontalButton.setName("horizontalButton");
+    horizontalButton.setButtonText("HORIZONTAL");
+    horizontalButton.setToggleState(false, juce::dontSendNotification);
+    horizontalButton.onClick = [this]() 
+        {
+            togglingButtons(horizontalButton, verticalButton); 
+            filmstripIsVertical = false;
+        };
+    addAndMakeVisible(horizontalButton);
+
+    verticalButton.setName("verticalButton");
+    verticalButton.setButtonText("VERTICAL");
+    verticalButton.setToggleState(true, juce::dontSendNotification);
+    verticalButton.onClick = [this]() 
+        {
+            togglingButtons(verticalButton, horizontalButton);
+            filmstripIsVertical = true;
+        };
+    addAndMakeVisible(verticalButton);
+}
+
 void MainComponent::resetDialog1()
 {
     knobToggleWorksButton.setEnabled(true);
@@ -599,6 +647,11 @@ void MainComponent::updateUI()
 
         labelBoxTotalFrames.setEnabled(false);
         labelBoxTotalFrames.setVisible(false);
+
+        horizontalButton.setEnabled(false);
+        horizontalButton.setVisible(false);
+        verticalButton.setEnabled(false);
+        verticalButton.setVisible(false);
     }
     else
     {
@@ -613,6 +666,11 @@ void MainComponent::updateUI()
 
         labelBoxTotalFrames.setEnabled(true);
         labelBoxTotalFrames.setVisible(true);
+
+        horizontalButton.setEnabled(true);
+        horizontalButton.setVisible(true);
+        verticalButton.setEnabled(true);
+        verticalButton.setVisible(true);
     }
 
 

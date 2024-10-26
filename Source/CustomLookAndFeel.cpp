@@ -132,6 +132,31 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getColorCustomLightGrey().brighter();
 		}
 	}
+	else if (buttonName == "horizontalButton" || buttonName == "verticalButton")
+	{
+		cornerSize = getRoundedCornerSize() * 2;
+
+		if (button.getToggleState() == 1)
+		{
+			fillColor = getColorCustomDarkGrey();
+			outlineColor = fillColor;
+
+		}
+		else if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorCustomDarkGrey().darker(0.2F);
+		}
+		else
+		{
+			fillColor = getColorCustomLightGrey();
+			outlineColor = getColorCustomDarkGrey();
+
+			if (shouldDrawButtonAsHighlighted)
+			{
+				fillColor = getColorCustomLightGrey().brighter(0.2F);
+			}
+		}
+	}
 
 	g.setColour(fillColor);
 	g.fillRoundedRectangle(button.getLocalBounds().toFloat(), cornerSize);
@@ -187,7 +212,6 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		{
 			textColor = getColorCustomWhite();
 		}
-
 	}
 	else if (buttonName == "closeDialog1")
 	{
@@ -196,6 +220,22 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		if (isButtonDown)
 		{
 			textColor = getColorCustomWhite();
+		}
+	}
+	else if (buttonName == "horizontalButton" || buttonName == "verticalButton")
+	{
+		if (button.getToggleState() == 1)
+		{
+			textColor = getColorCustomWhite().darker(0.1F);
+		}
+		else
+		{
+			textColor = getColorCustomDarkGrey();
+
+			if (isButtonDown)
+			{
+				textColor = getColorCustomWhite().darker(0.1F);
+			}
 		}
 	}
 

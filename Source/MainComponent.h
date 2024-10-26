@@ -36,7 +36,7 @@ public:
     void setupSliderToggleButton();
     void setupBrowseButton();
     void setupExportButton();
-    void toggleButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
+    void togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
 
     void setupAddKnobButton();
     void setupAddKnobScaleButton();
@@ -46,12 +46,14 @@ public:
     void setupCloseDialog1Button();
     void setupCustomGroupComponents();
     void setupFilmstripControls();
+    void setupOrientationButtons();
+
     void resetDialog1();
+    void openDialog1(juce::Graphics&);
 
     void fileChooserWindows(juce::String& inputPath);
     void updateUI();
 
-    void openDialog1(juce::Graphics&);
 
 private:
     //==============================================================================
@@ -114,15 +116,18 @@ private:
     int filmstripTotalFrames{};
     juce::Slider sliderTotalFrames{};
     juce::Label labelBoxTotalFrames{};
-    juce::Rectangle<int> debugOutline{};       // only for debugging UI position of TotalFrames.
-    juce::Rectangle<int> debugOutlineLeft{};
-    juce::Rectangle<int> debugOutlineRight{};
+    juce::Rectangle<int> debugOutlineTotalFrames{};       // only for debugging UI position of TotalFrames.
+    juce::Rectangle<int> debugOutlineLeftTotalFrames{};
+    juce::Rectangle<int> debugOutlineRightTotalFrames{};
 
     // ORIENTATION
     CustomGroupComponent groupOrientation{};
     juce::TextButton horizontalButton{};
     juce::TextButton verticalButton{};
     bool filmstripIsVertical{};
+    juce::Rectangle<int> debugOutlineOrientation{};
+    juce::Rectangle<int> debugOutlineOrientationHorizontal{};
+    juce::Rectangle<int> debugOutlineOrientationVertical{};
 
     // ANGLES KNOB
     CustomGroupComponent groupKnobAngles{};
