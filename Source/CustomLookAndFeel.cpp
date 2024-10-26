@@ -274,16 +274,20 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	juce::Colour thumbColour = getColorCustomLightGrey().brighter();
 
 	// Draw track
-	int trackHeight = int(height * 0.3F);
-	juce::Rectangle<int> track{ x, y + ((height - trackHeight) / 2), width, trackHeight };
+	float trackHeight = float(height * 0.325F);
+	float thumbSizeW  = float(trackHeight * 0.6F);
+	float pad = float(trackHeight * 0.10F);
+
+	//juce::Rectangle<int> track{ x, y + ((height - trackHeight) / 2), width, trackHeight };
+	juce::Rectangle<float> track{ x - (thumbSizeW / 2) - pad, y + ((height - trackHeight) / 2), width + (pad * 2) + thumbSizeW, trackHeight };
 	g.setColour(trackColour);
 	g.fillRoundedRectangle(track.toFloat(), getRoundedCornerSize());
 
 	// Draw thumb
-	int thumbWidth  = int(trackHeight * 0.8F);
-	int thumbHeight = int(trackHeight * 0.8F);
-	int thumbX = int(sliderPos - (thumbWidth / 2));
-	juce::Rectangle<int> thumb{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
+	float thumbWidth  = thumbSizeW;
+	float thumbHeight = float(trackHeight * 0.8F);;
+	float thumbX      = float(sliderPos - (thumbWidth / 2));
+	juce::Rectangle<float> thumb{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
 	g.setColour(thumbColour);
 	g.fillRoundedRectangle(thumb.toFloat(), getRoundedCornerSize());
 }

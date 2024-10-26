@@ -73,6 +73,10 @@ void MainComponent::paint (juce::Graphics& g)
             groupOrientation.paint(g);
             groupSliderThumbPositions.paint(g);
         }
+
+        // debug only
+        g.setColour(customLookAndFeel->getColorCustomGrey());
+        //g.drawRoundedRectangle(debugOutline.toFloat().reduced(debugOutline.getWidth() * 0.01F), 10.0F, 2.0F);
     }
 
 
@@ -189,13 +193,15 @@ void MainComponent::setupLayoutUI()
     left_area.removeFromTop(int(spacing * 1.5));
 
     //auto groupTotalFramesArea = left_area.removeFromTop(75);
-    auto groupTotalFramesArea = left_area.removeFromTop(int(left_area_H * 0.180F));
+    auto groupTotalFramesArea = left_area.removeFromTop(int(left_area_H * 0.160F));
     groupTotalFrames.setBounds(groupTotalFramesArea);
     left_area.removeFromTop(spacing);
 
     auto control1Area = groupTotalFramesArea;
-    control1Area.removeFromTop(int(spacing * 0.8F));
-    control1Area = control1Area.withSizeKeepingCentre(int(control1Area.getWidth() * 0.775F), control1Area.getHeight());
+    control1Area.removeFromTop(int(spacing * 0.70F));
+    control1Area = control1Area.withSizeKeepingCentre(int(control1Area.getWidth() * 0.825F), control1Area.getHeight());
+    debugOutline = control1Area;
+    control1Area.removeFromRight(int(control1Area.getWidth() * 0.075F));
     sliderTotalFrames.setBounds(control1Area);
 
     //auto groupOrientationArea = left_area.removeFromTop(95);
@@ -204,7 +210,7 @@ void MainComponent::setupLayoutUI()
     left_area.removeFromTop(spacing);
 
     //auto groupAnglesArea = left_area.removeFromTop(160);
-    auto groupAnglesArea = left_area.removeFromTop(int(left_area_H * 0.35F));
+    auto groupAnglesArea = left_area.removeFromTop(int(left_area_H * 0.370F));
     groupKnobAngles.setBounds(groupAnglesArea);
 
     auto groupThumbPosArea = groupAnglesArea;
@@ -441,7 +447,7 @@ void MainComponent::setupCustomGroupComponents()
 void MainComponent::setupFilmstripControls()
 {
     sliderTotalFrames.setName("sliderTotalFrames");
-    sliderTotalFrames.setRange(3.0, 128.0, 1.0);
+    sliderTotalFrames.setRange(3.0, 180.0, 1.0);
     sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
     sliderTotalFrames.setValue(69.0);
     sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -449,7 +455,7 @@ void MainComponent::setupFilmstripControls()
     sliderTotalFrames.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderTotalFrames.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomWhite());
     sliderTotalFrames.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
-    sliderTotalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomWhite());
+    sliderTotalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
     sliderTotalFrames.setMouseClickGrabsKeyboardFocus(false);
     sliderTotalFrames.setTextBoxIsEditable(true);
     sliderTotalFrames.onValueChange = [this]() 
