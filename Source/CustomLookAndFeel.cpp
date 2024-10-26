@@ -307,6 +307,19 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	g.drawText(label.getText(), label.getLocalBounds(), juce::Justification::centred, true);
 }
 
+void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor)
+{
+	editor.setJustification(juce::Justification::centred);
+	editor.setIndents(editor.getLeftIndent(), 0);	// keep the leftIndent the same, and set topIndent to 0
+
+	g.setColour(editor.findColour(juce::Label::backgroundWhenEditingColourId));
+	g.fillRoundedRectangle(editor.getLocalBounds().toFloat(), getRoundedCornerSize());
+}
+
+void CustomLookAndFeel::drawTextEditorOutline(juce::Graphics& g, int width, int height, juce::TextEditor& editor)
+{
+}
+
 ////////////////////////// ========= LOAD FONTS ========= //////////////////////////
 void CustomLookAndFeel::LoadFonts()
 {

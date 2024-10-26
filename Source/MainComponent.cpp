@@ -483,9 +483,15 @@ void MainComponent::setupFilmstripControls()
 
     labelBoxTotalFrames.setName("labelBoxTotalFrames");
     labelBoxTotalFrames.setText(std::to_string(sliderTotalFrames.getValue()), juce::dontSendNotification);
+    labelBoxTotalFrames.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.50F));
     labelBoxTotalFrames.setColour(juce::Label::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+    //labelBoxTotalFrames.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+    labelBoxTotalFrames.setColour(juce::TextEditor::textColourId, findColour(juce::Label::textColourId));
+    labelBoxTotalFrames.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
+    labelBoxTotalFrames.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    labelBoxTotalFrames.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getColorCustomWhite());
     labelBoxTotalFrames.setLookAndFeel(customLookAndFeel.get());
     labelBoxTotalFrames.setEditable(true, true, false);
     labelBoxTotalFrames.onTextChange = [this]() 
