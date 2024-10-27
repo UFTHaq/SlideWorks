@@ -377,6 +377,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	
 	//g.fillAll(getColorCustomDarkGrey());
 	//g.setColour(getColorCustomDarkGrey());
+
 	g.setColour(label.findColour(juce::Label::backgroundColourId));
 	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 3.0F);		
 

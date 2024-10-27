@@ -569,6 +569,7 @@ void MainComponent::setupFilmstripControls()
     labelBoxTotalFrames.setColour(juce::Label::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+    labelBoxTotalFrames.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.25F));
     labelBoxTotalFrames.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
     labelBoxTotalFrames.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
     labelBoxTotalFrames.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
@@ -641,7 +642,7 @@ void MainComponent::setupAnglesKnobControls()
     sliderMinAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMinAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMinAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomLightGrey());
-    sliderMinAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    sliderMinAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
     sliderMinAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
     sliderMinAngles.setTextBoxIsEditable(true);
     sliderMinAngles.onValueChange = [this, minimalAngleBetween]()
@@ -675,8 +676,8 @@ void MainComponent::setupAnglesKnobControls()
     sliderMaxAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMaxAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMaxAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomLightGrey());
-    sliderMaxAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
-    sliderMaxAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+    sliderMaxAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+    sliderMaxAngles.setColour(juce::Label::backgroundColourId, customLookAndFeel->getColorCustomGrey());
     sliderMaxAngles.setTextBoxIsEditable(true);
     sliderMaxAngles.onValueChange = [this, minimalAngleBetween]()
         {
@@ -687,6 +688,8 @@ void MainComponent::setupAnglesKnobControls()
             maxAngleDegree = sliderMaxAngles.getValue();
         };
     addAndMakeVisible(sliderMaxAngles);
+
+
 }
 
 void MainComponent::resetDialog1()
