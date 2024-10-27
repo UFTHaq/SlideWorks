@@ -20,6 +20,7 @@ public:
 	void drawGroupComponentOutline(juce::Graphics& g, int width, int height, const juce::String& text, const juce::Justification& position, juce::GroupComponent& group) override;
 
 	void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider) override;
+	void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override;
 
 	void drawLabel(juce::Graphics& g, juce::Label& label) override;
 	void fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor) override;

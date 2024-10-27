@@ -333,6 +333,40 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	g.fillRoundedRectangle(thumb, getRoundedCornerSize());
 }
 
+void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
+{
+	auto lineColour = slider.findColour(juce::Slider::trackColourId);
+	auto fillColour = slider.findColour(juce::Slider::backgroundColourId);
+	auto tickColour = slider.findColour(juce::Slider::thumbColourId);
+
+	auto radius = (float)juce::jmin(width / 2, height / 2) - (height * 0.2F);
+	auto centreX = (float)(x + width * 0.5F);
+	auto centreY = (float)(y + height * 0.5F);
+	auto rx = centreX - radius;
+	auto ry = centreY - radius;
+	auto rw = radius * 2.0F;
+	auto angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+
+	auto rectEllipse = juce::Rectangle{ rx, ry, rw, rw };
+	g.setColour(fillColour);
+	g.fillEllipse(rectEllipse.reduced(-3.0F));
+
+	g.setColour(lineColour);
+	g.drawEllipse(rectEllipse, -1.F);
+
+	{
+		juce::Path p{};
+		auto pointerLength = radius * 0.65F;
+		auto pointerThickness = 2.0F;
+		p.addRectangle(-pointerThickness * 0.5F, -radius, pointerThickness, pointerLength);
+		p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY));
+
+		g.setColour(tickColour);
+		g.fillPath(p);
+	}
+
+}
+
 void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 {
 	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
