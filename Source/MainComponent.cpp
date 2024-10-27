@@ -83,6 +83,16 @@ void MainComponent::paint (juce::Graphics& g)
         //g.drawRoundedRectangle(debugOutlineOrientation.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineOrientationHorizontal.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineOrientationVertical.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+        
+        //g.drawRoundedRectangle(debugOutlineAngles.toFloat().reduced(debugOutlineAngles.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineAnglesMin.toFloat().reduced(debugOutlineAnglesMin.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineAnglesMax.toFloat().reduced(debugOutlineAnglesMax.getWidth() * 0.01F), 5.0F, 1.0F);
+
+        //g.drawRoundedRectangle(debugOutlineAnglesMinTop.toFloat().reduced(debugOutlineAnglesMinTop.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineAnglesMinKnob.toFloat().reduced(debugOutlineAnglesMinKnob.getWidth() * 0.01F), 5.0F, 1.0F);
+
+        //g.drawRoundedRectangle(debugOutlineAnglesMaxTop.toFloat().reduced(debugOutlineAnglesMaxTop.getWidth() * 0.01F), 5.0F, 1.0F);
+        //g.drawRoundedRectangle(debugOutlineAnglesMaxKnob.toFloat().reduced(debugOutlineAnglesMaxKnob.getWidth() * 0.01F), 5.0F, 1.0F);
     }
 
 
@@ -252,6 +262,56 @@ void MainComponent::setupLayoutUI()
     auto groupAnglesArea = left_area.removeFromTop(int(left_area_H * 0.370F));
     groupKnobAngles.setBounds(groupAnglesArea);
 
+    auto anglesArea = groupAnglesArea;
+    anglesArea.removeFromTop(int(spacing * 0.80F));
+    anglesArea = anglesArea.withSizeKeepingCentre(int(anglesArea.getWidth() * 0.825F), anglesArea.getHeight());
+    anglesArea = anglesArea.withSizeKeepingCentre(int(anglesArea.getWidth()), int(anglesArea.getHeight() * 0.825F));
+    debugOutlineAngles = anglesArea;
+
+    {
+        ///-- MIN ANGLES --///
+        ratio = 0.5F;
+        auto anglesAreaMin = anglesArea;
+        anglesAreaMin.removeFromRight(int(anglesAreaMin.getWidth() * ratio));
+        debugOutlineAnglesMin = anglesAreaMin;
+
+        auto ratioAnglesSection = 0.85F;
+        auto anglesAreaMinTop = anglesAreaMin;
+        anglesAreaMinTop.removeFromBottom(int(anglesAreaMin.getHeight() * ratioAnglesSection));
+        labelMinAngles.setBounds(anglesAreaMinTop);
+        debugOutlineAnglesMinTop = anglesAreaMinTop;
+
+        auto anglesAreaMinKnob = anglesAreaMin;
+        anglesAreaMinKnob = anglesAreaMinKnob.removeFromBottom(int(anglesAreaMinKnob.getHeight() * ratioAnglesSection));
+        sliderMinAngles.setBounds(anglesAreaMinKnob);
+        debugOutlineAnglesMinKnob = anglesAreaMinKnob;
+    }
+
+    {
+        ///-- MAX ANGLES --///
+        ratio = 0.5F;
+        auto anglesAreaMax = anglesArea;
+        anglesAreaMax.removeFromLeft(int(anglesAreaMax.getWidth() * ratio));
+        debugOutlineAnglesMax = anglesAreaMax;
+
+        auto ratioAnglesSection = 0.85F;
+        auto anglesAreaMaxTop = anglesAreaMax;
+        anglesAreaMaxTop.removeFromBottom(int(anglesAreaMax.getHeight() * ratioAnglesSection));
+        labelMaxAngles.setBounds(anglesAreaMaxTop);
+        debugOutlineAnglesMaxTop = anglesAreaMaxTop;
+
+        auto anglesAreaMaxKnob = anglesAreaMax;
+        anglesAreaMaxKnob = anglesAreaMaxKnob.removeFromBottom(int(anglesAreaMaxKnob.getHeight() * ratioAnglesSection));
+        sliderMaxAngles.setBounds(anglesAreaMaxKnob);
+        debugOutlineAnglesMaxKnob = anglesAreaMaxKnob;
+    }
+
+    // THIS NEEDS AREA FOR CUSTOM LABEL TO WRITE THE "MIN" "MAX" ON TOP OF ROTARY SLIDER.
+    // SO DIVIDE LEFT RIGHT BY 2
+    // DIVIDE TOP BOTTON BY 10%-15% FOR TOP LABEL AND THE REST FOR KNOB AND VALUE LABEL.
+    //
+
+    ////////------------ THUMB POSITIONS ------------////////
     auto groupThumbPosArea = groupAnglesArea;
     groupSliderThumbPositions.setBounds(groupThumbPosArea);
 
@@ -301,6 +361,7 @@ void MainComponent::setupButtons()
 
     setupFilmstripControls();
     setupOrientationButtons();
+    setupAnglesKnobControls();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -349,7 +410,7 @@ void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextBu
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
 
-    repaint();
+    updateUI();
 }
 
 
@@ -487,7 +548,7 @@ void MainComponent::setupCustomGroupComponents()
 void MainComponent::setupFilmstripControls()
 {
     sliderTotalFrames.setName("sliderTotalFrames");
-    sliderTotalFrames.setRange(7.0, 210.0, 1.0);
+    sliderTotalFrames.setRange(7.0, 256.0, 1.0);
     sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
     sliderTotalFrames.setValue(69.0);
     sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -558,6 +619,68 @@ void MainComponent::setupOrientationButtons()
             filmstripIsVertical = true;
         };
     addAndMakeVisible(verticalButton);
+}
+
+void MainComponent::setupAnglesKnobControls()
+{
+    labelMinAngles.setName("labelMinAngles");
+    labelMinAngles.setText("MIN", juce::dontSendNotification);
+    labelMinAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeRegular()));
+    labelMinAngles.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+    labelMinAngles.setJustificationType(juce::Justification::centred);
+    labelMinAngles.setLookAndFeel(customLookAndFeel.get());
+    labelMinAngles.setEditable(false, false, false);
+    addAndMakeVisible(labelMinAngles);
+
+    sliderMinAngles.setName("sliderMinAngles");
+    sliderMinAngles.setRange(-175, 175, 0.5);
+    sliderMinAngles.setValue(-135);
+    sliderMinAngles.setDoubleClickReturnValue(true, -135);
+    sliderMinAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    sliderMinAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    sliderMinAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    sliderMinAngles.setLookAndFeel(customLookAndFeel.get());
+    sliderMinAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+    sliderMinAngles.setColour(juce::Slider::rotarySliderFillColourId, customLookAndFeel->getColorCustomGrey());
+    sliderMinAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomDarkest());
+    sliderMinAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    sliderMinAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+    sliderMinAngles.setTextBoxIsEditable(true);
+    sliderMinAngles.onValueChange = [this]()
+        {
+            minAngleDegree = sliderMinAngles.getValue();
+        };
+    addAndMakeVisible(sliderMinAngles);
+
+
+    labelMaxAngles.setName("labelMaxAngles");
+    labelMaxAngles.setText("MAX", juce::dontSendNotification);
+    labelMaxAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeRegular()));
+    labelMaxAngles.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+    labelMaxAngles.setJustificationType(juce::Justification::centred);
+    labelMaxAngles.setLookAndFeel(customLookAndFeel.get());
+    labelMaxAngles.setEditable(false, false, false);
+    addAndMakeVisible(labelMaxAngles);
+
+    sliderMaxAngles.setName("sliderMaxAngles");
+    sliderMaxAngles.setRange(-175, 175, 0.5);
+    sliderMaxAngles.setValue(135);
+    sliderMaxAngles.setDoubleClickReturnValue(true, 135);
+    sliderMaxAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    sliderMaxAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    sliderMaxAngles.setLookAndFeel(customLookAndFeel.get());
+    sliderMaxAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+    sliderMaxAngles.setColour(juce::Slider::rotarySliderFillColourId, customLookAndFeel->getColorCustomGrey());
+    sliderMaxAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomDarkest());
+    sliderMaxAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    sliderMaxAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+    sliderMaxAngles.setTextBoxIsEditable(true);
+    sliderMaxAngles.onValueChange = [this]()
+        {
+            minAngleDegree = sliderMaxAngles.getValue();
+        };
+    addAndMakeVisible(sliderMaxAngles);
 }
 
 void MainComponent::resetDialog1()
@@ -652,6 +775,15 @@ void MainComponent::updateUI()
         horizontalButton.setVisible(false);
         verticalButton.setEnabled(false);
         verticalButton.setVisible(false);
+
+        labelMinAngles.setEnabled(false);
+        labelMinAngles.setVisible(false);
+        labelMaxAngles.setEnabled(false);
+        labelMaxAngles.setVisible(false);
+        sliderMinAngles.setEnabled(false);
+        sliderMinAngles.setVisible(false);
+        sliderMaxAngles.setEnabled(false);
+        sliderMaxAngles.setVisible(false);
     }
     else
     {
@@ -671,6 +803,31 @@ void MainComponent::updateUI()
         horizontalButton.setVisible(true);
         verticalButton.setEnabled(true);
         verticalButton.setVisible(true);
+
+        if (knobToggleWorksButton.getToggleState())
+        {
+            labelMinAngles.setEnabled(true);
+            labelMinAngles.setVisible(true);
+            labelMaxAngles.setEnabled(true);
+            labelMaxAngles.setVisible(true);
+            sliderMinAngles.setEnabled(true);
+            sliderMinAngles.setVisible(true);
+            sliderMaxAngles.setEnabled(true);
+            sliderMaxAngles.setVisible(true);
+        } 
+        
+        if (sliderToggleWorksButton.getToggleState())
+        {
+            labelMinAngles.setEnabled(false);
+            labelMinAngles.setVisible(false);
+            labelMaxAngles.setEnabled(false);
+            labelMaxAngles.setVisible(false);
+            sliderMinAngles.setEnabled(false);
+            sliderMinAngles.setVisible(false);
+            sliderMaxAngles.setEnabled(false);
+            sliderMaxAngles.setVisible(false);
+        }
+
     }
 
 
@@ -734,6 +891,7 @@ void MainComponent::openDialog1(juce::Graphics& g)
         addKnobScale.setBounds(addKnobScaleRect.reduced(pad));
 
         {
+            knobToggleWorksButton.setEnabled(false);
             sliderToggleWorksButton.setEnabled(false);
 
             addKnob.setVisible(true);
@@ -766,6 +924,7 @@ void MainComponent::openDialog1(juce::Graphics& g)
         addSliderScale.setBounds(addSliderScaleRect.reduced(pad));
 
         {
+            sliderToggleWorksButton.setEnabled(false);
             knobToggleWorksButton.setEnabled(false);
 
             addKnob.setVisible(false);

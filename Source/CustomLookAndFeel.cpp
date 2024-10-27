@@ -338,7 +338,8 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
 	
 	//g.fillAll(getColorCustomDarkGrey());
-	g.setColour(getColorCustomDarkGrey());
+	//g.setColour(getColorCustomDarkGrey());
+	g.setColour(label.findColour(juce::Label::backgroundColourId));
 	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 3.0F);		
 
 	// Set the text color and draw the text
@@ -358,6 +359,10 @@ void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, i
 
 void CustomLookAndFeel::drawTextEditorOutline(juce::Graphics& g, int width, int height, juce::TextEditor& editor)
 {
+	(void)g;
+	(void)width;
+	(void)height;
+	(void)editor;
 }
 
 ////////////////////////// ========= LOAD FONTS ========= //////////////////////////

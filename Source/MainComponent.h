@@ -47,6 +47,7 @@ public:
     void setupCustomGroupComponents();
     void setupFilmstripControls();
     void setupOrientationButtons();
+    void setupAnglesKnobControls();
 
     void resetDialog1();
     void openDialog1(juce::Graphics&);
@@ -131,8 +132,19 @@ private:
 
     // ANGLES KNOB
     CustomGroupComponent groupKnobAngles{};
-    int minAngleDegree{};
-    int maxAngleDegree{};
+    double minAngleDegree{};
+    double maxAngleDegree{};
+    juce::Label labelMinAngles{};
+    juce::Label labelMaxAngles{};
+    juce::Slider sliderMinAngles{};
+    juce::Slider sliderMaxAngles{};
+    juce::Rectangle<int> debugOutlineAngles{};
+    juce::Rectangle<int> debugOutlineAnglesMin{};
+    juce::Rectangle<int> debugOutlineAnglesMax{};
+    juce::Rectangle<int> debugOutlineAnglesMinTop{};
+    juce::Rectangle<int> debugOutlineAnglesMaxTop{};
+    juce::Rectangle<int> debugOutlineAnglesMinKnob{};
+    juce::Rectangle<int> debugOutlineAnglesMaxKnob{};
 
     // THUMB POSITION
     CustomGroupComponent groupSliderThumbPositions{};
