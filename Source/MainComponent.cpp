@@ -263,7 +263,7 @@ void MainComponent::setupLayoutUI()
     groupKnobAngles.setBounds(groupAnglesArea);
 
     auto anglesArea = groupAnglesArea;
-    anglesArea.removeFromTop(int(spacing * 0.80F));
+    anglesArea.removeFromTop(int(spacing * 0.70F));
     anglesArea = anglesArea.withSizeKeepingCentre(int(anglesArea.getWidth() * 0.825F), anglesArea.getHeight());
     anglesArea = anglesArea.withSizeKeepingCentre(int(anglesArea.getWidth()), int(anglesArea.getHeight() * 0.825F));
     debugOutlineAngles = anglesArea;
@@ -306,10 +306,6 @@ void MainComponent::setupLayoutUI()
         debugOutlineAnglesMaxKnob = anglesAreaMaxKnob;
     }
 
-    // THIS NEEDS AREA FOR CUSTOM LABEL TO WRITE THE "MIN" "MAX" ON TOP OF ROTARY SLIDER.
-    // SO DIVIDE LEFT RIGHT BY 2
-    // DIVIDE TOP BOTTON BY 10%-15% FOR TOP LABEL AND THE REST FOR KNOB AND VALUE LABEL.
-    //
 
     ////////------------ THUMB POSITIONS ------------////////
     auto groupThumbPosArea = groupAnglesArea;
@@ -637,7 +633,6 @@ void MainComponent::setupAnglesKnobControls()
     sliderMinAngles.setName("sliderMinAngles");
     sliderMinAngles.setRange(-175, 175, 0.5);
     sliderMinAngles.setValue(-135);
-    sliderMinAngles.setTextValueSuffix("°");
     sliderMinAngles.setDoubleClickReturnValue(true, -135);
     sliderMinAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sliderMinAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
@@ -672,7 +667,6 @@ void MainComponent::setupAnglesKnobControls()
     sliderMaxAngles.setName("sliderMaxAngles");
     sliderMaxAngles.setRange(-175, 175, 0.5);
     sliderMaxAngles.setValue(135);
-    sliderMaxAngles.setTextValueSuffix("°");
     sliderMaxAngles.setDoubleClickReturnValue(true, 135);
     sliderMaxAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sliderMaxAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);

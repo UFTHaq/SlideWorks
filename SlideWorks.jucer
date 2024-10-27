@@ -22,6 +22,8 @@
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-SemiBold.ttf"/>
     <FILE id="v410u7" name="RobotoMono-Medium.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Mono/static/RobotoMono-Medium.ttf"/>
+    <FILE id="QgjCIt" name="small_scale_black.png" compile="0" resource="1"
+          file="C:/Users/ukhem/Downloads/small_scale_black.png"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

@@ -2674,6 +2674,7 @@
   <ItemGroup>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Mono\static\RobotoMono-Medium.ttf"/>
+    <None Include="C:\Users\ukhem\Downloads\small_scale_black.png"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\javascript\choc\JUCE_CHANGES.txt"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\javascript\choc\LICENSE.md"/>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\native\java\README.txt"/>

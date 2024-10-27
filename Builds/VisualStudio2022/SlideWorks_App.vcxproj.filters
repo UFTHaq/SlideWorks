@@ -4658,6 +4658,9 @@
     <None Include="..\..\Resources\Fonts\Roboto_Mono\static\RobotoMono-Medium.ttf">
       <Filter>SlideWorks</Filter>
     </None>
+    <None Include="C:\Users\ukhem\Downloads\small_scale_black.png">
+      <Filter>SlideWorks</Filter>
+    </None>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.2-windows\JUCE\modules\juce_core\javascript\choc\JUCE_CHANGES.txt">
       <Filter>JUCE Modules\juce_core\javascript\choc</Filter>
     </None>

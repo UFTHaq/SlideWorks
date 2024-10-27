@@ -6,6 +6,7 @@ CustomLookAndFeel::CustomLookAndFeel()
 	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, colorTitleBar);
 
 	LoadFonts();
+	loadImages();
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
@@ -346,8 +347,11 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 	auto ry = centreY - radius;
 	auto rw = radius * 2.0F;
 	auto angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-
 	auto rectEllipse = juce::Rectangle{ rx, ry, rw, rw };
+
+	g.setColour(getColorCustomDarkGrey().withAlpha(0.75F));
+	g.drawImage(knobScale, rectEllipse.reduced(-(rectEllipse.getHeight() * 0.25F)), juce::RectanglePlacement::centred, true);
+
 	g.setColour(fillColour);
 	g.fillEllipse(rectEllipse.reduced(-3.0F));
 
@@ -413,6 +417,11 @@ void CustomLookAndFeel::LoadFonts()
 
 	fontRobotoMono      = juce::FontOptions{ customFontRobotoMono };
 	fontRobotoCondensed = juce::FontOptions{ customFontRobotoCondensed };
+}
+
+void CustomLookAndFeel::loadImages()
+{
+	knobScale = juce::ImageCache::getFromMemory(BinaryData::small_scale_black_png, BinaryData::small_scale_black_pngSize);
 }
 
 

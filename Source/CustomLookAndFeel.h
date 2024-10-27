@@ -30,6 +30,8 @@ public:
 	// Load all fonts
 	void LoadFonts();
 
+	void loadImages();
+
 	// Return main color palette used in the projects;
 	const juce::Colour getColorTitleBar();
 	const juce::Colour getColorFontTitleBar();
@@ -62,5 +64,7 @@ private:
 	float roundedCornerSize{ 2.5F };
 	float fontSizeTitle{ 21.0F };
 	float fontSizeRegular{ 16.50F };
+
+	juce::Image knobScale{};
 };
 
