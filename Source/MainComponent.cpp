@@ -623,6 +623,8 @@ void MainComponent::setupOrientationButtons()
 
 void MainComponent::setupAnglesKnobControls()
 {
+    double minimalAngleBetween = 45.0;
+
     labelMinAngles.setName("labelMinAngles");
     labelMinAngles.setText("MIN", juce::dontSendNotification);
     labelMinAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeRegular()));
@@ -647,8 +649,12 @@ void MainComponent::setupAnglesKnobControls()
     sliderMinAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMinAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
     sliderMinAngles.setTextBoxIsEditable(true);
-    sliderMinAngles.onValueChange = [this]()
+    sliderMinAngles.onValueChange = [this, minimalAngleBetween]()
         {
+            if (sliderMaxAngles.getValue() - sliderMinAngles.getValue() <= minimalAngleBetween)
+            {
+                sliderMinAngles.setValue(sliderMaxAngles.getValue() - minimalAngleBetween);
+            }
             minAngleDegree = sliderMinAngles.getValue();
         };
     addAndMakeVisible(sliderMinAngles);
@@ -678,9 +684,13 @@ void MainComponent::setupAnglesKnobControls()
     sliderMaxAngles.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMaxAngles.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
     sliderMaxAngles.setTextBoxIsEditable(true);
-    sliderMaxAngles.onValueChange = [this]()
+    sliderMaxAngles.onValueChange = [this, minimalAngleBetween]()
         {
-            minAngleDegree = sliderMaxAngles.getValue();
+            if (sliderMaxAngles.getValue() - sliderMinAngles.getValue() <= minimalAngleBetween)
+            {
+                sliderMaxAngles.setValue(sliderMinAngles.getValue() + minimalAngleBetween);
+            }
+            maxAngleDegree = sliderMaxAngles.getValue();
         };
     addAndMakeVisible(sliderMaxAngles);
 }
