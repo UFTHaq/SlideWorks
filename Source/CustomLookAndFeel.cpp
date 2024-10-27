@@ -46,7 +46,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	juce::Colour outlineColor{};
 	float cornerSize{};
 
-	if (buttonName == "knobWorks" || buttonName == "sliderWorks")
+	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
 	{
 		cornerSize = getRoundedCornerSize();
 
@@ -172,7 +172,7 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	const juce::String buttonText = button.getButtonText();
 	juce::Colour textColor{};
 
-	if (buttonName == "knobWorks" || buttonName == "sliderWorks")
+	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
 	{
 		if (button.getToggleState() == 1)
 		{

@@ -193,6 +193,40 @@ void MainComponent::setupLayoutUI()
     base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
 
     ///////////////// PAGE 2 COMPONENT /////////////////
+    {
+        auto buttonW = 90;
+            modeSimulationButton.setBounds
+            (
+                {
+                    base_SlideWorks.getRight() - buttonW,
+                    knobToggleWorksButton.getY(),
+                    buttonW,
+                    knobToggleWorksButton.getHeight()
+                }
+        );
+
+        modePreviewButton.setBounds
+        (
+            {
+                modeSimulationButton.getX() - buttonW - 5,
+                modeSimulationButton.getY(),
+                modeSimulationButton.getWidth(),
+                modeSimulationButton.getHeight()
+            }
+        );
+
+        modeResizeButton.setBounds
+        (
+            {
+                modePreviewButton.getX() - buttonW - 5,
+                modeSimulationButton.getY(),
+                modeSimulationButton.getWidth(),
+                modeSimulationButton.getHeight()
+            }
+        );
+    }
+
+
     auto area = base_WorkSpace;
     //left_WorkSpace = area.removeFromLeft(275);
     left_WorkSpace = area.removeFromLeft(int(area.getWidth() * 0.35F));
@@ -348,6 +382,10 @@ void MainComponent::setupButtons()
     setupBrowseButton();
     setupExportButton();
 
+    setupSimulationButton();
+    setupPreviewButton();
+    setupResizeButton();
+
     setupAddKnobButton();
     setupAddKnobScaleButton();
     setupAddSliderTrackButton();
@@ -401,11 +439,59 @@ void MainComponent::setupExportButton()
     addAndMakeVisible(exportButton);
 }
 
+void MainComponent::setupSimulationButton()
+{
+    modeSimulationButton.setButtonText("SIMULATION");
+    modeSimulationButton.setName("modeSimulationButton");
+    modeSimulationButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+    modeSimulationButton.onClick = [this]() 
+        {
+            togglingButtons(modeSimulationButton, modePreviewButton, modeResizeButton);
+            SlideWorksMode = SIMULATION;
+        };
+    addAndMakeVisible(modeSimulationButton);
+}
+
+void MainComponent::setupPreviewButton()
+{
+    modePreviewButton.setButtonText("PREVIEW");
+    modePreviewButton.setName("modePreviewButton");
+    modePreviewButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    modePreviewButton.onClick = [this]() 
+        {
+            togglingButtons(modePreviewButton, modeSimulationButton, modeResizeButton);
+            SlideWorksMode = PREVIEW;
+        };
+    addAndMakeVisible(modePreviewButton);
+}
+
+void MainComponent::setupResizeButton()
+{
+    modeResizeButton.setButtonText("RESIZE");
+    modeResizeButton.setName("modeResizeButton");
+    modeResizeButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    modeResizeButton.onClick = [this]() 
+        {
+            togglingButtons(modeResizeButton, modeSimulationButton, modePreviewButton);
+            SlideWorksMode = RESIZE;
+        };
+    addAndMakeVisible(modeResizeButton);
+}
+
 void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)
 {
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
 
+    updateUI();
+}
+
+void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton1, juce::TextButton& inactiveButton2)
+{
+    activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+    inactiveButton1.setToggleState(false, juce::NotificationType::dontSendNotification);
+    inactiveButton2.setToggleState(false, juce::NotificationType::dontSendNotification);
+    
     updateUI();
 }
 
@@ -793,6 +879,13 @@ void MainComponent::updateUI()
         sliderMinAngles.setVisible(false);
         sliderMaxAngles.setEnabled(false);
         sliderMaxAngles.setVisible(false);
+
+        modeSimulationButton.setEnabled(false);
+        modeSimulationButton.setVisible(false);
+        modePreviewButton.setEnabled(false);
+        modePreviewButton.setVisible(false);
+        modeResizeButton.setEnabled(false);
+        modeResizeButton.setVisible(false);
     }
     else
     {
@@ -837,6 +930,12 @@ void MainComponent::updateUI()
             sliderMaxAngles.setVisible(false);
         }
 
+        modeSimulationButton.setEnabled(true);
+        modeSimulationButton.setVisible(true);
+        modePreviewButton.setEnabled(true);
+        modePreviewButton.setVisible(true);
+        modeResizeButton.setEnabled(true);
+        modeResizeButton.setVisible(true);
     }
 
 

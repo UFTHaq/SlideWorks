@@ -36,7 +36,11 @@ public:
     void setupSliderToggleButton();
     void setupBrowseButton();
     void setupExportButton();
+    void setupSimulationButton();
+    void setupPreviewButton();
+    void setupResizeButton();
     void togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
+    void togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton1, juce::TextButton& inactiveButton2);
 
     void setupAddKnobButton();
     void setupAddKnobScaleButton();
@@ -71,6 +75,15 @@ private:
 
     PageState SlideWorksPage{ PAGE1 };
 
+    enum ModeState
+    {
+        SIMULATION,
+        PREVIEW,
+        RESIZE
+    };
+
+    ModeState SlideWorksMode{ SIMULATION };
+
     bool inputPathState{};
 
     juce::Rectangle<int> base_SlideWorks{};     // maybe change the name to page1_base_SlideWorks
@@ -103,9 +116,9 @@ private:
     juce::TextButton closeDialog1{};
 
     ////////////////----------- PAGE 2 -----------////////////////
-    juce::TextButton simulationButton{};
-    juce::TextButton previewButton{};
-    juce::TextButton resizeButton{};
+    juce::TextButton modeSimulationButton{};
+    juce::TextButton modePreviewButton{};
+    juce::TextButton modeResizeButton{};
 
     //////////----- LEFT WORKSPACE -----//////////
 
@@ -156,6 +169,10 @@ private:
     bool isExportBundleWithScale{};
 
     //////////----- RIGHT WORKSPACE -----//////////
+
+
+    juce::Slider simulationKnob{};
+
     juce::TextButton editButton{};
 
 
