@@ -49,7 +49,7 @@ public:
 	const float getFontSizeTitle();
 	const float getFontSizeRegular();
 
-	void setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical);
+	void setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical, double startAngle, double endAngle);
 	void ClearSimulationKnobImage();
 	void setSimulationKnobScaleImage(juce::Image image);
 	void ClearSimulationKnobScaleImage();

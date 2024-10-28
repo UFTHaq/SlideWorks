@@ -530,10 +530,12 @@ const float CustomLookAndFeel::getFontSizeRegular()
 
 
 /////////////////////////////////////////////////////////////////////////////////
-void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical)
+void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical, double startAngle, double endAngle)
 {
 	int frameW = image.getWidth();
 	int frameH = image.getHeight();
+	double range = std::abs(startAngle) + std::abs(endAngle);
+	double angleInterval = range / totalFrames;
 
 	juce::Image filmstripImage{};
 
@@ -548,10 +550,29 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 	{
 		if (isVertical) {
 			int yPos = (int)i * frameH;
-			//g.drawImageAt(image, 0, yPos, false);
 			juce::Rectangle<int> dest{ 0, yPos, frameW, frameH };
-			g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
+			//g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
 
+			double angleNow = i * angleInterval;
+			double angleRadian = juce::degreesToRadians(startAngle + angleNow);
+			juce::Rectangle<int> temp{ 0,0,frameW, frameH };
+			juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, temp.getCentreX(), temp.getCentreY());
+
+			juce::Image rotary1{ juce::Image(juce::Image::PixelFormat::ARGB, frameW, frameH, true) };
+			juce::Graphics rotary2{ rotary1 };
+			rotary2.addTransform(rotating);
+			rotary2.drawImage(image, temp.toFloat(), juce::RectanglePlacement::centred, false);
+			rotary2.addTransform(juce::AffineTransform());
+
+			//g.addTransform(rotating);
+			g.drawImage(rotary1, dest.toFloat());
+
+			//double angleNow = i * angleInterval;
+			//double angleRadian = juce::degreesToRadians(startAngle) + juce::degreesToRadians(angleNow);
+			//juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, dest.getCentreX(), dest.getCentreY());
+			//g.addTransform(rotating);
+			//g.drawImage(image, dest.toFloat());
+			//g.addTransform(juce::AffineTransform()); // reset
 
 			juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.3F) };
 			g.setColour(getColorCustomDarkest());
@@ -564,7 +585,6 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		}
 		else {
 			int xPos = (int)i * frameW;
-			//g.drawImageAt(image, xPos, 0, false);
 			juce::Rectangle<int> dest{ xPos, 0, frameW, frameH };
 			g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
 		}

@@ -385,7 +385,7 @@ void MainComponent::checkInputPathState()
 
     if (inputPathKnob.isNotEmpty()) {
         juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
-        customLookAndFeel->setSimulationKnobImage(image, 127, filmstripIsVertical);
+        customLookAndFeel->setSimulationKnobImage(image, 75, filmstripIsVertical, -135, 135);
     }
 }
 
