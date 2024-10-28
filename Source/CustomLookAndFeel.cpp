@@ -386,7 +386,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 
 			if (frameIndex >= 0 && frameIndex < simulationKnobTotalFrames)
 			{
-				int knobSize = juce::jmin(width, height);
+				int knobSize = juce::jmin(width, height) - (height * 0.25F);
 				int drawX = x + (width - knobSize) / 2;
 				int drawY = y + (height - knobSize) / 2;
 
@@ -548,46 +548,40 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 
 	for (size_t i = 0; i < totalFrames; i++) 
 	{
+		juce::Rectangle<int> dest{};
+
 		if (isVertical) {
 			int yPos = (int)i * frameH;
-			juce::Rectangle<int> dest{ 0, yPos, frameW, frameH };
-			//g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
-
-			double angleNow = i * angleInterval;
-			double angleRadian = juce::degreesToRadians(startAngle + angleNow);
-			juce::Rectangle<int> temp{ 0,0,frameW, frameH };
-			juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, temp.getCentreX(), temp.getCentreY());
-
-			juce::Image rotary1{ juce::Image(juce::Image::PixelFormat::ARGB, frameW, frameH, true) };
-			juce::Graphics rotary2{ rotary1 };
-			rotary2.addTransform(rotating);
-			rotary2.drawImage(image, temp.toFloat(), juce::RectanglePlacement::centred, false);
-			rotary2.addTransform(juce::AffineTransform());
-
-			//g.addTransform(rotating);
-			g.drawImage(rotary1, dest.toFloat());
-
-			//double angleNow = i * angleInterval;
-			//double angleRadian = juce::degreesToRadians(startAngle) + juce::degreesToRadians(angleNow);
-			//juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, dest.getCentreX(), dest.getCentreY());
-			//g.addTransform(rotating);
-			//g.drawImage(image, dest.toFloat());
-			//g.addTransform(juce::AffineTransform()); // reset
-
-			juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.3F) };
-			g.setColour(getColorCustomDarkest());
-			g.fillEllipse(ellipse.toFloat());
-
-			auto numText = std::to_string(i + 1);
-			g.setFont(getFontRobotoCondensed().withHeight(ellipse.getHeight() * 0.60F));
-			g.setColour(getColorCustomWhite());
-			g.drawText(numText, ellipse.toFloat(), juce::Justification::centred, true);
+			dest = { 0, yPos, frameW, frameH };
 		}
 		else {
 			int xPos = (int)i * frameW;
-			juce::Rectangle<int> dest{ xPos, 0, frameW, frameH };
-			g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
+			dest = { xPos, 0, frameW, frameH };
 		}
+
+		double angleNow = int(i) * angleInterval;
+		double angleRadian = juce::degreesToRadians(startAngle + angleNow);
+
+		juce::Rectangle<int> temp{ 0,0,frameW, frameH };
+		juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, temp.getCentreX(), temp.getCentreY());
+
+		juce::Image rotary(juce::Image::PixelFormat::ARGB, frameW, frameH, true);
+		juce::Graphics frames(rotary);
+
+		frames.addTransform(rotating);
+		frames.drawImage(image, temp.toFloat(), juce::RectanglePlacement::centred, false);
+		
+		g.drawImage(rotary, dest.toFloat(), juce::RectanglePlacement::centred, false);
+
+		juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.3F) };
+		g.setColour(getColorCustomDarkest());
+		g.fillEllipse(ellipse.toFloat());
+
+		auto numText = std::to_string(i + 1);
+		g.setFont(getFontRobotoCondensed().withHeight(ellipse.getHeight() * 0.60F));
+		g.setColour(getColorCustomWhite());
+		g.drawText(numText, ellipse.toFloat(), juce::Justification::centred, true);
+
 	}
 
 	this->simulationKnobIsVertical = isVertical;

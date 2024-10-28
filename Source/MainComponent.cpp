@@ -359,7 +359,7 @@ void MainComponent::setupLayoutUI()
 
 
     ////////------///--------- SIMULATION ---------///------////////
-    auto widhtHeight = int(right_WorkSpace.getHeight() * 0.2F);
+    auto widhtHeight = int(right_WorkSpace.getHeight() * 0.5F);
     auto simulationKnobArea = right_WorkSpace.withSizeKeepingCentre(widhtHeight, widhtHeight);
     simulationKnob.setBounds(simulationKnobArea);
     debugOutlineSimulationArea = simulationKnobArea;
@@ -385,7 +385,7 @@ void MainComponent::checkInputPathState()
 
     if (inputPathKnob.isNotEmpty()) {
         juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
-        customLookAndFeel->setSimulationKnobImage(image, 75, filmstripIsVertical, -135, 135);
+        customLookAndFeel->setSimulationKnobImage(image, 99, filmstripIsVertical, -135, 135);
     }
 }
 
@@ -804,7 +804,7 @@ void MainComponent::setupAnglesKnobControls()
 void MainComponent::setupSimulationKnob()
 {
     simulationKnob.setName("simulationKnob");
-    simulationKnob.setRange(0, 130, 1);
+    simulationKnob.setRange(0, 100, 1);
     simulationKnob.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     simulationKnob.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     simulationKnob.setLookAndFeel(customLookAndFeel.get());
