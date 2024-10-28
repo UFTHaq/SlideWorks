@@ -53,6 +53,8 @@ public:
     void setupOrientationButtons();
     void setupAnglesKnobControls();
 
+    void setupSimulationKnob();
+
     void resetDialog1();
     void openDialog1(juce::Graphics&);
 
@@ -138,7 +140,7 @@ private:
     CustomGroupComponent groupOrientation{};
     juce::TextButton horizontalButton{};
     juce::TextButton verticalButton{};
-    bool filmstripIsVertical{};
+    bool filmstripIsVertical{true};
     juce::Rectangle<int> debugOutlineOrientation{};
     juce::Rectangle<int> debugOutlineOrientationHorizontal{};
     juce::Rectangle<int> debugOutlineOrientationVertical{};
@@ -170,13 +172,39 @@ private:
 
     //////////----- RIGHT WORKSPACE -----//////////
 
-
-    juce::Slider simulationKnob{};
-
     juce::TextButton editButton{};
+    
+    // SIMULATION 
+    // TODO: 
+    // - Make slider rotary (knob), and make it work by real implementation of filmstrip already made in background according to setup filmstrip.
+    // - zoom in out to resize the display.
+    // - set the simulation min max value to control.
+    //
+    juce::Slider simulationKnob{};
+    juce::Slider simulationSlider{};
+    int simulationInterval{};
+    juce::Rectangle<int> debugOutlineSimulationArea{};
+    juce::Image debugImageSimulation{};
 
+    // PREVIEW
+    // TODO:
+    // - Display the filmstrip that already made (like zen pixel do).
+    // - Using rectangle as abstraction area to display
+    // - zoom in out, scrolling.
+    //
+    juce::Rectangle<int> previewFilmstripArea{};        // will be dynamic according to setup (total frames, orientation)
 
-
+    // RESIZE
+    // - Display and choose the image need to resize (need to click the iamge symbol to activate the image).
+    // - Using rectangles as abstraction to resize each images (knob, scale), and will always centred.
+    // - Resize the slider will be different.
+    // - It will have base workspace long wide rectangle. and can arrange the rectangle of track, thumb and scale.
+    //
+    juce::Rectangle<int> resizeKnob{};
+    juce::Rectangle<int> resizeKnobScale{};
+    juce::Rectangle<int> resizeSliderTrack{};
+    juce::Rectangle<int> resizeSliderThumb{};
+    juce::Rectangle<int> resizeSliderScale{};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

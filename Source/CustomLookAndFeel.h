@@ -49,6 +49,11 @@ public:
 	const float getFontSizeTitle();
 	const float getFontSizeRegular();
 
+	void setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical);
+	void ClearSimulationKnobImage();
+	void setSimulationKnobScaleImage(juce::Image image);
+	void ClearSimulationKnobScaleImage();
+
 private:
 	juce::Colour colorTitleBar          { juce::Colour::fromString("#ff181818") };
 	juce::Colour colorFontTitleBar      { juce::Colour::fromString("#ffc3bfbf") };
@@ -66,5 +71,10 @@ private:
 	float fontSizeRegular{ 16.50F };
 
 	juce::Image knobScale{};
+
+	juce::Image simulationKnobImage{};
+	juce::Image simulationKnobScale{};
+	int simulationKnobTotalFrames{};
+	bool simulationKnobIsVertical{};
 };
 

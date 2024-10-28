@@ -349,24 +349,61 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 	auto angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
 	auto rectEllipse = juce::Rectangle{ rx, ry, rw, rw };
 
-	g.setColour(getColorCustomDarkGrey().withAlpha(0.75F));
-	g.drawImage(knobScale, rectEllipse.reduced(-(rectEllipse.getHeight() * 0.25F)), juce::RectanglePlacement::centred, true);
-
-	g.setColour(fillColour);
-	g.fillEllipse(rectEllipse.reduced(-3.0F));
-
-	g.setColour(lineColour);
-	g.drawEllipse(rectEllipse, -1.F);
-
+	auto sliderName = slider.getName();
+	if (sliderName == "sliderMinAngles" || sliderName == "sliderMaxAngles")
 	{
-		juce::Path p{};
-		auto pointerLength = radius * 0.65F;
-		auto pointerThickness = 2.0F;
-		p.addRectangle(-pointerThickness * 0.5F, -radius, pointerThickness, pointerLength);
-		p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY));
+		g.setColour(getColorCustomDarkGrey().withAlpha(0.75F));
+		g.drawImage(knobScale, rectEllipse.reduced(-(rectEllipse.getHeight() * 0.3F)), juce::RectanglePlacement::centred, true);
 
-		g.setColour(tickColour);
-		g.fillPath(p);
+		g.setColour(fillColour);
+		g.fillEllipse(rectEllipse.reduced(-3.0F));
+
+		g.setColour(lineColour);
+		g.drawEllipse(rectEllipse, -1.F);
+
+		{
+			juce::Path p{};
+			auto pointerLength = radius * 0.65F;
+			auto pointerThickness = 2.0F;
+			p.addRectangle(-pointerThickness * 0.5F, -radius, pointerThickness, pointerLength);
+			p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY));
+
+			g.setColour(tickColour);
+			g.fillPath(p);
+		}
+	}
+
+	// for debug will be deleted
+	if (sliderName == "simulationKnob")
+	{
+		DBG("this slider called: " << sliderName);
+
+		if (simulationKnobImage.isValid()) 
+		{
+			DBG("Simulation KNOB IMAGE VALID");
+
+			int frameIndex = int(std::round(sliderPos * (simulationKnobTotalFrames - 1)));
+
+			if (frameIndex >= 0 && frameIndex < simulationKnobTotalFrames)
+			{
+				int knobSize = juce::jmin(width, height);
+				int drawX = x + (width - knobSize) / 2;
+				int drawY = y + (height - knobSize) / 2;
+
+				if (simulationKnobIsVertical) {
+					int frameW = simulationKnobImage.getWidth();
+					int frameH = simulationKnobImage.getHeight() / simulationKnobTotalFrames;
+					g.drawImage(simulationKnobImage, 
+						drawX, drawY, knobSize, knobSize, 
+						0, frameIndex * frameH, frameW, frameH);
+				}
+
+			}
+
+		}
+		else {
+			DBG("Simulation KNOB IMAGE NOT VALID");
+		}
 	}
 
 }
@@ -489,5 +526,67 @@ const float CustomLookAndFeel::getFontSizeTitle()
 const float CustomLookAndFeel::getFontSizeRegular()
 {
 	return fontSizeRegular;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical)
+{
+	int frameW = image.getWidth();
+	int frameH = image.getHeight();
+
+	juce::Image filmstripImage{};
+
+	if (isVertical) 
+		filmstripImage = juce::Image(juce::Image::PixelFormat::ARGB, frameW, frameH * totalFrames, true);
+	else 
+		filmstripImage = juce::Image(juce::Image::PixelFormat::ARGB, frameW * totalFrames, frameH, true);
+
+	juce::Graphics g(filmstripImage);
+
+	for (size_t i = 0; i < totalFrames; i++) 
+	{
+		if (isVertical) {
+			int yPos = (int)i * frameH;
+			//g.drawImageAt(image, 0, yPos, false);
+			juce::Rectangle<int> dest{ 0, yPos, frameW, frameH };
+			g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
+
+
+			juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.3F) };
+			g.setColour(getColorCustomDarkest());
+			g.fillEllipse(ellipse.toFloat());
+
+			auto numText = std::to_string(i + 1);
+			g.setFont(getFontRobotoCondensed().withHeight(ellipse.getHeight() * 0.60F));
+			g.setColour(getColorCustomWhite());
+			g.drawText(numText, ellipse.toFloat(), juce::Justification::centred, true);
+		}
+		else {
+			int xPos = (int)i * frameW;
+			//g.drawImageAt(image, xPos, 0, false);
+			juce::Rectangle<int> dest{ xPos, 0, frameW, frameH };
+			g.drawImage(image, dest.toFloat(), juce::RectanglePlacement::centred, false);
+		}
+	}
+
+	this->simulationKnobIsVertical = isVertical;
+	this->simulationKnobTotalFrames = totalFrames;
+	this->simulationKnobImage = filmstripImage;
+}
+
+void CustomLookAndFeel::ClearSimulationKnobImage()
+{
+	this->simulationKnobImage = juce::Image{};
+}
+
+void CustomLookAndFeel::setSimulationKnobScaleImage(juce::Image image)
+{
+	this->simulationKnobScale = image;
+}
+
+void CustomLookAndFeel::ClearSimulationKnobScaleImage()
+{
+	this->simulationKnobScale = juce::Image{};
 }
 

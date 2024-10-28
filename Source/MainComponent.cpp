@@ -93,6 +93,13 @@ void MainComponent::paint (juce::Graphics& g)
 
         //g.drawRoundedRectangle(debugOutlineAnglesMaxTop.toFloat().reduced(debugOutlineAnglesMaxTop.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineAnglesMaxKnob.toFloat().reduced(debugOutlineAnglesMaxKnob.getWidth() * 0.01F), 5.0F, 1.0F);
+
+        if (SlideWorksMode == SIMULATION)
+        {
+            g.setColour(customLookAndFeel->getColorCustomWhite());
+            g.drawRoundedRectangle(debugOutlineSimulationArea.toFloat(), 3.0F, 0.5F);
+        }
+
     }
 
 
@@ -350,6 +357,13 @@ void MainComponent::setupLayoutUI()
     auto exportButtonArea = left_area.withSizeKeepingCentre(100, 25);
     exportButton.setBounds(exportButtonArea);
 
+
+    ////////------///--------- SIMULATION ---------///------////////
+    auto widhtHeight = int(right_WorkSpace.getHeight() * 0.2F);
+    auto simulationKnobArea = right_WorkSpace.withSizeKeepingCentre(widhtHeight, widhtHeight);
+    simulationKnob.setBounds(simulationKnobArea);
+    debugOutlineSimulationArea = simulationKnobArea;
+    
 }
 
 void MainComponent::checkInputPathState()
@@ -367,6 +381,11 @@ void MainComponent::checkInputPathState()
     else
     {
         SlideWorksPage = PAGE1;
+    }
+
+    if (inputPathKnob.isNotEmpty()) {
+        juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
+        customLookAndFeel->setSimulationKnobImage(image, 127, filmstripIsVertical);
     }
 }
 
@@ -396,6 +415,8 @@ void MainComponent::setupButtons()
     setupFilmstripControls();
     setupOrientationButtons();
     setupAnglesKnobControls();
+
+    setupSimulationKnob();
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -446,8 +467,8 @@ void MainComponent::setupSimulationButton()
     modeSimulationButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     modeSimulationButton.onClick = [this]() 
         {
-            togglingButtons(modeSimulationButton, modePreviewButton, modeResizeButton);
             SlideWorksMode = SIMULATION;
+            togglingButtons(modeSimulationButton, modePreviewButton, modeResizeButton);
         };
     addAndMakeVisible(modeSimulationButton);
 }
@@ -459,8 +480,8 @@ void MainComponent::setupPreviewButton()
     modePreviewButton.setToggleState(false, juce::NotificationType::dontSendNotification);
     modePreviewButton.onClick = [this]() 
         {
-            togglingButtons(modePreviewButton, modeSimulationButton, modeResizeButton);
             SlideWorksMode = PREVIEW;
+            togglingButtons(modePreviewButton, modeSimulationButton, modeResizeButton);
         };
     addAndMakeVisible(modePreviewButton);
 }
@@ -472,8 +493,8 @@ void MainComponent::setupResizeButton()
     modeResizeButton.setToggleState(false, juce::NotificationType::dontSendNotification);
     modeResizeButton.onClick = [this]() 
         {
-            togglingButtons(modeResizeButton, modeSimulationButton, modePreviewButton);
             SlideWorksMode = RESIZE;
+            togglingButtons(modeResizeButton, modeSimulationButton, modePreviewButton);
         };
     addAndMakeVisible(modeResizeButton);
 }
@@ -630,7 +651,7 @@ void MainComponent::setupCustomGroupComponents()
 void MainComponent::setupFilmstripControls()
 {
     sliderTotalFrames.setName("sliderTotalFrames");
-    sliderTotalFrames.setRange(7.0, 256.0, 1.0);
+    sliderTotalFrames.setRange(7.0, 128, 1.0);
     sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
     sliderTotalFrames.setValue(69.0);
     sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -723,7 +744,8 @@ void MainComponent::setupAnglesKnobControls()
     sliderMinAngles.setDoubleClickReturnValue(true, -135);
     sliderMinAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sliderMinAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
-    sliderMinAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    //sliderMinAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    sliderMinAngles.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.F), true);
     sliderMinAngles.setLookAndFeel(customLookAndFeel.get());
     sliderMinAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMinAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
@@ -757,7 +779,8 @@ void MainComponent::setupAnglesKnobControls()
     sliderMaxAngles.setDoubleClickReturnValue(true, 135);
     sliderMaxAngles.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     sliderMaxAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
-    sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    //sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
+    sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.F), true);
     sliderMaxAngles.setLookAndFeel(customLookAndFeel.get());
     sliderMaxAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMaxAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
@@ -776,6 +799,17 @@ void MainComponent::setupAnglesKnobControls()
     addAndMakeVisible(sliderMaxAngles);
 
 
+}
+
+void MainComponent::setupSimulationKnob()
+{
+    simulationKnob.setName("simulationKnob");
+    simulationKnob.setRange(0, 130, 1);
+    simulationKnob.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+    simulationKnob.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    simulationKnob.setLookAndFeel(customLookAndFeel.get());
+    simulationKnob.onValueChange = [this]() {};
+    addAndMakeVisible(simulationKnob);
 }
 
 void MainComponent::resetDialog1()
@@ -886,6 +920,9 @@ void MainComponent::updateUI()
         modePreviewButton.setVisible(false);
         modeResizeButton.setEnabled(false);
         modeResizeButton.setVisible(false);
+
+        simulationKnob.setEnabled(false);
+        simulationKnob.setVisible(false);
     }
     else
     {
@@ -936,8 +973,24 @@ void MainComponent::updateUI()
         modePreviewButton.setVisible(true);
         modeResizeButton.setEnabled(true);
         modeResizeButton.setVisible(true);
-    }
 
+        if (SlideWorksMode == SIMULATION) 
+        {
+            simulationKnob.setEnabled(true);
+            simulationKnob.setVisible(true);
+        }
+        else if (SlideWorksMode == PREVIEW)
+        {
+            simulationKnob.setEnabled(false);
+            simulationKnob.setVisible(false);
+        }
+        else if (SlideWorksMode == RESIZE)
+        {
+            simulationKnob.setEnabled(false);
+            simulationKnob.setVisible(false);
+        }
+
+    }
 
     // SYSTEM INI PERLU DIPERBAIKI
     {
