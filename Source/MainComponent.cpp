@@ -1044,7 +1044,6 @@ void MainComponent::openDialog1(juce::Graphics& g)
     if (knobToggleWorksButton.getToggleState() == true)
     {
         auto buttonHeight     = dialog1ButtonArea2.getHeight() / 2;
-        DBG("buttonHeight: " << buttonHeight);
         auto addKnobRect      = dialog1ButtonArea2.removeFromTop(buttonHeight);
         auto addKnobScaleRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
 
@@ -1075,7 +1074,6 @@ void MainComponent::openDialog1(juce::Graphics& g)
     else if (sliderToggleWorksButton.getToggleState() == true)
     {
         auto buttonHeight       = dialog1ButtonArea2.getHeight() / 3;
-        DBG("buttonHeight: " << buttonHeight);
         auto addSliderTrackRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
         auto addSliderThumbRect = dialog1ButtonArea2.removeFromTop(buttonHeight);
         auto addSliderScaleRect = dialog1ButtonArea2.removeFromTop(buttonHeight);

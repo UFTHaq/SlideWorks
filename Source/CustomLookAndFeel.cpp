@@ -545,9 +545,18 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		filmstripImage = juce::Image(juce::Image::PixelFormat::ARGB, frameW * totalFrames, frameH, true);
 
 	juce::Graphics g(filmstripImage);
+	juce::Image rotary(juce::Image::PixelFormat::ARGB, frameW, frameH, true);
 
 	for (size_t i = 0; i < totalFrames; i++) 
 	{
+		rotary.clear(rotary.getBounds(), juce::Colours::transparentBlack);
+
+		// Debug
+		//if (i == 71) {
+		//	DBG("Skipping frame 71 for testing.");
+		//	continue;
+		//}
+
 		juce::Rectangle<int> dest{};
 
 		if (isVertical) {
@@ -563,9 +572,9 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		double angleRadian = juce::degreesToRadians(startAngle + angleNow);
 
 		juce::Rectangle<int> temp{ 0,0,frameW, frameH };
-		juce::AffineTransform rotating = juce::AffineTransform::rotation(angleRadian, temp.getCentreX(), temp.getCentreY());
+		juce::AffineTransform rotating = juce::AffineTransform::rotation((float)angleRadian, temp.getCentreX(), temp.getCentreY());
 
-		juce::Image rotary(juce::Image::PixelFormat::ARGB, frameW, frameH, true);
+		//juce::Image rotary(juce::Image::PixelFormat::ARGB, frameW, frameH, true);
 		juce::Graphics frames(rotary);
 
 		frames.addTransform(rotating);
@@ -581,6 +590,10 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		g.setFont(getFontRobotoCondensed().withHeight(ellipse.getHeight() * 0.60F));
 		g.setColour(getColorCustomWhite());
 		g.drawText(numText, ellipse.toFloat(), juce::Justification::centred, true);
+
+		// Debug missing image at index 71 or image num 72;
+		DBG("Frame: " << i << ", Dest: " << dest.toString() << ", Angle radian: " << angleRadian << ", Angle degree: " << juce::radiansToDegrees(angleRadian));
+		if (i == 71) DBG("Rotary image at 71 validity: " << std::to_string(rotary.isValid()));
 
 	}
 
