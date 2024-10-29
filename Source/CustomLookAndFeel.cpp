@@ -535,7 +535,13 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 	int frameW = image.getWidth();
 	int frameH = image.getHeight();
 	double range = std::abs(startAngle) + std::abs(endAngle);
-	double angleInterval = range / totalFrames;
+	double angleInterval = range / (totalFrames - 1);
+
+	DBG("Start Angle : " << startAngle);
+	DBG("End Angle: " << endAngle);
+	DBG("Range : " << range);
+	DBG("Total Frames: " << totalFrames);
+	DBG("Interval : " << angleInterval);
 
 	juce::Image filmstripImage{};
 
@@ -550,12 +556,6 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 	for (size_t i = 0; i < totalFrames; i++) 
 	{
 		rotary.clear(rotary.getBounds(), juce::Colours::transparentBlack);
-
-		// Debug
-		//if (i == 71) {
-		//	DBG("Skipping frame 71 for testing.");
-		//	continue;
-		//}
 
 		juce::Rectangle<int> dest{};
 
@@ -593,7 +593,6 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 
 		// Debug missing image at index 71 or image num 72;
 		DBG("Frame: " << i << ", Dest: " << dest.toString() << ", Angle radian: " << angleRadian << ", Angle degree: " << juce::radiansToDegrees(angleRadian));
-		if (i == 71) DBG("Rotary image at 71 validity: " << std::to_string(rotary.isValid()));
 
 	}
 
