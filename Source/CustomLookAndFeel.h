@@ -11,6 +11,14 @@ public:
 	// =============== ALL OVERRIDER FUNCITONS ===============
 	// 
 	// Override the drawDocumentWindowTitleBar to customize title bar
+	juce::Button* createDocumentWindowButton(int buttonType) override;
+	void positionDocumentWindowButtons(juce::DocumentWindow&,
+		int titleBarX, int titleBarY,
+		int titleBarW, int titleBarH,
+		juce::Button* minimiseButton,
+		juce::Button* maximiseButton,
+		juce::Button* closeButton,
+		bool positionTitleBarButtonsOnLeft) override;
 	void drawDocumentWindowTitleBar(juce::DocumentWindow& window, juce::Graphics& g, int w, int h, int titleSpaceX, int titleSpaceW, const juce::Image* icon, bool drawTitleTextOnLeft) override;
 
 	// Override button draw
@@ -55,8 +63,11 @@ public:
 	void ClearSimulationKnobScaleImage();
 
 private:
-	juce::Colour colorTitleBar          { juce::Colour::fromString("#ff181818") };
-	juce::Colour colorFontTitleBar      { juce::Colour::fromString("#ffc3bfbf") };
+	//juce::Colour colorTitleBar          { juce::Colour::fromString("#ff181818") };
+	juce::Colour colorTitleBar          { juce::Colour::fromString("#ff0063B1") };
+	//juce::Colour colorTitleBar          { juce::Colour::fromString("#ff185ABD") };
+	//juce::Colour colorFontTitleBar      { juce::Colour::fromString("#ffc3bfbf") };
+	juce::Colour colorFontTitleBar      { juce::Colour::fromString("#ffffffff") };
 	juce::Colour colorCustomDarkest     { juce::Colour::fromString("#ff181818") };
 	juce::Colour colorCustomDarkGrey    { juce::Colour::fromString("#ff2a2a2c") };
 	juce::Colour colorCustomGrey        { juce::Colour::fromString("#ff535354") };

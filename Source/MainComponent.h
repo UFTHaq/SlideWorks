@@ -31,6 +31,7 @@ public:
     void setupLayoutUI();
     bool getInputPathState();
     void checkInputPathState();
+    void loadSimulationImage();
     void setupButtons();
     void setupKnobToggleButton();
     void setupSliderToggleButton();
@@ -185,6 +186,7 @@ private:
     int simulationInterval{};
     juce::Rectangle<int> debugOutlineSimulationArea{};
     juce::Image debugImageSimulation{};
+    bool isSimulationImageLoaded{false};
 
     // PREVIEW
     // TODO:

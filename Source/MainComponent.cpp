@@ -377,15 +377,22 @@ void MainComponent::checkInputPathState()
     {
         SlideWorksPage = PAGE2;
 
+        loadSimulationImage();
     }
     else
     {
         SlideWorksPage = PAGE1;
     }
 
-    if (inputPathKnob.isNotEmpty()) {
+
+}
+
+void MainComponent::loadSimulationImage()
+{
+    if (isSimulationImageLoaded == false && inputPathKnob.isNotEmpty()) {
         juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
-        customLookAndFeel->setSimulationKnobImage(image, 11, filmstripIsVertical, -135, 135);
+        customLookAndFeel->setSimulationKnobImage(image, 109, filmstripIsVertical, -135, 135);
+        isSimulationImageLoaded = true;
     }
 }
 
@@ -1004,6 +1011,7 @@ void MainComponent::updateUI()
     }
 
     repaint();
+    DBG("REPAINT NOW");
 }
 
 

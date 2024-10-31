@@ -1,9 +1,61 @@
 #include "CustomLookAndFeel.h"
 
+
+class LookAndFeel_V4_DocumentWindowButton final : public juce::Button,
+	public CustomLookAndFeel
+{
+public:
+	LookAndFeel_V4_DocumentWindowButton(const juce::String& name, juce::Colour c, const juce::Path& normal, const juce::Path& toggled)
+		: Button(name), colour(c), normalShape(normal), toggledShape(toggled)
+	{
+	}
+
+	void paintButton(juce::Graphics& g, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override
+	{
+		auto background = juce::Colours::grey;
+
+		if (auto* rw = findParentComponentOfClass<juce::ResizableWindow>())
+			if (auto lf = dynamic_cast<juce::LookAndFeel_V4*> (&rw->getLookAndFeel()))
+				background = lf->getCurrentColourScheme().getUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground);
+
+		g.fillAll(background);
+
+		g.setColour((!isEnabled() || shouldDrawButtonAsDown) ? colour.withAlpha(0.6f)
+			: colour);
+
+		if (shouldDrawButtonAsHighlighted)
+		{
+			g.fillAll();
+			g.setColour(background);
+		}
+
+		auto& p = getToggleState() ? toggledShape : normalShape;
+
+		auto reducedRect = juce::Justification(juce::Justification::centred)
+			.appliedToRectangle(juce::Rectangle<int>(getHeight(), getHeight()), getLocalBounds())
+			.toFloat()
+			.reduced((float)getHeight() * 0.3f);
+		g.setColour(getColorCustomWhite());
+		g.fillPath(p, p.getTransformToScaleToFit(reducedRect, true));
+	}
+
+private:
+	juce::Colour colour;
+	juce::Path normalShape, toggledShape;
+
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LookAndFeel_V4_DocumentWindowButton)
+};
+
+
+
 CustomLookAndFeel::CustomLookAndFeel()
 {
 	auto& colorscheme = getCurrentColourScheme();
 	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, colorTitleBar);
+
+	//juce::LookAndFeel_V4::setColour(juce::DocumentWindow::minimiseButton, juce::Colours::royalblue.darker()); 
+	//setColour(juce::DocumentWindow::minimiseButton, juce::Colours::red);
+	setColour(juce::DocumentWindow::allButtons, juce::Colours::royalblue);
 
 	LoadFonts();
 	loadImages();
@@ -15,6 +67,126 @@ CustomLookAndFeel::~CustomLookAndFeel()
 }
 
 ////////////////////////// ========= OVERRIDER FUNTIONS ========= //////////////////////////
+juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
+{
+	juce::Path shape;
+	auto crossThickness = 0.15f;
+
+	if (buttonType == juce::DocumentWindow::closeButton)
+	{
+		shape.addLineSegment({ 0.0f, 0.0f, 1.0f, 1.0f }, crossThickness);
+		shape.addLineSegment({ 1.0f, 0.0f, 0.0f, 1.0f }, crossThickness);
+
+		//return new LookAndFeel_V4_DocumentWindowButton("close", juce::Colour(0xff9A131D), shape, shape);
+		return new LookAndFeel_V4_DocumentWindowButton("close", juce::Colours::red.darker(0.1F), shape, shape);
+	}
+
+	if (buttonType == juce::DocumentWindow::minimiseButton)
+	{
+		shape.addLineSegment({ 0.0f, 0.5f, 1.0f, 0.5f }, crossThickness);
+
+		//return new LookAndFeel_V4_DocumentWindowButton("minimise", juce::Colour(0xff9A131D), shape, shape);
+		return new LookAndFeel_V4_DocumentWindowButton("minimise", getColorTitleBar().darker(0.2F), shape, shape);
+	}
+
+	if (buttonType == juce::DocumentWindow::maximiseButton)
+	{
+		shape.addLineSegment({ 0.5f, 0.0f, 0.5f, 1.0f }, crossThickness);
+		shape.addLineSegment({ 0.0f, 0.5f, 1.0f, 0.5f }, crossThickness);
+
+		juce::Path fullscreenShape;
+		fullscreenShape.startNewSubPath(45.0f, 100.0f);
+		fullscreenShape.lineTo(0.0f, 100.0f);
+		fullscreenShape.lineTo(0.0f, 0.0f);
+		fullscreenShape.lineTo(100.0f, 0.0f);
+		fullscreenShape.lineTo(100.0f, 45.0f);
+		fullscreenShape.addRectangle(45.0f, 45.0f, 100.0f, 100.0f);
+		juce::PathStrokeType(30.0f).createStrokedPath(fullscreenShape, fullscreenShape);
+
+		//return new LookAndFeel_V4_DocumentWindowButton("maximise", juce::Colour(0xff9A131D), shape, shape);
+		return new LookAndFeel_V4_DocumentWindowButton("maximise", getColorTitleBar().darker(0.2F), shape, fullscreenShape);
+	}
+
+	jassertfalse;
+	return nullptr;
+}
+
+void CustomLookAndFeel::positionDocumentWindowButtons(juce::DocumentWindow&, int titleBarX, int titleBarY, int titleBarW, int titleBarH, juce::Button* minimiseButton, juce::Button* maximiseButton, juce::Button* closeButton, bool positionTitleBarButtonsOnLeft)
+{
+	//auto buttonW = static_cast<int> (titleBarH * 1.2);
+
+	//auto x = positionTitleBarButtonsOnLeft ? titleBarX
+	//	: titleBarX + titleBarW - buttonW;
+
+	//if (closeButton != nullptr)
+	//{
+	//	closeButton->setBounds(x, titleBarY, buttonW, titleBarH);
+	//	x += positionTitleBarButtonsOnLeft ? buttonW : -buttonW;
+	//}
+
+	//if (positionTitleBarButtonsOnLeft)
+	//	std::swap(minimiseButton, maximiseButton);
+
+	//if (maximiseButton != nullptr)
+	//{
+	//	maximiseButton->setBounds(x, titleBarY, buttonW, titleBarH);
+	//	x += positionTitleBarButtonsOnLeft ? buttonW : -buttonW;
+	//}
+
+	//if (minimiseButton != nullptr)
+	//{
+	//	minimiseButton->setBounds(x, titleBarY, buttonW, titleBarH);
+	//	minimiseButton->setColour(juce::DocumentWindow::minimiseButton, juce::Colours::royalblue.darker());
+	//}
+
+
+	//// Position the buttons in the title bar
+	//auto x = window.getWidth() - titleSpaceW + titleSpaceX;
+	//int y = 0; // Top of the title bar
+
+	//if (closeButton != nullptr)
+	//{
+	//	closeButton->setBounds(x, y, buttonWidth, buttonHeight);
+	//	x -= buttonWidth; // Move left for next button
+	//}
+
+	//if (maximiseButton != nullptr)
+	//{
+	//	maximiseButton->setBounds(x, y, buttonWidth, buttonHeight);
+	//	x -= buttonWidth; // Move left for next button
+	//}
+
+	//if (minimiseButton != nullptr)
+	//{
+	//	minimiseButton->setBounds(x, y, buttonWidth, buttonHeight);
+	//}
+
+
+
+	auto buttonW = static_cast<int> (titleBarH * 1.2);
+
+	auto x = positionTitleBarButtonsOnLeft ? titleBarX
+		: titleBarX + titleBarW - buttonW;
+
+	if (closeButton != nullptr)
+	{
+		closeButton->setBounds(x, titleBarY, buttonW, titleBarH);
+		x += positionTitleBarButtonsOnLeft ? buttonW : -buttonW;
+	}
+
+	if (positionTitleBarButtonsOnLeft)
+		std::swap(minimiseButton, maximiseButton);
+
+	if (maximiseButton != nullptr)
+	{
+		maximiseButton->setBounds(x, titleBarY, buttonW, titleBarH);
+		x += positionTitleBarButtonsOnLeft ? buttonW : -buttonW;
+	}
+
+	if (minimiseButton != nullptr)
+		minimiseButton->setBounds(x, titleBarY, buttonW, titleBarH);
+}
+
 void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window, 
 													juce::Graphics& g, int w, int h, int titleSpaceX, int titleSpaceW, 
 													const juce::Image* icon, bool drawTitleTextOnLeft)
@@ -373,20 +545,17 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 		}
 	}
 
-	// for debug will be deleted
 	if (sliderName == "simulationKnob")
 	{
-		DBG("this slider called: " << sliderName);
 
 		if (simulationKnobImage.isValid()) 
 		{
-			DBG("Simulation KNOB IMAGE VALID");
 
 			int frameIndex = int(std::round(sliderPos * (simulationKnobTotalFrames - 1)));
 
 			if (frameIndex >= 0 && frameIndex < simulationKnobTotalFrames)
 			{
-				int knobSize = juce::jmin(width, height) - (height * 0.25F);
+				int knobSize = juce::jmin(width, height) - (height * 0.65F);
 				int drawX = x + (width - knobSize) / 2;
 				int drawY = y + (height - knobSize) / 2;
 
@@ -405,7 +574,6 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 			DBG("Simulation KNOB IMAGE NOT VALID");
 		}
 	}
-
 }
 
 void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
@@ -537,12 +705,6 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 	double range = std::abs(startAngle) + std::abs(endAngle);
 	double angleInterval = range / (totalFrames - 1);
 
-	DBG("Start Angle : " << startAngle);
-	DBG("End Angle: " << endAngle);
-	DBG("Range : " << range);
-	DBG("Total Frames: " << totalFrames);
-	DBG("Interval : " << angleInterval);
-
 	juce::Image filmstripImage{};
 
 	if (isVertical) 
@@ -582,7 +744,7 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		
 		g.drawImage(rotary, dest.toFloat(), juce::RectanglePlacement::centred, false);
 
-		juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.3F) };
+		juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.35F) };
 		g.setColour(getColorCustomDarkest());
 		g.fillEllipse(ellipse.toFloat());
 
@@ -590,9 +752,6 @@ void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrame
 		g.setFont(getFontRobotoCondensed().withHeight(ellipse.getHeight() * 0.60F));
 		g.setColour(getColorCustomWhite());
 		g.drawText(numText, ellipse.toFloat(), juce::Justification::centred, true);
-
-		// Debug missing image at index 71 or image num 72;
-		DBG("Frame: " << i << ", Dest: " << dest.toString() << ", Angle radian: " << angleRadian << ", Angle degree: " << juce::radiansToDegrees(angleRadian));
 
 	}
 
