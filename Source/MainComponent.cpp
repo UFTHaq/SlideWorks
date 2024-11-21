@@ -7,8 +7,7 @@ MainComponent::MainComponent()
 
 
     setupLayoutUI();
-    //setupButtons(&customLookAndFeel);
-    setupButtons(Globals::getCustomLookAndFeel().get());
+    setupButtons(ptr_Global_CustomLookAndFeel);
 
     setupCustomGroupComponents();
 
@@ -25,19 +24,20 @@ void MainComponent::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     //g.fillAll(customLookAndFeel.getColorCustomDarkGrey());
-    g.fillAll(juce::Colour::fromString("ffbebebe"));
+    //g.fillAll(juce::Colour::fromString("ffbebebe"));
+    g.fillAll(ptr_Global_CustomLookAndFeel->getBackgroundColour());
 
     if (SlideWorksPage == PAGE1)
     {
-        g.setColour(customLookAndFeel.getColorCustomLightGrey());
-        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 2);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().Page_1);
+        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 1);
 
         if (openAddImage_Dialog1 == false)
         {
-            g.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(customLookAndFeel.getFontSizeTitle()));
-            g.setColour(customLookAndFeel.getColorCustomDarkGrey());
+            g.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(ptr_Global_CustomLookAndFeel->getFontSizeTitle()));
+            g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
 
-            g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
+            g.drawText("Filmstrip Knob & Slider Generator", base_WorkSpace, juce::Justification::centred, true);
         }
 
         if (openAddImage_Dialog1 == true)
@@ -48,16 +48,16 @@ void MainComponent::paint (juce::Graphics& g)
     
     if (SlideWorksPage == PAGE2)
     {
-        g.setColour(customLookAndFeel.getColorCustomLightGrey());
+        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomLightGrey());
 
-        g.fillRoundedRectangle(left_WorkSpace.toFloat(), customLookAndFeel.getRoundedCornerSize());
-        g.fillRoundedRectangle(right_WorkSpace.toFloat(), customLookAndFeel.getRoundedCornerSize());
+        g.fillRoundedRectangle(left_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+        g.fillRoundedRectangle(right_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
 
-        g.setColour(customLookAndFeel.getColorCustomDarkGrey());
-        g.fillRoundedRectangle(filmstripBanner.toFloat(), customLookAndFeel.getRoundedCornerSize());
+        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
+        g.fillRoundedRectangle(filmstripBanner.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
 
-        g.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(18));
-        g.setColour(customLookAndFeel.getColorCustomWhite());
+        g.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(18));
+        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
         g.drawText("FILMSTRIP", filmstripBanner, juce::Justification::centred, true);
 
         if (knobToggleWorksButton.getToggleState())
@@ -75,7 +75,7 @@ void MainComponent::paint (juce::Graphics& g)
         }
 
         // debug only
-        g.setColour(customLookAndFeel.getColorCustomGrey());
+        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomGrey());
         //g.drawRoundedRectangle(debugOutlineTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineLeftTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineRightTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
@@ -83,7 +83,7 @@ void MainComponent::paint (juce::Graphics& g)
         //g.drawRoundedRectangle(debugOutlineOrientation.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineOrientationHorizontal.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineOrientationVertical.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
-        
+
         //g.drawRoundedRectangle(debugOutlineAngles.toFloat().reduced(debugOutlineAngles.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineAnglesMin.toFloat().reduced(debugOutlineAnglesMin.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineAnglesMax.toFloat().reduced(debugOutlineAnglesMax.getWidth() * 0.01F), 5.0F, 1.0F);
@@ -96,10 +96,102 @@ void MainComponent::paint (juce::Graphics& g)
 
         if (SlideWorksMode == SIMULATION)
         {
-            g.setColour(customLookAndFeel.getColorCustomWhite());
+            g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
             g.drawRoundedRectangle(debugOutlineSimulationArea.toFloat(), 3.0F, 0.5F);
         }
 
+    }
+
+    if (SlideWorksPage == PAGE3_INFO)
+    {
+        closeDialog_2_Info.setEnabled(1);
+        closeDialog_2_Info.setVisible(1);
+
+        author_param.setVisible(1);
+        author_arg.setVisible(1);
+        version_param.setVisible(1);
+        version_arg.setVisible(1);
+        release_param.setVisible(1);
+        release_arg.setVisible(1);
+        license_param.setVisible(1);
+        license_arg.setVisible(1);
+        juceVersion_arg.setVisible(1);
+
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().Page_1);
+        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 1);
+
+        // AUTOMATIC CENTER
+        auto base_groupDialog_2_Info{ base_WorkSpace.withSizeKeepingCentre(275, 240) };
+
+        //g.setColour(customLookAndFeel->getColorCustomLightGrey().brighter());
+        //g.drawRoundedRectangle(baseOpenDialog1.toFloat(), 10.0F, 4.0F);
+
+        auto groupDialog_2_Info_Area = base_groupDialog_2_Info.reduced(10);
+        groupDialog_2_Info_Area.removeFromBottom(40);
+        groupDialog_2_Info.setBounds(groupDialog_2_Info_Area);
+        groupDialog_2_Info.paint(g);
+
+        //juce::Label author_param{};
+        //juce::Label author_arg{};
+        //juce::Label version_param{};
+        //juce::Label version_arg{};
+        //juce::Label release_param{};
+        //juce::Label release_arg{};
+        //juce::Label license_param{};
+        //juce::Label license_arg{};
+        //juce::Label juceVersion_arg{};
+
+        auto infoArea = groupDialog_2_Info_Area;
+        infoArea.removeFromTop(8);
+        infoArea = infoArea.reduced(20);
+        infoArea = infoArea.withSizeKeepingCentre(150, infoArea.getHeight());
+
+        auto contentHeight = infoArea.getHeight() / 5;
+        auto author = infoArea.removeFromTop(contentHeight);
+        auto version = infoArea.removeFromTop(contentHeight);
+        auto release = infoArea.removeFromTop(contentHeight);
+        auto license = infoArea.removeFromTop(contentHeight);
+        auto juceVer = infoArea.removeFromTop(contentHeight);
+
+        auto paramWidht = infoArea.getWidth() * 0.4F;
+        author_param.setBounds(author.removeFromLeft(paramWidht));
+        author_arg.setBounds(author);
+        version_param.setBounds(version.removeFromLeft(paramWidht));
+        version_arg.setBounds(version);
+        release_param.setBounds(release.removeFromLeft(paramWidht));
+        release_arg.setBounds(release);
+        license_param.setBounds(license.removeFromLeft(paramWidht));
+        license_arg.setBounds(license);
+        juceVersion_arg.setBounds(juceVer);
+
+        {
+            // CLOSE BUTTON
+            auto w = 100;
+            auto h = 30;
+            juce::Rectangle dialog2_Close{
+                base_groupDialog_2_Info.getX() + (base_groupDialog_2_Info.getWidth() - w) / 2,
+                base_groupDialog_2_Info.getBottom() - h - 10,
+                w,
+                h
+            };
+            closeDialog_2_Info.setBounds(dialog2_Close);
+        }
+
+        repaint();
+    }
+    else {
+        closeDialog_2_Info.setEnabled(0);
+        closeDialog_2_Info.setVisible(0);
+
+        author_param.setVisible(0);
+        author_arg.setVisible(0);
+        version_param.setVisible(0);
+        version_arg.setVisible(0);
+        release_param.setVisible(0);
+        release_arg.setVisible(0);
+        license_param.setVisible(0);
+        license_arg.setVisible(0);
+        juceVersion_arg.setVisible(0);
     }
 
 
@@ -409,11 +501,11 @@ void MainComponent::loadSimulationImage()
     if (isSimulationImageLoaded == false && inputPathKnob.isNotEmpty()) {
         juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
         int totalStrip = 11;
-        customLookAndFeel.setSimulationKnobImage(image, totalStrip, filmstripIsVertical, -135, 135);
+        ptr_Global_CustomLookAndFeel->setSimulationKnobImage(image, totalStrip, filmstripIsVertical, -135, 135);
 
         openGLComponent.setBounds(0, 0, image.getWidth(), image.getHeight() * totalStrip);
         openGLComponent.drawFilmstripKnobImage(image, totalStrip, filmstripIsVertical, -135, 135);
-        customLookAndFeel.setFilmStripKnob(openGLComponent.getFilmstrip());
+        ptr_Global_CustomLookAndFeel->setFilmStripKnob(openGLComponent.getFilmstrip());
 
         isSimulationImageLoaded = true;
     }
@@ -484,16 +576,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                     Globals::repaintTitleBar = true;
 
-                    //triggerRepaint();
-
-                    //setVisible(false);
-                    //setVisible(true);
-
-                    //if (auto* mainComp = dynamic_cast<MainComponent*>(getParentComponent()))
-                    //{
-                    //    mainComp->repaint();
-                    //    
-                    //}
                 }
             );
         };
@@ -502,6 +584,10 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
     SW_InfoButton.setButtonText("Info");
     SW_InfoButton.setComponentID("Buttons_ID_01_SW");
     SW_InfoButton.setLookAndFeel(customLookAndFeel);
+    SW_InfoButton.onClick = [this]()
+        {
+            SlideWorksPage = PAGE3_INFO;
+        };
     addAndMakeVisible(SW_InfoButton);
 }
 
@@ -660,6 +746,7 @@ void MainComponent::setupCloseDialog1Button()
 {
     closeDialog1.setButtonText("CLOSE");
     closeDialog1.setName("closeDialog1");
+    closeDialog1.setComponentID("Buttons_ID_02_Close_Group");
     closeDialog1.onClick = [this]() 
         { 
             openAddImage_Dialog1 = false;
@@ -671,12 +758,101 @@ void MainComponent::setupCloseDialog1Button()
 
 void MainComponent::setupCustomGroupComponents()
 {
+    groupDialog_2_Info.setName("DIALOG 2 INFO");
+    groupDialog_2_Info.setText("SLIDEWORKS");
+    groupDialog_2_Info.setTextLabelPosition(juce::Justification::centred);
+    groupDialog_2_Info.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(18.0F));
+    groupDialog_2_Info.setFontColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    groupDialog_2_Info.setOutlineColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    groupDialog_2_Info.setCornerSize(10.0F);
+    groupDialog_2_Info.setIndentation(3.0F);
+    groupDialog_2_Info.setTextLineGap(8.0F);
+    groupDialog_2_Info.setLineThickness(1.5F);
+    addAndMakeVisible(groupDialog_2_Info);
+
+    author_param.setText("Author", juce::dontSendNotification);
+    author_param.setJustificationType(juce::Justification::centredLeft);
+    author_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    author_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    author_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    author_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(author_param);
+    author_arg.setText(":  UFTHaq", juce::dontSendNotification);
+    author_arg.setJustificationType(juce::Justification::centredLeft);
+    author_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    author_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    author_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    author_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(author_arg);
+
+    version_param.setText("Version", juce::dontSendNotification);
+    version_param.setJustificationType(juce::Justification::centredLeft);
+    version_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    version_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    version_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    version_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(version_param);
+    version_arg.setText(":  1.0", juce::dontSendNotification);
+    version_arg.setJustificationType(juce::Justification::centredLeft);
+    version_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    version_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    version_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    version_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(version_arg);
+
+    release_param.setText("Release", juce::dontSendNotification);
+    release_param.setJustificationType(juce::Justification::centredLeft);
+    release_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    release_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    release_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    release_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(release_param);
+    release_arg.setText(":  15/12/2024", juce::dontSendNotification);
+    release_arg.setJustificationType(juce::Justification::centredLeft);
+    release_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    release_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    release_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    release_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(release_arg);
+
+    license_param.setText("License", juce::dontSendNotification);
+    license_param.setJustificationType(juce::Justification::centredLeft);
+    license_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    license_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    license_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    license_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(license_param);
+    license_arg.setText(":  APGLv3", juce::dontSendNotification);
+    license_arg.setJustificationType(juce::Justification::centredLeft);
+    license_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    license_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    license_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    license_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(license_arg);
+
+    juceVersion_arg.setText("Created with JUCE 8.0.3", juce::dontSendNotification);
+    juceVersion_arg.setJustificationType(juce::Justification::centredBottom);
+    juceVersion_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    juceVersion_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
+    juceVersion_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
+    juceVersion_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
+    addAndMakeVisible(juceVersion_arg);
+
+    closeDialog_2_Info.setButtonText("CLOSE");
+    closeDialog_2_Info.setComponentID("Buttons_ID_02_Close_Group");
+    closeDialog_2_Info.onClick = [this]()
+        {
+            SlideWorksPage = PAGE1;
+        };
+    addAndMakeVisible(closeDialog_2_Info);
+
+
     groupDialog1.setName("DIALOG1");
     groupDialog1.setText("ADD IMAGES");
     groupDialog1.setTextLabelPosition(juce::Justification::centred);
-    groupDialog1.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
-    groupDialog1.setFontColour(customLookAndFeel.getColorCustomDarkGrey());
-    groupDialog1.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupDialog1.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    groupDialog1.setFontColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
+    groupDialog1.setOutlineColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
     groupDialog1.setCornerSize(10.0F);
     groupDialog1.setIndentation(3);
     groupDialog1.setTextLineGap(8.0F);
@@ -688,9 +864,9 @@ void MainComponent::setupCustomGroupComponents()
     groupTotalFrames.setName("TOTAL FRAMES");
     groupTotalFrames.setText("TOTAL FRAMES");
     groupTotalFrames.setTextLabelPosition(juce::Justification::centred);
-    groupTotalFrames.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
-    groupTotalFrames.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
-    groupTotalFrames.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupTotalFrames.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    groupTotalFrames.setFontColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey().darker());
+    groupTotalFrames.setOutlineColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
     groupTotalFrames.setCornerSize(10.0F);
     groupTotalFrames.setIndentation(indentation);
     groupTotalFrames.setTextLineGap(gap);
@@ -700,9 +876,9 @@ void MainComponent::setupCustomGroupComponents()
     groupOrientation.setName("ORIENTATION");
     groupOrientation.setText("ORIENTATION");
     groupOrientation.setTextLabelPosition(juce::Justification::centred);
-    groupOrientation.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
-    groupOrientation.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
-    groupOrientation.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupOrientation.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    groupOrientation.setFontColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey().darker());
+    groupOrientation.setOutlineColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
     groupOrientation.setCornerSize(10.0F);
     groupOrientation.setIndentation(indentation);
     groupOrientation.setTextLineGap(gap);
@@ -712,9 +888,9 @@ void MainComponent::setupCustomGroupComponents()
     groupKnobAngles.setName("ANGLES");
     groupKnobAngles.setText("ANGLES");
     groupKnobAngles.setTextLabelPosition(juce::Justification::centred);
-    groupKnobAngles.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
-    groupKnobAngles.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
-    groupKnobAngles.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupKnobAngles.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    groupKnobAngles.setFontColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey().darker());
+    groupKnobAngles.setOutlineColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
     groupKnobAngles.setCornerSize(10.0F);
     groupKnobAngles.setIndentation(indentation);
     groupKnobAngles.setTextLineGap(gap);
@@ -724,9 +900,9 @@ void MainComponent::setupCustomGroupComponents()
     groupSliderThumbPositions.setName("THUMB POSITION");
     groupSliderThumbPositions.setText("THUMB POSITION");
     groupSliderThumbPositions.setTextLabelPosition(juce::Justification::centred);
-    groupSliderThumbPositions.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
-    groupSliderThumbPositions.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
-    groupSliderThumbPositions.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupSliderThumbPositions.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
+    groupSliderThumbPositions.setFontColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey().darker());
+    groupSliderThumbPositions.setOutlineColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
     groupSliderThumbPositions.setCornerSize(10.0F);
     groupSliderThumbPositions.setIndentation(indentation);
     groupSliderThumbPositions.setTextLineGap(gap);
@@ -977,12 +1153,15 @@ void MainComponent::updateUI()
         SW_NewProjectButton.setEnabled(true);
         SW_NewProjectButton.setVisible(true);
 
-        SW_ThemeButton.setEnabled(1);
-        SW_ThemeButton.setVisible(1);
+        SW_ThemeButton.setEnabled(true);
+        SW_ThemeButton.setVisible(true);
         
-        SW_InfoButton.setEnabled(1);
-        SW_InfoButton.setVisible(1);
-
+        SW_InfoButton.setEnabled(true);
+        SW_InfoButton.setVisible(true);
+        {
+            groupDialog_2_Info.setEnabled(false);
+            groupDialog_2_Info.setVisible(false);
+        }
 
         browseButton.setEnabled(true);
         browseButton.setVisible(true);
@@ -1020,8 +1199,13 @@ void MainComponent::updateUI()
         simulationKnob.setEnabled(false);
         simulationKnob.setVisible(false);
     }
-    else
+    else if (SlideWorksPage == PAGE2)
     {
+        {
+            groupDialog_2_Info.setEnabled(false);
+            groupDialog_2_Info.setVisible(false);
+        }
+
         browseButton.setEnabled(false);
         browseButton.setVisible(false);
 
@@ -1086,6 +1270,13 @@ void MainComponent::updateUI()
             simulationKnob.setVisible(false);
         }
 
+    }
+    else if (SlideWorksPage == PAGE3_INFO)
+    {
+        {
+            groupDialog_2_Info.setEnabled(true);
+            groupDialog_2_Info.setVisible(true);
+        }
     }
 
     // SYSTEM INI PERLU DIPERBAIKI

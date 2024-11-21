@@ -66,8 +66,9 @@ public:
     void fileChooserWindows(juce::String& inputPath);
     void updateUI();
 
-
-    CustomLookAndFeel customLookAndFeel{};
+    CustomLookAndFeel* ptr_Global_CustomLookAndFeel = Globals::getCustomLookAndFeel().get();
+    //CustomLookAndFeel customLookAndFeel{};
+    //std::shared_ptr<CustomLookAndFeel> customLookAndFeel{Globals::getCustomLookAndFeel().get()};
 private:
     //==============================================================================
     // Your private member variables go here...
@@ -77,7 +78,8 @@ private:
     enum PageState
     {
         PAGE1,
-        PAGE2
+        PAGE2,
+        PAGE3_INFO
     };
 
     PageState SlideWorksPage{ PAGE1 };
@@ -132,6 +134,21 @@ private:
     juce::TextButton modeSimulationButton{};
     juce::TextButton modePreviewButton{};
     juce::TextButton modeResizeButton{};
+
+    ////////////////----------- PAGE 3 -----------////////////////
+    CustomGroupComponent groupDialog_2_Info{};
+    juce::Label author_param{};
+    juce::Label author_arg{};
+    juce::Label version_param{};
+    juce::Label version_arg{};
+    juce::Label release_param{};
+    juce::Label release_arg{};
+    juce::Label license_param{};
+    juce::Label license_arg{};
+    juce::Label juceVersion_arg{};
+    juce::TextButton closeDialog_2_Info{};
+
+    ////////////////----------- PAGE 2 -----------////////////////
 
     //////////----- LEFT WORKSPACE -----//////////
 

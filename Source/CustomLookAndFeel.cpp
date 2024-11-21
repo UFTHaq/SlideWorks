@@ -179,6 +179,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	juce::Colour fillColor{};
 	juce::Colour outlineColor{};
 	float cornerSize{};
+	float outlineThick{};
 
 	if (buttonID == "Buttons_ID_01_SW")
 	{
@@ -191,15 +192,14 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		//}
 
 		outlineColor = getColorCustomGrey();
+		outlineThick = 0.4F;
+
 		if (shouldDrawButtonAsDown)
 		{
-			fillColor = getColorCustomLightGrey().darker(0.2F);
-			fillColor = juce::Colour::fromString("ffe1e2e6");
 			fillColor = getColorTitleBar();
 		}
 		else
 		{
-			//fillColor = juce::Colour::fromString("ffe1e2e6");
 			fillColor = themeColoursNow.ButtonsID_01;
 
 			if (shouldDrawButtonAsHighlighted)
@@ -207,7 +207,26 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 				fillColor = fillColor.brighter(0.2F);
 			}
 		}
+	} 
+	else if (buttonID == "Buttons_ID_02_Close_Group")
+	{
+		cornerSize = getRoundedCornerSize() * 2;
+
+		fillColor = themeColoursNow.Page_1;
+		outlineColor = themeColoursNow.CustomGroupComponent;
+		outlineThick = 1.5F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = fillColor.darker(0.2F);
+		}
+		else if (shouldDrawButtonAsHighlighted)
+		{
+			fillColor = fillColor.brighter();
+		}
 	}
+
+
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
 	{
@@ -327,7 +346,8 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 
 	g.setColour(outlineColor);
 	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(1.1F), cornerSize, 2.0F);
-	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(0.2F), cornerSize, 0.3F);
+	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(0.2F), cornerSize, outlineThick);
+	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(outlineThick/2), cornerSize, outlineThick);
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
@@ -353,6 +373,19 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = textColor.brighter();
 		}
 	}
+	else if (buttonID == "Buttons_ID_02_Close_Group")
+	{
+		font = getFontRobotoCondensedBold().withHeight(getFontSizeRegular());
+		textColor = themeColoursNow.CustomGroupComponent;
+
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
+		}
+	}
+
+
+
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
 	{
@@ -594,8 +627,10 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 
 	// Set the text color and draw the text
 	g.setColour(label.findColour(juce::Label::textColourId));
-	g.setFont(getFontRobotoCondensedBold().withHeight(17.50F));
-	g.drawText(label.getText(), label.getLocalBounds(), juce::Justification::centred, true);
+	//g.setFont(getFontRobotoCondensedBold().withHeight(17.50F));
+	g.setFont(label.getFont());
+	//g.drawText(label.getText(), label.getLocalBounds(), juce::Justification::centred, true);
+	g.drawText(label.getText(), label.getLocalBounds(), label.getJustificationType(), true);
 }
 
 void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor)
@@ -648,37 +683,42 @@ void CustomLookAndFeel::loadImages()
 ////////////////////////// ========= GET COLOURS ========= //////////////////////////
 const juce::Colour CustomLookAndFeel::getColorTitleBar()
 {
-	return colorTitleBar;
+	return themeColoursNow.TitleBar;
 }
 
 const juce::Colour CustomLookAndFeel::getColorFontTitleBar()
 {
-	return colorFontTitleBar;
+	return themeColoursNow.FontTitleBar;
+}
+
+const juce::Colour CustomLookAndFeel::getBackgroundColour()
+{
+	return themeColoursNow.BackgroundColour;
 }
 
 const juce::Colour CustomLookAndFeel::getColorCustomDarkest()
 {
-	return colorCustomDarkest;
+	return themeColoursNow.CustomDarkest;
 }
 
 const juce::Colour CustomLookAndFeel::getColorCustomDarkGrey()
 {
-	return colorCustomDarkGrey;
+	return themeColoursNow.CustomDarkGrey;
 }
 
 const juce::Colour CustomLookAndFeel::getColorCustomGrey()
 {
-	return colorCustomGrey;
+	return themeColoursNow.CustomGrey;
 }
 
 const juce::Colour CustomLookAndFeel::getColorCustomLightGrey()
 {
-	return colorCustomLightGrey;
+	return themeColoursNow.CustomLightGrey;
 }
 
 const juce::Colour CustomLookAndFeel::getColorCustomWhite()
 {
-	return colorCustomWhite;
+	return themeColoursNow.CustomWhite;
 }
 
 ////////////////////////// ========= GET FONTS ========= //////////////////////////

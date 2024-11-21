@@ -67,22 +67,13 @@ public:
         {
             setUsingNativeTitleBar (false);
             setContentOwned (new MainComponent(), true);
-            //auto* mainComp = new MainComponent();
-            //setContentOwned(mainComp, true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
            #else
 
             // Custom title bar to get ColourScheme::widgetBackground from class CustomLookAndFeel constructor
-            //customLookAndFeel = std::make_unique<CustomLookAndFeel>();
-            //setLookAndFeel(customLookAndFeel.get());
-            //setLookAndFeel(globalLookAndFeel.get());
-
-            //mainComp->triggerRepaint();
-
             setLookAndFeel(Globals::getCustomLookAndFeel().get());
-            //repaint();
             setTitleBarHeight(30);
 
             setResizable (false, false);               // put this to (false, false) not works
@@ -109,7 +100,6 @@ public:
         */
 
     private:
-        //std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };

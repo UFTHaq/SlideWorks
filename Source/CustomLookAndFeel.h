@@ -43,6 +43,8 @@ public:
 	// Return main color palette used in the projects;
 	const juce::Colour getColorTitleBar();
 	const juce::Colour getColorFontTitleBar();
+	const juce::Colour getBackgroundColour();
+
 	const juce::Colour getColorCustomDarkest();
 	const juce::Colour getColorCustomDarkGrey();
 	const juce::Colour getColorCustomGrey();
@@ -76,29 +78,44 @@ private:
 
 	ThemeColours OfficeLightTheme 
 	{
-		.TitleBar          = juce::Colour::fromString("#ff0063b1"),
-		.FontTitleBar      = juce::Colour::fromString("#ffffffff"),
-		.ButtonsID_01      = juce::Colour::fromString("#ffe1e2e6"),
-		.ButtonsID_01_Text = juce::Colour::fromString("#ff262525"),
-		.FontBlack         = juce::Colour::fromString("#ff262525"),
-		.CustomDarkest     = juce::Colour::fromString("#ff181818"),
-		.CustomDarkGrey    = juce::Colour::fromString("#ff2a2a2c"),
-		.CustomGrey        = juce::Colour::fromString("#ff535354"),
-		.CustomLightGrey   = juce::Colour::fromString("#ffacadaf"),
-		.CustomWhite       = juce::Colour::fromString("#ffffffff")
+		.TitleBar             = juce::Colour::fromString("ff0063b1"),
+		.FontTitleBar         = juce::Colour::fromString("ffffffff"),
+		.BackgroundColour     = juce::Colour::fromString("ffbebebe"),
+		.Page_1               = juce::Colour::fromString("ffe1e2e3"),
+						      
+		.ButtonsID_01         = juce::Colour::fromString("ffe1e2e6"),
+		.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
+
+		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
+
+		.FontBlack            = juce::Colour::fromString("ff262525"),
+						      
+		.CustomDarkest        = juce::Colour::fromString("ff181818"),
+		.CustomDarkGrey       = juce::Colour::fromString("ff2a2a2c"),
+		.CustomGrey           = juce::Colour::fromString("ff535354"),
+		.CustomLightGrey      = juce::Colour::fromString("ffacadaf"),
+		.CustomWhite          = juce::Colour::fromString("ffffffff"),
+		.CustomTransparent    = juce::Colours::transparentBlack,
 	};
 
 	ThemeColours DarkNightTheme
 	{
-		.TitleBar          = juce::Colour::fromString("#ff181818"),
-		.FontTitleBar      = juce::Colour::fromString("#ffffffff"),
-		.ButtonsID_01      = juce::Colour::fromString("#ff181818"),
-		.ButtonsID_01_Text = juce::Colour::fromString("#ffffffff"),
-		.CustomDarkest     = juce::Colour::fromString("#ff181818"),
-		.CustomDarkGrey    = juce::Colour::fromString("#ff2a2a2c"),
-		.CustomGrey        = juce::Colour::fromString("#ff535354"),
-		.CustomLightGrey   = juce::Colour::fromString("#ffacadaf"),
-		.CustomWhite       = juce::Colour::fromString("#ff2a2a2c")
+		.TitleBar             = juce::Colour::fromString("ff181818"),
+		.FontTitleBar         = juce::Colour::fromString("ffffffff"),
+		.BackgroundColour     = juce::Colour::fromString("ff2a2a2c"),
+		.Page_1               = juce::Colour::fromString("ffb4b5b9"),
+						      
+		.ButtonsID_01         = juce::Colour::fromString("ffb4b5b9"),
+		.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
+
+		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
+						      
+		.CustomDarkest        = juce::Colour::fromString("ff181818"),
+		.CustomDarkGrey       = juce::Colour::fromString("ff2a2a2c"),
+		.CustomGrey           = juce::Colour::fromString("ff535354"),
+		.CustomLightGrey      = juce::Colour::fromString("ffacadaf"),
+		.CustomWhite          = juce::Colour::fromString("ff2a2a2c"),
+		.CustomTransparent    = juce::Colours::transparentBlack,
 	};
 
 	ThemeColours themeColoursNow{ OfficeLightTheme };
