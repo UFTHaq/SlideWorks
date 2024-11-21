@@ -6,11 +6,10 @@ MainComponent::MainComponent()
     setSize(800, 540);   // This is mandatory to not trigger error in debug mode
 
 
-    // Assign the pointer of customLookAndFeel
-    customLookAndFeel = std::make_unique<CustomLookAndFeel>();
-
     setupLayoutUI();
-    setupButtons();
+    //setupButtons(&customLookAndFeel);
+    setupButtons(Globals::getCustomLookAndFeel().get());
+
     setupCustomGroupComponents();
 
     updateUI();
@@ -25,17 +24,18 @@ MainComponent::~MainComponent()
 void MainComponent::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(customLookAndFeel->getColorCustomDarkGrey());
+    //g.fillAll(customLookAndFeel.getColorCustomDarkGrey());
+    g.fillAll(juce::Colour::fromString("ffbebebe"));
 
     if (SlideWorksPage == PAGE1)
     {
-        g.setColour(customLookAndFeel->getColorCustomLightGrey());
-        g.fillRoundedRectangle(base_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
+        g.setColour(customLookAndFeel.getColorCustomLightGrey());
+        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 2);
 
         if (openAddImage_Dialog1 == false)
         {
-            g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeTitle()));
-            g.setColour(customLookAndFeel->getColorCustomDarkGrey());
+            g.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(customLookAndFeel.getFontSizeTitle()));
+            g.setColour(customLookAndFeel.getColorCustomDarkGrey());
 
             g.drawText("DRAG DROP NOT WORKING FOR NOW", base_WorkSpace, juce::Justification::centred, true);
         }
@@ -48,16 +48,16 @@ void MainComponent::paint (juce::Graphics& g)
     
     if (SlideWorksPage == PAGE2)
     {
-        g.setColour(customLookAndFeel->getColorCustomLightGrey());
+        g.setColour(customLookAndFeel.getColorCustomLightGrey());
 
-        g.fillRoundedRectangle(left_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
-        g.fillRoundedRectangle(right_WorkSpace.toFloat(), customLookAndFeel->getRoundedCornerSize());
+        g.fillRoundedRectangle(left_WorkSpace.toFloat(), customLookAndFeel.getRoundedCornerSize());
+        g.fillRoundedRectangle(right_WorkSpace.toFloat(), customLookAndFeel.getRoundedCornerSize());
 
-        g.setColour(customLookAndFeel->getColorCustomDarkGrey());
-        g.fillRoundedRectangle(filmstripBanner.toFloat(), customLookAndFeel->getRoundedCornerSize());
+        g.setColour(customLookAndFeel.getColorCustomDarkGrey());
+        g.fillRoundedRectangle(filmstripBanner.toFloat(), customLookAndFeel.getRoundedCornerSize());
 
-        g.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(18));
-        g.setColour(customLookAndFeel->getColorCustomWhite());
+        g.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(18));
+        g.setColour(customLookAndFeel.getColorCustomWhite());
         g.drawText("FILMSTRIP", filmstripBanner, juce::Justification::centred, true);
 
         if (knobToggleWorksButton.getToggleState())
@@ -75,7 +75,7 @@ void MainComponent::paint (juce::Graphics& g)
         }
 
         // debug only
-        g.setColour(customLookAndFeel->getColorCustomGrey());
+        g.setColour(customLookAndFeel.getColorCustomGrey());
         //g.drawRoundedRectangle(debugOutlineTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineLeftTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
         //g.drawRoundedRectangle(debugOutlineRightTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
@@ -96,7 +96,7 @@ void MainComponent::paint (juce::Graphics& g)
 
         if (SlideWorksMode == SIMULATION)
         {
-            g.setColour(customLookAndFeel->getColorCustomWhite());
+            g.setColour(customLookAndFeel.getColorCustomWhite());
             g.drawRoundedRectangle(debugOutlineSimulationArea.toFloat(), 3.0F, 0.5F);
         }
 
@@ -170,6 +170,23 @@ void MainComponent::filesDropped(const juce::StringArray& files, int x, int y)
 /////////////////////////////////////////////////////////////////////
 void MainComponent::setupLayoutUI()
 {
+    ///////////////// NEW PLAN PAGE 1 COMPONENT /////////////////
+    base_SlideWorks = getLocalBounds().reduced(5);
+    int componentSpace = 2;
+
+    juce::Rectangle<int> area_NewProjectButton{ base_SlideWorks.getX(), base_SlideWorks.getY(), 50, 20 };
+    juce::Rectangle<int> area_ThemeButton{ area_NewProjectButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+    juce::Rectangle<int> area_InfoButton{ area_ThemeButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+
+    SW_NewProjectButton.setBounds(area_NewProjectButton);
+    SW_ThemeButton.setBounds(area_ThemeButton);
+    SW_InfoButton.setBounds(area_InfoButton);
+
+    base_WorkSpace = base_SlideWorks;
+    base_WorkSpace.removeFromTop(SW_NewProjectButton.getHeight() + componentSpace);
+
+
+
     ///////////////// PAGE 1 COMPONENT /////////////////
     base_SlideWorks = getLocalBounds().reduced(10);
 
@@ -196,8 +213,8 @@ void MainComponent::setupLayoutUI()
         }
     );
 
-    base_WorkSpace = base_SlideWorks;
-    base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
+    //base_WorkSpace = base_SlideWorks;
+    //base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
 
     ///////////////// PAGE 2 COMPONENT /////////////////
     {
@@ -391,7 +408,13 @@ void MainComponent::loadSimulationImage()
 {
     if (isSimulationImageLoaded == false && inputPathKnob.isNotEmpty()) {
         juce::Image image{ juce::ImageFileFormat::loadFrom(inputPathKnob) };
-        customLookAndFeel->setSimulationKnobImage(image, 109, filmstripIsVertical, -135, 135);
+        int totalStrip = 11;
+        customLookAndFeel.setSimulationKnobImage(image, totalStrip, filmstripIsVertical, -135, 135);
+
+        openGLComponent.setBounds(0, 0, image.getWidth(), image.getHeight() * totalStrip);
+        openGLComponent.drawFilmstripKnobImage(image, totalStrip, filmstripIsVertical, -135, 135);
+        customLookAndFeel.setFilmStripKnob(openGLComponent.getFilmstrip());
+
         isSimulationImageLoaded = true;
     }
 }
@@ -401,8 +424,11 @@ bool MainComponent::getInputPathState()
     return inputPathState;
 }
 
-void MainComponent::setupButtons()
+void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
 {
+    setupProjectButtons(customLookAndFeel);
+
+
     setupKnobToggleButton();
     setupSliderToggleButton();
     setupBrowseButton();
@@ -419,11 +445,64 @@ void MainComponent::setupButtons()
     setupAddSliderScaleButton();
     setupCloseDialog1Button();
 
-    setupFilmstripControls();
+    setupFilmstripControls(customLookAndFeel);
     setupOrientationButtons();
-    setupAnglesKnobControls();
+    setupAnglesKnobControls(customLookAndFeel);
 
-    setupSimulationKnob();
+    setupSimulationKnob(customLookAndFeel);
+}
+
+void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
+{
+    SW_NewProjectButton.setButtonText("New");
+    SW_NewProjectButton.setComponentID("Buttons_ID_01_SW");
+    SW_NewProjectButton.setLookAndFeel(customLookAndFeel);
+    addAndMakeVisible(SW_NewProjectButton);
+
+    SW_ThemeButton.setButtonText("Theme");
+    SW_ThemeButton.setComponentID("Buttons_ID_01_SW");
+    SW_ThemeButton.setLookAndFeel(customLookAndFeel);
+    SW_ThemeButton.onClick = [&, customLookAndFeel, this] ()
+        {
+            ThemeType currentTheme = customLookAndFeel->getCurrentThemeType();
+
+            juce::PopupMenu menu;
+            menu.addItem(1, "Office Light", true, currentTheme == ThemeType::OfficeLight);
+            menu.addItem(2, "Dark Night", true, currentTheme == ThemeType::DarkNight);
+
+            menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(SW_ThemeButton), [this, customLookAndFeel](int result)
+                {
+                    if (result == 1)
+                    {
+                        customLookAndFeel->setTheme(ThemeType::OfficeLight);
+                    }
+                    else if (result == 2)
+                    {
+                        customLookAndFeel->setTheme(ThemeType::DarkNight);
+                    }
+                    repaint();
+
+                    Globals::repaintTitleBar = true;
+
+                    //triggerRepaint();
+
+                    //setVisible(false);
+                    //setVisible(true);
+
+                    //if (auto* mainComp = dynamic_cast<MainComponent*>(getParentComponent()))
+                    //{
+                    //    mainComp->repaint();
+                    //    
+                    //}
+                }
+            );
+        };
+    addAndMakeVisible(SW_ThemeButton);
+
+    SW_InfoButton.setButtonText("Info");
+    SW_InfoButton.setComponentID("Buttons_ID_01_SW");
+    SW_InfoButton.setLookAndFeel(customLookAndFeel);
+    addAndMakeVisible(SW_InfoButton);
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -432,7 +511,7 @@ void MainComponent::setupKnobToggleButton()
     knobToggleWorksButton.setName("knobWorks");
     knobToggleWorksButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     knobToggleWorksButton.onClick = [this]() { togglingButtons(knobToggleWorksButton, sliderToggleWorksButton); };
-    addAndMakeVisible(knobToggleWorksButton);
+    //addAndMakeVisible(knobToggleWorksButton);
 }
 
 void MainComponent::setupSliderToggleButton()
@@ -441,7 +520,7 @@ void MainComponent::setupSliderToggleButton()
     sliderToggleWorksButton.setName("sliderWorks");
     sliderToggleWorksButton.setToggleState(false, juce::NotificationType::dontSendNotification);
     sliderToggleWorksButton.onClick = [this]() { togglingButtons(sliderToggleWorksButton, knobToggleWorksButton); };
-    addAndMakeVisible(sliderToggleWorksButton);
+    //addAndMakeVisible(sliderToggleWorksButton);
 }
 
 void MainComponent::setupBrowseButton()
@@ -595,9 +674,9 @@ void MainComponent::setupCustomGroupComponents()
     groupDialog1.setName("DIALOG1");
     groupDialog1.setText("ADD IMAGES");
     groupDialog1.setTextLabelPosition(juce::Justification::centred);
-    groupDialog1.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupDialog1.setFontColour(customLookAndFeel->getColorCustomDarkGrey());
-    groupDialog1.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupDialog1.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
+    groupDialog1.setFontColour(customLookAndFeel.getColorCustomDarkGrey());
+    groupDialog1.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
     groupDialog1.setCornerSize(10.0F);
     groupDialog1.setIndentation(3);
     groupDialog1.setTextLineGap(8.0F);
@@ -609,9 +688,9 @@ void MainComponent::setupCustomGroupComponents()
     groupTotalFrames.setName("TOTAL FRAMES");
     groupTotalFrames.setText("TOTAL FRAMES");
     groupTotalFrames.setTextLabelPosition(juce::Justification::centred);
-    groupTotalFrames.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupTotalFrames.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
-    groupTotalFrames.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupTotalFrames.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
+    groupTotalFrames.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
+    groupTotalFrames.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
     groupTotalFrames.setCornerSize(10.0F);
     groupTotalFrames.setIndentation(indentation);
     groupTotalFrames.setTextLineGap(gap);
@@ -621,9 +700,9 @@ void MainComponent::setupCustomGroupComponents()
     groupOrientation.setName("ORIENTATION");
     groupOrientation.setText("ORIENTATION");
     groupOrientation.setTextLabelPosition(juce::Justification::centred);
-    groupOrientation.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupOrientation.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
-    groupOrientation.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupOrientation.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
+    groupOrientation.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
+    groupOrientation.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
     groupOrientation.setCornerSize(10.0F);
     groupOrientation.setIndentation(indentation);
     groupOrientation.setTextLineGap(gap);
@@ -633,9 +712,9 @@ void MainComponent::setupCustomGroupComponents()
     groupKnobAngles.setName("ANGLES");
     groupKnobAngles.setText("ANGLES");
     groupKnobAngles.setTextLabelPosition(juce::Justification::centred);
-    groupKnobAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupKnobAngles.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
-    groupKnobAngles.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupKnobAngles.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
+    groupKnobAngles.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
+    groupKnobAngles.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
     groupKnobAngles.setCornerSize(10.0F);
     groupKnobAngles.setIndentation(indentation);
     groupKnobAngles.setTextLineGap(gap);
@@ -645,9 +724,9 @@ void MainComponent::setupCustomGroupComponents()
     groupSliderThumbPositions.setName("THUMB POSITION");
     groupSliderThumbPositions.setText("THUMB POSITION");
     groupSliderThumbPositions.setTextLabelPosition(juce::Justification::centred);
-    groupSliderThumbPositions.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(17.0F));
-    groupSliderThumbPositions.setFontColour(customLookAndFeel->getColorCustomDarkGrey().darker());
-    groupSliderThumbPositions.setOutlineColour(customLookAndFeel->getColorCustomDarkGrey());
+    groupSliderThumbPositions.setFont(customLookAndFeel.getFontRobotoCondensedBold().withHeight(17.0F));
+    groupSliderThumbPositions.setFontColour(customLookAndFeel.getColorCustomDarkGrey().darker());
+    groupSliderThumbPositions.setOutlineColour(customLookAndFeel.getColorCustomDarkGrey());
     groupSliderThumbPositions.setCornerSize(10.0F);
     groupSliderThumbPositions.setIndentation(indentation);
     groupSliderThumbPositions.setTextLineGap(gap);
@@ -655,11 +734,11 @@ void MainComponent::setupCustomGroupComponents()
     addAndMakeVisible(groupSliderThumbPositions);
 }
 
-void MainComponent::setupFilmstripControls()
+void MainComponent::setupFilmstripControls(CustomLookAndFeel* customLookAndFeel)
 {
     sliderTotalFrames.setName("sliderTotalFrames");
     sliderTotalFrames.setRange(7.0, 128, 1.0);
-    sliderTotalFrames.setLookAndFeel(customLookAndFeel.get());
+    sliderTotalFrames.setLookAndFeel(customLookAndFeel);
     sliderTotalFrames.setValue(69.0);
     sliderTotalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
     sliderTotalFrames.setTextBoxStyle(juce::Slider::NoTextBox, true, 40, 20);
@@ -679,7 +758,7 @@ void MainComponent::setupFilmstripControls()
 
     labelBoxTotalFrames.setName("labelBoxTotalFrames");
     labelBoxTotalFrames.setText(std::to_string(sliderTotalFrames.getValue()), juce::dontSendNotification);
-    labelBoxTotalFrames.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(18.F));
+    labelBoxTotalFrames.setFont(customLookAndFeel->getFontRobotoCondensedBold().withHeight(18.F));
     labelBoxTotalFrames.setColour(juce::Label::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
@@ -688,7 +767,7 @@ void MainComponent::setupFilmstripControls()
     labelBoxTotalFrames.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
     labelBoxTotalFrames.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
     labelBoxTotalFrames.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getColorCustomWhite());
-    labelBoxTotalFrames.setLookAndFeel(customLookAndFeel.get());
+    labelBoxTotalFrames.setLookAndFeel(customLookAndFeel);
     labelBoxTotalFrames.setEditable(true, true, false);
     labelBoxTotalFrames.onTextChange = [this]() 
         {
@@ -732,16 +811,16 @@ void MainComponent::setupOrientationButtons()
     addAndMakeVisible(verticalButton);
 }
 
-void MainComponent::setupAnglesKnobControls()
+void MainComponent::setupAnglesKnobControls(CustomLookAndFeel* customLookAndFeel)
 {
     double minimalAngleBetween = 45.0;
 
     labelMinAngles.setName("labelMinAngles");
     labelMinAngles.setText("MIN", juce::dontSendNotification);
-    labelMinAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeRegular()));
+    labelMinAngles.setFont(customLookAndFeel->getFontRobotoCondensedBold().withHeight(customLookAndFeel->getFontSizeRegular()));
     labelMinAngles.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
     labelMinAngles.setJustificationType(juce::Justification::centred);
-    labelMinAngles.setLookAndFeel(customLookAndFeel.get());
+    labelMinAngles.setLookAndFeel(customLookAndFeel);
     labelMinAngles.setEditable(false, false, false);
     addAndMakeVisible(labelMinAngles);
 
@@ -753,7 +832,7 @@ void MainComponent::setupAnglesKnobControls()
     sliderMinAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
     //sliderMinAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
     sliderMinAngles.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.F), true);
-    sliderMinAngles.setLookAndFeel(customLookAndFeel.get());
+    sliderMinAngles.setLookAndFeel(customLookAndFeel);
     sliderMinAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMinAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMinAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomLightGrey());
@@ -773,10 +852,10 @@ void MainComponent::setupAnglesKnobControls()
 
     labelMaxAngles.setName("labelMaxAngles");
     labelMaxAngles.setText("MAX", juce::dontSendNotification);
-    labelMaxAngles.setFont(customLookAndFeel->getFontRobotoCondensed().withHeight(customLookAndFeel->getFontSizeRegular()));
+    labelMaxAngles.setFont(customLookAndFeel->getFontRobotoCondensedBold().withHeight(customLookAndFeel->getFontSizeRegular()));
     labelMaxAngles.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
     labelMaxAngles.setJustificationType(juce::Justification::centred);
-    labelMaxAngles.setLookAndFeel(customLookAndFeel.get());
+    labelMaxAngles.setLookAndFeel(customLookAndFeel);
     labelMaxAngles.setEditable(false, false, false);
     addAndMakeVisible(labelMaxAngles);
 
@@ -788,7 +867,7 @@ void MainComponent::setupAnglesKnobControls()
     sliderMaxAngles.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
     //sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(-175.0F), juce::degreesToRadians(175.0F), true);
     sliderMaxAngles.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.F), true);
-    sliderMaxAngles.setLookAndFeel(customLookAndFeel.get());
+    sliderMaxAngles.setLookAndFeel(customLookAndFeel);
     sliderMaxAngles.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
     sliderMaxAngles.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
     sliderMaxAngles.setColour(juce::Slider::thumbColourId, customLookAndFeel->getColorCustomLightGrey());
@@ -808,13 +887,13 @@ void MainComponent::setupAnglesKnobControls()
 
 }
 
-void MainComponent::setupSimulationKnob()
+void MainComponent::setupSimulationKnob(CustomLookAndFeel* customLookAndFeel)
 {
     simulationKnob.setName("simulationKnob");
     simulationKnob.setRange(0, 100, 1);
     simulationKnob.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     simulationKnob.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    simulationKnob.setLookAndFeel(customLookAndFeel.get());
+    simulationKnob.setLookAndFeel(customLookAndFeel);
     simulationKnob.onValueChange = [this]() {};
     addAndMakeVisible(simulationKnob);
 }
@@ -895,6 +974,16 @@ void MainComponent::updateUI()
 
     if (SlideWorksPage == PAGE1) 
     {
+        SW_NewProjectButton.setEnabled(true);
+        SW_NewProjectButton.setVisible(true);
+
+        SW_ThemeButton.setEnabled(1);
+        SW_ThemeButton.setVisible(1);
+        
+        SW_InfoButton.setEnabled(1);
+        SW_InfoButton.setVisible(1);
+
+
         browseButton.setEnabled(true);
         browseButton.setVisible(true);
 

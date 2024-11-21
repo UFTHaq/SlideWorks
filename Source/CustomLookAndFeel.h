@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ThemeColours.h"
 
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -34,7 +35,6 @@ public:
 	void fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor) override;
 	void drawTextEditorOutline(juce::Graphics& g, int width, int height, juce::TextEditor& editor) override;
 
-
 	// Load all fonts
 	void LoadFonts();
 
@@ -49,20 +49,61 @@ public:
 	const juce::Colour getColorCustomLightGrey();
 	const juce::Colour getColorCustomWhite();
 
+
 	// Return Fonts
 	const juce::Font getFontRobotoMono();
-	const juce::Font getFontRobotoCondensed();
+	const juce::Font getFontRobotoCondensedBold();
+	const juce::Font getFontRobotoCondensedRegular();
 
 	const float getRoundedCornerSize();
 	const float getFontSizeTitle();
 	const float getFontSizeRegular();
 
+
+	
 	void setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical, double startAngle, double endAngle);
 	void ClearSimulationKnobImage();
 	void setSimulationKnobScaleImage(juce::Image image);
 	void ClearSimulationKnobScaleImage();
 
+	void setFilmStripKnob(juce::Image image);
+
+	void setTheme(ThemeType themeType);
+	const ThemeType& getCurrentThemeType();
+	const ThemeColours& getCurrentTheme();
+
 private:
+
+	ThemeColours OfficeLightTheme 
+	{
+		.TitleBar          = juce::Colour::fromString("#ff0063b1"),
+		.FontTitleBar      = juce::Colour::fromString("#ffffffff"),
+		.ButtonsID_01      = juce::Colour::fromString("#ffe1e2e6"),
+		.ButtonsID_01_Text = juce::Colour::fromString("#ff262525"),
+		.FontBlack         = juce::Colour::fromString("#ff262525"),
+		.CustomDarkest     = juce::Colour::fromString("#ff181818"),
+		.CustomDarkGrey    = juce::Colour::fromString("#ff2a2a2c"),
+		.CustomGrey        = juce::Colour::fromString("#ff535354"),
+		.CustomLightGrey   = juce::Colour::fromString("#ffacadaf"),
+		.CustomWhite       = juce::Colour::fromString("#ffffffff")
+	};
+
+	ThemeColours DarkNightTheme
+	{
+		.TitleBar          = juce::Colour::fromString("#ff181818"),
+		.FontTitleBar      = juce::Colour::fromString("#ffffffff"),
+		.ButtonsID_01      = juce::Colour::fromString("#ff181818"),
+		.ButtonsID_01_Text = juce::Colour::fromString("#ffffffff"),
+		.CustomDarkest     = juce::Colour::fromString("#ff181818"),
+		.CustomDarkGrey    = juce::Colour::fromString("#ff2a2a2c"),
+		.CustomGrey        = juce::Colour::fromString("#ff535354"),
+		.CustomLightGrey   = juce::Colour::fromString("#ffacadaf"),
+		.CustomWhite       = juce::Colour::fromString("#ff2a2a2c")
+	};
+
+	ThemeColours themeColoursNow{ OfficeLightTheme };
+	ThemeType themeTypeNow{ ThemeType::OfficeLight };
+
 	//juce::Colour colorTitleBar          { juce::Colour::fromString("#ff181818") };
 	juce::Colour colorTitleBar          { juce::Colour::fromString("#ff0063B1") };
 	//juce::Colour colorTitleBar          { juce::Colour::fromString("#ff185ABD") };
@@ -74,12 +115,14 @@ private:
 	juce::Colour colorCustomLightGrey   { juce::Colour::fromString("#ffacadaf") };
 	juce::Colour colorCustomWhite       { juce::Colour::fromString("#ffffffff") };
 
-	juce::Font fontRobotoMono           { juce::FontOptions{} };
-	juce::Font fontRobotoCondensed      { juce::FontOptions{} };
+	juce::Font fontRobotoMono             { juce::FontOptions{} };
+	juce::Font fontRobotoCondensedBold    { juce::FontOptions{} };
+	juce::Font fontRobotoCondensedRegular { juce::FontOptions{} };
 
 	float roundedCornerSize{ 2.5F };
-	float fontSizeTitle{ 21.0F };
-	float fontSizeRegular{ 16.50F };
+	float fontSizeTitle{ 19.0F };
+	//float fontSizeRegular{ 16.50F };
+	float fontSizeRegular{ 16.0F };
 
 	juce::Image knobScale{};
 

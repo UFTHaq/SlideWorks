@@ -8,6 +8,12 @@
 
 namespace BinaryData
 {
+    extern const char*   RobotoCondensedMedium_ttf;
+    const int            RobotoCondensedMedium_ttfSize = 144888;
+
+    extern const char*   RobotoCondensedRegular_ttf;
+    const int            RobotoCondensedRegular_ttfSize = 144852;
+
     extern const char*   RobotoCondensedSemiBold_ttf;
     const int            RobotoCondensedSemiBold_ttfSize = 145484;
 
@@ -18,7 +24,7 @@ namespace BinaryData
     const int            small_scale_black_pngSize = 7374;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 3;
+    const int namedResourceListSize = 5;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

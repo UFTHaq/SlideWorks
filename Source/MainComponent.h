@@ -3,6 +3,9 @@
 #include <JuceHeader.h>
 #include "CustomLookAndFeel.h"
 #include "CustomGroupComponent.h"
+#include "OpenGLComponent.h"
+#include "ThemeColours.h"
+#include "Globals.h"
 
 //==============================================================================
 /*
@@ -32,7 +35,8 @@ public:
     bool getInputPathState();
     void checkInputPathState();
     void loadSimulationImage();
-    void setupButtons();
+    void setupButtons(CustomLookAndFeel* customLookAndFeel);
+    void setupProjectButtons(CustomLookAndFeel* customLookAndFeel);
     void setupKnobToggleButton();
     void setupSliderToggleButton();
     void setupBrowseButton();
@@ -50,11 +54,11 @@ public:
     void setupAddSliderScaleButton();
     void setupCloseDialog1Button();
     void setupCustomGroupComponents();
-    void setupFilmstripControls();
+    void setupFilmstripControls(CustomLookAndFeel* customLookAndFeel);
     void setupOrientationButtons();
-    void setupAnglesKnobControls();
+    void setupAnglesKnobControls(CustomLookAndFeel* customLookAndFeel);
 
-    void setupSimulationKnob();
+    void setupSimulationKnob(CustomLookAndFeel* customLookAndFeel);
 
     void resetDialog1();
     void openDialog1(juce::Graphics&);
@@ -63,12 +67,12 @@ public:
     void updateUI();
 
 
+    CustomLookAndFeel customLookAndFeel{};
 private:
     //==============================================================================
     // Your private member variables go here...
 
     // Create pointer for CustomLookAndFeel object
-    std::unique_ptr<CustomLookAndFeel> customLookAndFeel{};
 
     enum PageState
     {
@@ -94,6 +98,12 @@ private:
     juce::Rectangle<int> left_WorkSpace{};
     juce::Rectangle<int> right_WorkSpace{};     // page2_right_WorksSpace
 
+    //////////////// NEW BUTTON ////////////////
+    juce::TextButton SW_NewProjectButton{};
+    juce::TextButton SW_ThemeButton{};
+    juce::TextButton SW_InfoButton{};
+
+    //////////////// OLD BUTTON ////////////////
     juce::TextButton knobToggleWorksButton{};
     juce::TextButton sliderToggleWorksButton{};
     juce::TextButton browseButton{};
@@ -207,6 +217,10 @@ private:
     juce::Rectangle<int> resizeSliderTrack{};
     juce::Rectangle<int> resizeSliderThumb{};
     juce::Rectangle<int> resizeSliderScale{};
+
+
+
+    OpenGLComponent openGLComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

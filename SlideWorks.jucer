@@ -17,7 +17,16 @@
             file="Source/CustomGroupComponent.h"/>
       <FILE id="v9loTb" name="CustomGroupComponent.cpp" compile="1" resource="0"
             file="Source/CustomGroupComponent.cpp"/>
+      <FILE id="vajGgq" name="OpenGLComponent.h" compile="0" resource="0"
+            file="Source/OpenGLComponent.h"/>
+      <FILE id="HZGwtf" name="ThemeColours.h" compile="0" resource="0" file="Source/ThemeColours.h"/>
+      <FILE id="RVc28g" name="Globals.h" compile="0" resource="0" file="Source/Globals.h"/>
+      <FILE id="w206rb" name="Globals.cpp" compile="1" resource="0" file="Source/Globals.cpp"/>
     </GROUP>
+    <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
+          file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>
+    <FILE id="PO9Zkl" name="RobotoCondensed-Regular.ttf" compile="0" resource="1"
+          file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Regular.ttf"/>
     <FILE id="bbBBjQ" name="RobotoCondensed-SemiBold.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-SemiBold.ttf"/>
     <FILE id="v410u7" name="RobotoMono-Medium.ttf" compile="0" resource="1"
@@ -32,6 +41,7 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
@@ -47,6 +57,7 @@
         <MODULEPATH id="juce_gui_basics" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.3-windows/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2022 targetFolder="Builds/VisualStudio2022">
@@ -61,6 +72,7 @@
         <MODULEPATH id="juce_gui_basics" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
         <MODULEPATH id="juce_data_structures" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.2-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../Aplikasi/CODING/C &amp; C++/JUCE/juce-8.0.3-windows/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
