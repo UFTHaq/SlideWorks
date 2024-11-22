@@ -22,6 +22,17 @@
       <FILE id="HZGwtf" name="ThemeColours.h" compile="0" resource="0" file="Source/ThemeColours.h"/>
       <FILE id="RVc28g" name="Globals.h" compile="0" resource="0" file="Source/Globals.h"/>
       <FILE id="w206rb" name="Globals.cpp" compile="1" resource="0" file="Source/Globals.cpp"/>
+      <FILE id="AvDlKQ" name="FilmstripProject.h" compile="0" resource="0"
+            file="Source/FilmstripProject.h"/>
+      <FILE id="eoQlGo" name="FilmstripProject.cpp" compile="1" resource="0"
+            file="Source/FilmstripProject.cpp"/>
+      <FILE id="pab9bx" name="KnobFilmstrip.h" compile="0" resource="0" file="Source/KnobFilmstrip.h"/>
+      <FILE id="KHVv4o" name="KnobFilmstrip.cpp" compile="1" resource="0"
+            file="Source/KnobFilmstrip.cpp"/>
+      <FILE id="saOf2v" name="SliderFilmstrip.h" compile="0" resource="0"
+            file="Source/SliderFilmstrip.h"/>
+      <FILE id="OjAao8" name="SliderFilmstrip.cpp" compile="1" resource="0"
+            file="Source/SliderFilmstrip.cpp"/>
     </GROUP>
     <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>

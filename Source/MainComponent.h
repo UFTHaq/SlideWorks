@@ -4,8 +4,13 @@
 #include "CustomLookAndFeel.h"
 #include "CustomGroupComponent.h"
 #include "OpenGLComponent.h"
+
 #include "ThemeColours.h"
 #include "Globals.h"
+
+#include "FilmstripProject.h"
+#include "KnobFilmstrip.h"
+#include "SliderFilmstrip.h"
 
 //==============================================================================
 /*
@@ -30,6 +35,9 @@ public:
     void buttonClicked(juce::Button* button) override;
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;
+
+    void updatePageContent(juce::Graphics& g);
+    void updatePageInfoVisibility(bool visible);
 
     void setupLayoutUI();
     bool getInputPathState();
@@ -75,23 +83,24 @@ private:
 
     // Create pointer for CustomLookAndFeel object
 
-    enum PageState
+    enum class PageState
     {
         PAGE1,
         PAGE2,
         PAGE3_INFO
     };
 
-    PageState SlideWorksPage{ PAGE1 };
+    PageState currentSlideWorksPage{ PageState::PAGE1 };
+    PageState previousSlideWorksPage{};
 
-    enum ModeState
+    enum class ModeState
     {
         SIMULATION,
         PREVIEW,
-        RESIZE
+        EDIT
     };
 
-    ModeState SlideWorksMode{ SIMULATION };
+    ModeState SlideWorksMode{ ModeState::SIMULATION };
 
     bool inputPathState{};
 
@@ -100,10 +109,23 @@ private:
     juce::Rectangle<int> left_WorkSpace{};
     juce::Rectangle<int> right_WorkSpace{};     // page2_right_WorksSpace
 
+    //////////////// NEW UI ////////////////
+    juce::Rectangle<int> area_Footer{};
+    juce::Rectangle<int> area_MainControl{};
+    juce::Rectangle<int> area_MainWorkspace{};
+    juce::Rectangle<int> area_ModeButtons{};
+    juce::Rectangle<int> area_Canvas{};
+    juce::Rectangle<int> area_SubControl{};
+
+
+    std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
+
     //////////////// NEW BUTTON ////////////////
     juce::TextButton SW_NewProjectButton{};
     juce::TextButton SW_ThemeButton{};
     juce::TextButton SW_InfoButton{};
+
+
 
     //////////////// OLD BUTTON ////////////////
     juce::TextButton knobToggleWorksButton{};

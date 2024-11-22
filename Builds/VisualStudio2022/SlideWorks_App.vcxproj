@@ -146,6 +146,9 @@
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\CustomGroupComponent.cpp"/>
     <ClCompile Include="..\..\Source\Globals.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject.cpp"/>
+    <ClCompile Include="..\..\Source\KnobFilmstrip.cpp"/>
+    <ClCompile Include="..\..\Source\SliderFilmstrip.cpp"/>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1881,6 +1884,9 @@
     <ClInclude Include="..\..\Source\OpenGLComponent.h"/>
     <ClInclude Include="..\..\Source\ThemeColours.h"/>
     <ClInclude Include="..\..\Source\Globals.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject.h"/>
+    <ClInclude Include="..\..\Source\KnobFilmstrip.h"/>
+    <ClInclude Include="..\..\Source\SliderFilmstrip.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>
