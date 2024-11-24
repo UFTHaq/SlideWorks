@@ -21,8 +21,7 @@ public:
 
 		g.fillAll(background);
 
-		g.setColour((!isEnabled() || shouldDrawButtonAsDown) ? colour.withAlpha(0.6f)
-			: colour);
+		g.setColour((!isEnabled() || shouldDrawButtonAsDown) ? colour.withAlpha(0.6f) : colour);
 
 		if (shouldDrawButtonAsHighlighted)
 		{
@@ -52,8 +51,7 @@ private:
 CustomLookAndFeel::CustomLookAndFeel()
 {
 	auto& colorscheme = getCurrentColourScheme();
-	//colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, colorTitleBar);
-	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, themeColoursNow.TitleBar);
+	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, getCurrentTheme().TitleBar);
 
 	LoadFonts();
 	loadImages();
@@ -63,6 +61,8 @@ CustomLookAndFeel::~CustomLookAndFeel()
 {
 
 }
+
+std::vector<std::unique_ptr<LookAndFeel_V4_DocumentWindowButton>> docsdf;
 
 ////////////////////////// ========= OVERRIDER FUNTIONS ========= //////////////////////////
 juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
@@ -77,16 +77,13 @@ juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
 
 		return new LookAndFeel_V4_DocumentWindowButton("close", juce::Colours::red.darker(0.1F), shape, shape);
 	}
-
-	if (buttonType == juce::DocumentWindow::minimiseButton)
+	else if (buttonType == juce::DocumentWindow::minimiseButton)
 	{
 		shape.addLineSegment({ 0.0F, 0.5F, 1.0F, 0.5F }, crossThickness);
 
-		//return new LookAndFeel_V4_DocumentWindowButton("minimise", getColorTitleBar().darker(0.2F), shape, shape);
-		return new LookAndFeel_V4_DocumentWindowButton("minimise", themeColoursNow.TitleBar.darker(0.2F), shape, shape);
+		return new LookAndFeel_V4_DocumentWindowButton("minimise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, shape);
 	}
-
-	if (buttonType == juce::DocumentWindow::maximiseButton)
+	else if (buttonType == juce::DocumentWindow::maximiseButton)
 	{
 		crossThickness = 0.125F;
 		shape.addLineSegment({ 0.0F, 0.0F, 1.0F, 0.0F }, crossThickness);
@@ -103,8 +100,7 @@ juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
 		fullscreenShape.addRectangle(45.0F, 45.0F, 100.0F, 100.0F);
 		juce::PathStrokeType(15.0F).createStrokedPath(fullscreenShape, fullscreenShape);
 
-		//return new LookAndFeel_V4_DocumentWindowButton("maximise", getColorTitleBar().darker(0.2F), shape, fullscreenShape);
-		return new LookAndFeel_V4_DocumentWindowButton("maximise", themeColoursNow.TitleBar.darker(0.2F), shape, fullscreenShape);
+		return new LookAndFeel_V4_DocumentWindowButton("maximise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, fullscreenShape);
 	}
 
 	jassertfalse;
@@ -151,6 +147,7 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 	if (Globals::repaintTitleBar == true)
 	{
 		Globals::repaintTitleBar = false;
+
 		window.repaint();
 	}
 
@@ -158,11 +155,11 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 
 	// Coloring the title bar
 	//g.fillAll(getColorTitleBar());
-	g.fillAll(themeColoursNow.TitleBar);
+	g.fillAll(getCurrentTheme().TitleBar);
 
 	// Draw and coloring the title text
 	//g.setColour(getColorFontTitleBar());
-	g.setColour(themeColoursNow.FontTitleBar);
+	g.setColour(getCurrentTheme().FontTitleBar);
 	//g.setFont(getFontRobotoMono().withHeight(getFontSizeTitle()));
 	g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeTitle()));
 	//g.drawText(window.getName(), juce::Rectangle{ 0, 0, w, h }.toFloat(), juce::Justification::centred, true);
@@ -775,7 +772,7 @@ void CustomLookAndFeel::setTheme(ThemeType themeType)
 	}
 
 	auto& colorscheme = getCurrentColourScheme();
-	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, themeColoursNow.TitleBar);
+	colorscheme.setUIColour(juce::LookAndFeel_V4::ColourScheme::widgetBackground, getCurrentTheme().TitleBar);
 }
 
 const ThemeType& CustomLookAndFeel::getCurrentThemeType()

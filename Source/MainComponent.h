@@ -75,13 +75,9 @@ public:
     void updateUI();
 
     CustomLookAndFeel* ptr_Global_CustomLookAndFeel = Globals::getCustomLookAndFeel().get();
-    //CustomLookAndFeel customLookAndFeel{};
-    //std::shared_ptr<CustomLookAndFeel> customLookAndFeel{Globals::getCustomLookAndFeel().get()};
 private:
     //==============================================================================
     // Your private member variables go here...
-
-    // Create pointer for CustomLookAndFeel object
 
     enum class PageState
     {
