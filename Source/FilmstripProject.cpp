@@ -28,3 +28,8 @@ juce::String FilmstripProject::getFilmstripSizeStatus()
 {
     return juce::String("OKAY TESTING");
 }
+
+juce::String FilmstripProject::getProjectName()
+{
+    return this->name;
+}

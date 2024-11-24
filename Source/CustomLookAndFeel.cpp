@@ -197,7 +197,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		}
 		else
 		{
-			fillColor = themeColoursNow.ButtonsID_01;
+			fillColor = getCurrentTheme().ButtonsID_01;
 
 			if (shouldDrawButtonAsHighlighted)
 			{
@@ -209,8 +209,8 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	{
 		cornerSize = getRoundedCornerSize() * 2;
 
-		fillColor = themeColoursNow.Page_1;
-		outlineColor = themeColoursNow.CustomGroupComponent;
+		fillColor = getCurrentTheme().Page_1;
+		outlineColor = getCurrentTheme().CustomGroupComponent;
 		outlineThick = 1.5F;
 
 		if (shouldDrawButtonAsDown)
@@ -220,6 +220,32 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		else if (shouldDrawButtonAsHighlighted)
 		{
 			fillColor = fillColor.brighter();
+		}
+	}
+	else if (buttonID == "Buttons_ID_03_FP")
+	{
+		cornerSize = 1;
+
+		outlineColor = getColorCustomGrey();
+		outlineThick = 0.4F;
+
+		if (button.getToggleState() == 1)
+		{
+			fillColor = getColorTitleBar();
+
+		}
+		else if (shouldDrawButtonAsDown)
+		{
+			fillColor = getColorTitleBar();
+		}
+		else
+		{
+			fillColor = getCurrentTheme().ButtonsID_01;
+
+			if (shouldDrawButtonAsHighlighted)
+			{
+				fillColor = fillColor.brighter(0.2F);
+			}
 		}
 	}
 
@@ -380,7 +406,16 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getColorCustomWhite();
 		}
 	}
+	else if (buttonID == "Buttons_ID_03_FP")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = themeColoursNow.CustomGroupComponent;
 
+		if (isButtonDown)
+		{
+			textColor = getColorCustomWhite();
+		}
+	}
 
 
 

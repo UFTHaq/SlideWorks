@@ -31,6 +31,7 @@ class FilmstripProject
 {
 protected:
     juce::String name{ "Untitled" };
+
     int totalFrames{ 0 };
     FilmstripOrientation orientation{ FilmstripOrientation::VERTICAL_FILMSTRIP };
     WorkingMode workingMode{ WorkingMode::EDIT_MODE };
@@ -43,4 +44,7 @@ public:
 
     virtual double getFilmstripSizeCalc();
     virtual juce::String getFilmstripSizeStatus();
+
+    juce::String getProjectName();
+
 };

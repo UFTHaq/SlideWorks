@@ -37,7 +37,9 @@ public:
     void filesDropped(const juce::StringArray& files, int x, int y) override;
 
     void updatePageContent(juce::Graphics& g);
-    void updatePageInfoVisibility(bool visible);
+
+    void updatePage2WorkVisibility(bool visible);
+    void updatePage3InfoVisibility(bool visible);
 
     void setupLayoutUI();
     bool getInputPathState();
@@ -81,12 +83,12 @@ private:
 
     enum class PageState
     {
-        PAGE1,
-        PAGE2,
+        PAGE1_GREETINGS,
+        PAGE2_WORKSPACE,
         PAGE3_INFO
     };
 
-    PageState currentSlideWorksPage{ PageState::PAGE1 };
+    PageState currentSlideWorksPage{ PageState::PAGE1_GREETINGS };
     PageState previousSlideWorksPage{};
 
     enum class ModeState
@@ -96,25 +98,38 @@ private:
         EDIT
     };
 
-    ModeState SlideWorksMode{ ModeState::SIMULATION };
+    ModeState SlideWorksMode{ ModeState::EDIT };
 
     bool inputPathState{};
 
     juce::Rectangle<int> base_SlideWorks{};     // maybe change the name to page1_base_SlideWorks
-    juce::Rectangle<int> base_WorkSpace{};
-    juce::Rectangle<int> left_WorkSpace{};
+    juce::Rectangle<int> base_Workspace{};
+    juce::Rectangle<int> left_WorkSpace{};      // Will be deleted
     juce::Rectangle<int> right_WorkSpace{};     // page2_right_WorksSpace
 
     //////////////// NEW UI ////////////////
+    const int FooterHeight    { 25 };
+    const int MainControlWidth{ 240 };
+    const int FPButtonWidth{ 90 };
+    const int ModeButtonHeight{ 25 };
+    const int SubControlWidth { 180 };
+
+
     juce::Rectangle<int> area_Footer{};
     juce::Rectangle<int> area_MainControl{};
-    juce::Rectangle<int> area_MainWorkspace{};
+    juce::Rectangle<int> area_Layer1_MainWorkspace{};
+    juce::Rectangle<int> area_FilmstripProjects{};
+    juce::Rectangle<int> area_Layer2_MainWorkspace{};
     juce::Rectangle<int> area_ModeButtons{};
+    juce::Rectangle<int> area_Layer3_MainWorkspace{};
     juce::Rectangle<int> area_Canvas{};
     juce::Rectangle<int> area_SubControl{};
 
-
     std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
+    std::vector < std::unique_ptr<juce::TextButton>> filmstripProjectButtons{};
+    juce::Viewport filmstripButtonsViewport{};
+    juce::Component filmstripButtonsContainer{};
+
 
     //////////////// NEW BUTTON ////////////////
     juce::TextButton SW_NewProjectButton{};

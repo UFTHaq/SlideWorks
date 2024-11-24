@@ -12,6 +12,9 @@ MainComponent::MainComponent()
     setupCustomGroupComponents();
 
     updateUI();
+
+    addAndMakeVisible(filmstripButtonsViewport);
+    filmstripButtonsViewport.setViewedComponent(&filmstripButtonsContainer, false);
 }
 
 MainComponent::~MainComponent()
@@ -94,17 +97,17 @@ void MainComponent::updatePageContent(juce::Graphics& g)
 {
     g.fillAll(ptr_Global_CustomLookAndFeel->getBackgroundColour());
 
-    if (currentSlideWorksPage == PageState::PAGE1)
+    if (currentSlideWorksPage == PageState::PAGE1_GREETINGS)
     {
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().Page_1);
-        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 1);
+        g.fillRoundedRectangle(base_Workspace.toFloat(), 1);
 
         if (openAddImage_Dialog1 == false)
         {
             g.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(ptr_Global_CustomLookAndFeel->getFontSizeTitle()));
             g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
 
-            g.drawText("Filmstrip Knob & Slider Generator", base_WorkSpace, juce::Justification::centred, true);
+            g.drawText("Filmstrip Knob & Slider Generator", base_Workspace, juce::Justification::centred, true);
         }
 
         if (openAddImage_Dialog1 == true)
@@ -112,74 +115,121 @@ void MainComponent::updatePageContent(juce::Graphics& g)
             openDialog1(g);
         }
     }
-    
-    if (currentSlideWorksPage == PageState::PAGE2)
+
+    if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
     {
-        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomLightGrey());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01);
+        
+        g.fillRoundedRectangle(area_Footer.toFloat(), 1);
+        g.fillRoundedRectangle(area_MainControl.toFloat(), 1);
+        g.fillRoundedRectangle(area_Layer1_MainWorkspace.toFloat(), 1);
 
-        g.fillRoundedRectangle(left_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
-        g.fillRoundedRectangle(right_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.fillRoundedRectangle(area_Layer2_MainWorkspace.toFloat(), 1);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
+        g.drawRoundedRectangle(area_Layer2_MainWorkspace.toFloat(), 1, 0.15F);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
-        g.fillRoundedRectangle(filmstripBanner.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.fillRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
+        g.drawRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1, 0.15F);
 
-        g.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(18));
-        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
-        g.drawText("FILMSTRIP", filmstripBanner, juce::Justification::centred, true);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.fillRoundedRectangle(area_Canvas.toFloat(), 1);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
+        g.drawRoundedRectangle(area_Canvas.toFloat(), 1, 0.15F);
 
-        if (knobToggleWorksButton.getToggleState())
-        {
-            groupTotalFrames.paint(g);
-            groupOrientation.paint(g);
-            groupKnobAngles.paint(g);
-        }
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01);
+        g.fillRoundedRectangle(area_SubControl.toFloat(), 1);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
+        g.drawRoundedRectangle(area_SubControl.toFloat(), 1, 0.15F);
 
-        if (sliderToggleWorksButton.getToggleState())
-        {
-            groupTotalFrames.paint(g);
-            groupOrientation.paint(g);
-            groupSliderThumbPositions.paint(g);
-        }
-
-        // debug only
-        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomGrey());
-        //g.drawRoundedRectangle(debugOutlineTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineLeftTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineRightTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
-
-        //g.drawRoundedRectangle(debugOutlineOrientation.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineOrientationHorizontal.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineOrientationVertical.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
-
-        //g.drawRoundedRectangle(debugOutlineAngles.toFloat().reduced(debugOutlineAngles.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineAnglesMin.toFloat().reduced(debugOutlineAnglesMin.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineAnglesMax.toFloat().reduced(debugOutlineAnglesMax.getWidth() * 0.01F), 5.0F, 1.0F);
-
-        //g.drawRoundedRectangle(debugOutlineAnglesMinTop.toFloat().reduced(debugOutlineAnglesMinTop.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineAnglesMinKnob.toFloat().reduced(debugOutlineAnglesMinKnob.getWidth() * 0.01F), 5.0F, 1.0F);
-
-        //g.drawRoundedRectangle(debugOutlineAnglesMaxTop.toFloat().reduced(debugOutlineAnglesMaxTop.getWidth() * 0.01F), 5.0F, 1.0F);
-        //g.drawRoundedRectangle(debugOutlineAnglesMaxKnob.toFloat().reduced(debugOutlineAnglesMaxKnob.getWidth() * 0.01F), 5.0F, 1.0F);
-
-        if (SlideWorksMode == ModeState::SIMULATION)
-        {
-            g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
-            g.drawRoundedRectangle(debugOutlineSimulationArea.toFloat(), 3.0F, 0.5F);
-        }
-
+        //g.setColour(juce::Colours::red);
+        //g.fillRoundedRectangle(area_FilmstripProjects.toFloat().reduced(2), 1);
     }
+    
+    //if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
+    //{
+    //    g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomLightGrey());
+
+    //    g.fillRoundedRectangle(left_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+    //    g.fillRoundedRectangle(right_WorkSpace.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+
+    //    g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomDarkGrey());
+    //    g.fillRoundedRectangle(filmstripBanner.toFloat(), ptr_Global_CustomLookAndFeel->getRoundedCornerSize());
+
+    //    g.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(18));
+    //    g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
+    //    g.drawText("FILMSTRIP", filmstripBanner, juce::Justification::centred, true);
+
+    //    if (knobToggleWorksButton.getToggleState())
+    //    {
+    //        groupTotalFrames.paint(g);
+    //        groupOrientation.paint(g);
+    //        groupKnobAngles.paint(g);
+    //    }
+
+    //    if (sliderToggleWorksButton.getToggleState())
+    //    {
+    //        groupTotalFrames.paint(g);
+    //        groupOrientation.paint(g);
+    //        groupSliderThumbPositions.paint(g);
+    //    }
+
+    //    // debug only
+    //    g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomGrey());
+    //    //g.drawRoundedRectangle(debugOutlineTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineLeftTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineRightTotalFrames.toFloat().reduced(debugOutlineTotalFrames.getWidth() * 0.01F), 5.0F, 1.0F);
+
+    //    //g.drawRoundedRectangle(debugOutlineOrientation.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineOrientationHorizontal.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineOrientationVertical.toFloat().reduced(debugOutlineOrientation.getWidth() * 0.01F), 5.0F, 1.0F);
+
+    //    //g.drawRoundedRectangle(debugOutlineAngles.toFloat().reduced(debugOutlineAngles.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMin.toFloat().reduced(debugOutlineAnglesMin.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMax.toFloat().reduced(debugOutlineAnglesMax.getWidth() * 0.01F), 5.0F, 1.0F);
+
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMinTop.toFloat().reduced(debugOutlineAnglesMinTop.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMinKnob.toFloat().reduced(debugOutlineAnglesMinKnob.getWidth() * 0.01F), 5.0F, 1.0F);
+
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMaxTop.toFloat().reduced(debugOutlineAnglesMaxTop.getWidth() * 0.01F), 5.0F, 1.0F);
+    //    //g.drawRoundedRectangle(debugOutlineAnglesMaxKnob.toFloat().reduced(debugOutlineAnglesMaxKnob.getWidth() * 0.01F), 5.0F, 1.0F);
+
+    //    if (SlideWorksMode == ModeState::SIMULATION)
+    //    {
+    //        g.setColour(ptr_Global_CustomLookAndFeel->getColorCustomWhite());
+    //        g.drawRoundedRectangle(debugOutlineSimulationArea.toFloat(), 3.0F, 0.5F);
+    //    }
+
+    //}
 
     if (currentSlideWorksPage == PageState::PAGE3_INFO)
     {
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().Page_1);
-        g.fillRoundedRectangle(base_WorkSpace.toFloat(), 1);
+        g.fillRoundedRectangle(base_Workspace.toFloat(), 1);
         
         groupDialog_2_Info.paint(g);
 
     }
 }
 
-void MainComponent::updatePageInfoVisibility(bool visible)
+void MainComponent::updatePage2WorkVisibility(bool visible)
+{
+    for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+    {
+        auto& button = filmstripProjectButtons.at(i);
+
+        if (button != nullptr)
+        {
+            button.get()->setVisible(visible);
+            button.get()->setEnabled(visible);
+
+        }
+    }
+}
+
+void MainComponent::updatePage3InfoVisibility(bool visible)
 {
     closeDialog_2_Info.setEnabled(visible);
     closeDialog_2_Info.setVisible(visible);
@@ -197,8 +247,6 @@ void MainComponent::updatePageInfoVisibility(bool visible)
     license_arg.setVisible(visible);
 
     juceVersion_arg.setVisible(visible);
-
-    repaint();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -216,13 +264,69 @@ void MainComponent::setupLayoutUI()
     SW_ThemeButton.setBounds(area_ThemeButton);
     SW_InfoButton.setBounds(area_InfoButton);
 
-    base_WorkSpace = base_SlideWorks;
-    base_WorkSpace.removeFromTop(SW_NewProjectButton.getHeight() + componentSpace);
+    base_Workspace = base_SlideWorks;
+    base_Workspace.removeFromTop(SW_NewProjectButton.getHeight() + componentSpace);
+
+    //////// ==== PAGE 2 WORKSPACE ==== ////////
+
+    bool page2 = (currentSlideWorksPage == PageState::PAGE2_WORKSPACE);
+
+    ///== Area Footer ==///
+    auto copy_base_Workspace = base_Workspace;
+    area_Footer = copy_base_Workspace.removeFromBottom(FooterHeight);
+    copy_base_Workspace.removeFromBottom(1);
+    area_MainControl = copy_base_Workspace.removeFromLeft(MainControlWidth);
+    copy_base_Workspace.removeFromLeft(1);
+    area_Layer1_MainWorkspace = copy_base_Workspace;
+
+    area_FilmstripProjects = copy_base_Workspace.removeFromTop(FooterHeight);
+    area_Layer2_MainWorkspace = copy_base_Workspace;
+    area_Layer2_MainWorkspace = area_Layer2_MainWorkspace.reduced(1);
+
+    auto copy_area_Layer2_MainWorkspace = area_Layer2_MainWorkspace;
+    area_ModeButtons = copy_area_Layer2_MainWorkspace.removeFromTop(FooterHeight);
+    area_Layer3_MainWorkspace = copy_area_Layer2_MainWorkspace.reduced(1);
+
+    auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace.reduced(1);
+
+    if (SlideWorksMode == ModeState::EDIT)
+    {
+        area_SubControl = copy_area_Layer3_MainWorkspace.removeFromRight(SubControlWidth);
+        area_SubControl = area_SubControl.reduced(1);
+        area_Canvas = copy_area_Layer3_MainWorkspace;
+        area_Canvas = area_Canvas.reduced(1);
+
+    }
+    else {
+        area_Canvas = copy_area_Layer3_MainWorkspace;
+        area_Canvas = area_Canvas.reduced(1);
+    }
+
+    if (filmstripProjects.size() >= 1)
+    {
+        auto copy_area_FilmstripProjects = area_FilmstripProjects;
+
+        for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+        {
+            auto& button = filmstripProjectButtons.at(i);
+
+            if (button != nullptr)
+            {
+                auto bounds = copy_area_FilmstripProjects.removeFromLeft(FPButtonWidth).reduced(1);
+                
+                button.get()->setBounds(bounds);
+
+            }
+        }
+
+    }
+
+
 
 
 
     ///////////////// PAGE 1 COMPONENT /////////////////
-    base_SlideWorks = getLocalBounds().reduced(10);
+    //base_SlideWorks = getLocalBounds().reduced(10);
 
     knobToggleWorksButton.setBounds(
         { base_SlideWorks.getX(), 
@@ -285,7 +389,7 @@ void MainComponent::setupLayoutUI()
     }
 
 
-    auto area = base_WorkSpace;
+    auto area = base_Workspace;
     //left_WorkSpace = area.removeFromLeft(275);
     left_WorkSpace = area.removeFromLeft(int(area.getWidth() * 0.35F));
     area.removeFromLeft(5);
@@ -300,7 +404,7 @@ void MainComponent::setupLayoutUI()
     left_area.removeFromTop(int(spacing * 1.5));
 
     ////////------------ INFO CARD GROUP ------------////////
-    auto base_groupDialog_2_Info{ base_WorkSpace.withSizeKeepingCentre(275, 240) };
+    auto base_groupDialog_2_Info{ base_Workspace.withSizeKeepingCentre(275, 240) };
     auto groupDialog_2_Info_Area = base_groupDialog_2_Info.reduced(10);
     groupDialog_2_Info_Area.removeFromBottom(40);
     groupDialog_2_Info.setBounds(groupDialog_2_Info_Area);
@@ -340,7 +444,7 @@ void MainComponent::setupLayoutUI()
         };
         closeDialog_2_Info.setBounds(dialog2_Close);
     }
-    updatePageInfoVisibility(false);
+    
     ////////------------ INFO CARD GROUP ------------////////
 
     ////////------------ TOTAL FRAMES ------------////////
@@ -470,13 +574,13 @@ void MainComponent::checkInputPathState()
         inputPathSliderScale.isNotEmpty()
         )
     {
-        currentSlideWorksPage = PageState::PAGE2;
+        currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
 
         loadSimulationImage();
     }
     else
     {
-        currentSlideWorksPage = PageState::PAGE1;
+        currentSlideWorksPage = PageState::PAGE1_GREETINGS;
     }
 
 
@@ -550,12 +654,86 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                     {
                         // Create New Knob Filmstrip Project
                         filmstripProjects.push_back(std::make_unique<KnobFilmstrip>());
+
+                        auto button = std::make_unique<juce::TextButton>();
+                        button->setButtonText(filmstripProjects.back().get()->getProjectName());
+                        button->setComponentID("Buttons_ID_03_FP");
+                        button->setToggleState(false, juce::dontSendNotification);
+                        addAndMakeVisible(*button);
+
+                        auto* buttonPtr = button.get();
+                        //button.get()->onClick = [this]()
+                        buttonPtr->onClick = [this, buttonPtr]()
+                            {
+                                for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+                                {
+                                    filmstripProjectButtons.at(i)->setToggleState(false, juce::dontSendNotification);
+                                }
+
+                                // this button toggle true
+                                buttonPtr->setToggleState(true, juce::dontSendNotification);
+                            };
+
+                        filmstripProjectButtons.push_back(std::move(button));
                     }
                     else if (result == 2)
                     {
                         // Create New Slider Filmstrip Project
                         filmstripProjects.push_back(std::make_unique<SliderFilmstrip>());
+
+                        auto button = std::make_unique<juce::TextButton>();
+                        button->setButtonText(filmstripProjects.back().get()->getProjectName());
+                        button->setComponentID("Buttons_ID_03_FP");
+                        button->setToggleState(false, juce::dontSendNotification);
+                        addAndMakeVisible(*button);
+
+                        auto* buttonPtr = button.get();
+                        //button.get()->onClick = [this]()
+                        buttonPtr->onClick = [this, buttonPtr]()
+                            {
+                                for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+                                {
+                                    filmstripProjectButtons.at(i)->setToggleState(false, juce::dontSendNotification);
+                                }
+
+                                // this button toggle true
+                                buttonPtr->setToggleState(true, juce::dontSendNotification);
+                            };
+
+                        filmstripProjectButtons.push_back(std::move(button));
                     }
+
+                    for (auto& button : filmstripProjectButtons)
+                    {
+                        button.get()->setToggleState(false, juce::dontSendNotification);
+                    }
+                    filmstripProjectButtons.back().get()->setToggleState(true, juce::dontSendNotification);
+
+                    size_t KnobTotal{};
+                    size_t SliderTotal{};
+
+                    for (auto& project : filmstripProjects)
+                    {
+                        if (auto* knob = dynamic_cast<KnobFilmstrip*>(project.get()))
+                        {
+                            KnobTotal++;
+                        }
+
+                        if (auto* slider = dynamic_cast<SliderFilmstrip*>(project.get()))
+                        {
+                            SliderTotal++;
+                        }
+                    }
+
+                    DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
+                    DBG("==> Total Projects  : " << filmstripProjects.size());
+                    DBG("==> Total Knobs     : " << KnobTotal);
+                    DBG("==> Total Sliders   : " << SliderTotal);
+
+                    if (filmstripProjects.size() >= 0) currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
+
+                    resized();
+                    repaint();
                 }
             );
         };
@@ -604,7 +782,9 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                 previousSlideWorksPage = currentSlideWorksPage;
                 currentSlideWorksPage = PageState::PAGE3_INFO;
 
-                updatePageInfoVisibility(true);
+                updatePage2WorkVisibility(false);
+                updatePage3InfoVisibility(true);
+                repaint();
             }
         };
     addAndMakeVisible(SW_InfoButton);
@@ -863,9 +1043,13 @@ void MainComponent::setupCustomGroupComponents()
         {
             currentSlideWorksPage = previousSlideWorksPage;
 
-            updatePageInfoVisibility(false);
+            updatePage2WorkVisibility(true);
+            updatePage3InfoVisibility(false);
+            repaint();
         };
     addAndMakeVisible(closeDialog_2_Info);
+
+    updatePage3InfoVisibility(false);
 
 
     groupDialog1.setName("DIALOG1");
@@ -1154,7 +1338,7 @@ void MainComponent::fileChooserWindows(juce::String& inputPath)
             // Set openAddImage_Dialog1 to false after file selection
             openAddImage_Dialog1 = false;
 
-            currentSlideWorksPage = PageState::PAGE2;
+            currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
 
             resetDialog1();
 
@@ -1169,7 +1353,7 @@ void MainComponent::updateUI()
 
     checkInputPathState();
 
-    if (currentSlideWorksPage == PageState::PAGE1)
+    if (currentSlideWorksPage == PageState::PAGE1_GREETINGS)
     {
         SW_NewProjectButton.setEnabled(true);
         SW_NewProjectButton.setVisible(true);
@@ -1220,7 +1404,7 @@ void MainComponent::updateUI()
         simulationKnob.setEnabled(false);
         simulationKnob.setVisible(false);
     }
-    else if (currentSlideWorksPage == PageState::PAGE2)
+    else if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
     {
         {
             groupDialog_2_Info.setEnabled(false);
@@ -1329,7 +1513,7 @@ void MainComponent::openDialog1(juce::Graphics& g)
     else if (sliderToggleWorksButton.getToggleState() == true) base_height = 260;
 
     // AUTOMATIC CENTER
-    auto baseOpenDialog1{ base_WorkSpace.withSizeKeepingCentre(base_width, base_height) };
+    auto baseOpenDialog1{ base_Workspace.withSizeKeepingCentre(base_width, base_height) };
 
     //g.setColour(customLookAndFeel->getColorCustomLightGrey().brighter());
     //g.drawRoundedRectangle(baseOpenDialog1.toFloat(), 10.0F, 4.0F);
