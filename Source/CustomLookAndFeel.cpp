@@ -231,21 +231,21 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 
 		if (button.getToggleState() == 1)
 		{
-			fillColor = getColorTitleBar();
+			fillColor = getCurrentTheme().ButtonsID_01.brighter();
 
 		}
 		else if (shouldDrawButtonAsDown)
 		{
-			fillColor = getColorTitleBar();
+			fillColor = getCurrentTheme().ButtonsID_01.brighter();
 		}
 		else
 		{
-			fillColor = getCurrentTheme().ButtonsID_01;
+			fillColor = getCurrentTheme().ButtonsID_01.darker(0.1F);
 
-			if (shouldDrawButtonAsHighlighted)
-			{
-				fillColor = fillColor.brighter(0.2F);
-			}
+			//if (shouldDrawButtonAsHighlighted)
+			//{
+			//	fillColor = getCurrentTheme().ButtonsID_01.darker(0.1F);
+			//}
 		}
 	}
 
@@ -409,11 +409,15 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	else if (buttonID == "Buttons_ID_03_FP")
 	{
 		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
-		textColor = themeColoursNow.CustomGroupComponent;
+		textColor = getCurrentTheme().CustomLightGrey.darker(0.1F);
 
-		if (isButtonDown)
+		if (isButtonDown || button.getToggleState() == 1)
 		{
-			textColor = getColorCustomWhite();
+			textColor = getCurrentTheme().CustomGroupComponent;
+		}
+		else if (isMouseOver)
+		{
+			textColor = getCurrentTheme().CustomGrey;
 		}
 	}
 

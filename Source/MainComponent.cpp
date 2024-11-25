@@ -13,8 +13,8 @@ MainComponent::MainComponent()
 
     updateUI();
 
+    addAndMakeVisible(filmstripButtonsContainer);
     addAndMakeVisible(filmstripButtonsViewport);
-    filmstripButtonsViewport.setViewedComponent(&filmstripButtonsContainer, false);
 }
 
 MainComponent::~MainComponent()
@@ -306,18 +306,39 @@ void MainComponent::setupLayoutUI()
     {
         auto copy_area_FilmstripProjects = area_FilmstripProjects;
 
-        for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
-        {
-            auto& button = filmstripProjectButtons.at(i);
+        filmstripButtonsViewport.setBounds(copy_area_FilmstripProjects);
 
+        filmstripButtonsViewport.setScrollBarsShown(false, true, false, true);
+
+        int totalWidth = static_cast<int>(filmstripProjectButtons.size()) * FPButtonWidth;
+
+        filmstripButtonsContainer.setBounds(0, 0, totalWidth, filmstripButtonsViewport.getHeight());
+
+        filmstripButtonsViewport.setViewedComponent(&filmstripButtonsContainer, false);
+
+        if (filmstripButtonsViewport.getViewedComponent() == &filmstripButtonsContainer)
+            DBG("Child component successfully attached to viewport!");
+        else
+            DBG("Failed to attach child component to viewport.");
+
+        if (filmstripButtonsViewport.canScrollHorizontally())
+            DBG("CAN SCROLL HORIZONTAL");
+
+        
+
+        juce::Rectangle<int> buttonArea{ copy_area_FilmstripProjects.getX(),copy_area_FilmstripProjects.getY(), FPButtonWidth, filmstripButtonsViewport.getHeight()};
+
+        
+
+        for (auto& button : filmstripProjectButtons)
+        {
             if (button != nullptr)
             {
-                auto bounds = copy_area_FilmstripProjects.removeFromLeft(FPButtonWidth).reduced(1);
-                
-                button.get()->setBounds(bounds);
-
+                button->setBounds(buttonArea.reduced(1));
+                buttonArea.translate((FPButtonWidth), 0);
             }
         }
+
 
     }
 
@@ -641,12 +662,20 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
     SW_NewProjectButton.setLookAndFeel(customLookAndFeel);
     SW_NewProjectButton.onClick = [&, customLookAndFeel, this]()
         {
+            bool buttonMenuEnable{ false };
+            if (filmstripProjects.size() < 5)
+            {
+                buttonMenuEnable = true;
+            }
+
             juce::PopupMenu menu;
             menu.addSectionHeader("New Filmstrip Project");
             menu.addSeparator();
-            menu.addItem(1, "Knob Filmstrip", true, false);
-            menu.addItem(2, "Slider Filmstrip", true, false);
+            menu.addItem(1, "Knob Filmstrip", buttonMenuEnable, false);
+            menu.addItem(2, "Slider Filmstrip", buttonMenuEnable, false);
             menu.setLookAndFeel(customLookAndFeel);
+
+
 
             menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(SW_NewProjectButton), [this](int result)
                 {
@@ -662,7 +691,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         addAndMakeVisible(*button);
 
                         auto* buttonPtr = button.get();
-                        //button.get()->onClick = [this]()
                         buttonPtr->onClick = [this, buttonPtr]()
                             {
                                 for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
@@ -688,7 +716,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         addAndMakeVisible(*button);
 
                         auto* buttonPtr = button.get();
-                        //button.get()->onClick = [this]()
                         buttonPtr->onClick = [this, buttonPtr]()
                             {
                                 for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
@@ -702,6 +729,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                         filmstripProjectButtons.push_back(std::move(button));
                     }
+
 
                     for (auto& button : filmstripProjectButtons)
                     {
@@ -730,7 +758,16 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                     DBG("==> Total Knobs     : " << KnobTotal);
                     DBG("==> Total Sliders   : " << SliderTotal);
 
+                    if (currentSlideWorksPage == PageState::PAGE3_INFO)
+                    {
+                        updatePage2WorkVisibility(true);
+                        updatePage3InfoVisibility(false);
+                    }
+
+
                     if (filmstripProjects.size() >= 0) currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
+
+
 
                     resized();
                     repaint();
@@ -820,7 +857,7 @@ void MainComponent::setupBrowseButton()
             closeDialog1.setEnabled(true);
 
         };
-    addAndMakeVisible(browseButton);
+    //addAndMakeVisible(browseButton);
 }
 
 void MainComponent::setupExportButton()
