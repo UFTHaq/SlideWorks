@@ -57,6 +57,7 @@ public:
     virtual juce::String getFilmstripSizeStatus();
 
     juce::String getProjectName();
+    void setProjectName(juce::String newName);
 
     juce::TextButton tabButton{};
     std::function<void(FilmstripProject*)> onDeleteRequest{};

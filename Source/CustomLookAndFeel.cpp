@@ -444,7 +444,7 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		textColor = getCurrentTheme().CustomLightGrey.darker(0.1F);
 
 		bounds.removeFromLeft(5);
-		bounds.removeFromRight(20);
+		bounds.removeFromRight(25);
 		justification = juce::Justification::centredLeft;
 
 		if (isButtonDown || button.getToggleState() == 1)
@@ -696,14 +696,26 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
 
 	g.setColour(label.findColour(juce::Label::backgroundColourId));
-	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 3.0F);		
+	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
+
+	auto outlineColour = juce::Colours::transparentWhite;
+	auto bounds = label.getLocalBounds();
+	auto ID = label.getComponentID();
+	if (ID == "Label_ID_01_NamingEditor" || ID == "Label_ID_O1_Naming")
+	{
+		bounds.removeFromLeft(5);
+		bounds.removeFromTop(1);
+
+		outlineColour = label.findColour(juce::Label::outlineColourId);
+	}
 
 	// Set the text color and draw the text
 	g.setColour(label.findColour(juce::Label::textColourId));
-	//g.setFont(getFontRobotoCondensedBold().withHeight(17.50F));
 	g.setFont(label.getFont());
-	//g.drawText(label.getText(), label.getLocalBounds(), juce::Justification::centred, true);
-	g.drawText(label.getText(), label.getLocalBounds(), label.getJustificationType(), true);
+	g.drawText(label.getText(), bounds, label.getJustificationType(), true);
+
+	g.setColour(outlineColour);
+	g.drawRoundedRectangle(label.getLocalBounds().toFloat().reduced(0.5F), 1.0F, 0.4F);
 }
 
 void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor)
@@ -711,8 +723,8 @@ void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, i
 	(void)width;
 	(void)height;
 
-	editor.setJustification(juce::Justification::centred);
-	editor.setIndents(editor.getLeftIndent(), 0);	// keep the leftIndent the same, and set topIndent to 0
+	editor.setJustification(editor.getJustificationType());
+	editor.setIndents(editor.getLeftIndent(), 3);	// keep the leftIndent the same, and set topIndent to 0
 
 	g.setColour(editor.findColour(juce::Label::backgroundWhenEditingColourId));
 	g.fillRoundedRectangle(editor.getLocalBounds().toFloat(), getRoundedCornerSize());
@@ -723,7 +735,12 @@ void CustomLookAndFeel::drawTextEditorOutline(juce::Graphics& g, int width, int 
 	(void)g;
 	(void)width;
 	(void)height;
-	(void)editor;
+	//(void)editor;
+	
+	auto outlineColour = editor.findColour(juce::Label::outlineWhenEditingColourId);
+
+	g.setColour(outlineColour);
+	g.drawRoundedRectangle(editor.getLocalBounds().toFloat().reduced(0.5F), 1.0F, 0.4F);
 }
 
 

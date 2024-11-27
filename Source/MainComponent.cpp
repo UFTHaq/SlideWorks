@@ -12,9 +12,6 @@ MainComponent::MainComponent()
     setupCustomGroupComponents();
 
     updateUI();
-
-    addAndMakeVisible(filmstripButtonsContainer);
-    addAndMakeVisible(filmstripButtonsViewport);
 }
 
 MainComponent::~MainComponent()
@@ -226,6 +223,12 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
 
         }
     }
+
+    naming_Label.setVisible(visible);
+    naming_Label.setEnabled(visible);
+
+    naming_Editor.setVisible(visible);
+    naming_Editor.setEnabled(visible);
 }
 
 void MainComponent::updatePage3InfoVisibility(bool visible)
@@ -301,6 +304,12 @@ void MainComponent::setupLayoutUI()
 
     if (filmstripProjects.size() >= 1)
     {
+        // GET ACTIVE PROJECT
+        projectActiveIndex = getActiveProjectIndex();
+
+        
+
+        // TAB BUTTON VIEWPORT
         auto copy_area_FilmstripProjects = area_FilmstripProjects;
         DBG("TAB AREA : " << copy_area_FilmstripProjects.toString());
 
@@ -309,9 +318,9 @@ void MainComponent::setupLayoutUI()
 
         filmstripButtonsViewport.setScrollBarsShown(false, true, false, true);
 
-        int totalWidth = static_cast<int>(filmstripProjects.size()) * FPButtonWidth;
+        int tabsTotalWidth = static_cast<int>(filmstripProjects.size()) * FPButtonWidth;
 
-        filmstripButtonsContainer.setBounds(0, 0, totalWidth, filmstripButtonsViewport.getHeight());
+        filmstripButtonsContainer.setBounds(0, 0, tabsTotalWidth, filmstripButtonsViewport.getHeight());
 
         filmstripButtonsViewport.setViewedComponent(&filmstripButtonsContainer, false);
 
@@ -323,23 +332,42 @@ void MainComponent::setupLayoutUI()
         if (filmstripButtonsViewport.canScrollHorizontally())
             DBG("CAN SCROLL HORIZONTAL");
 
-        
 
-        juce::Rectangle<int> buttonArea{ copy_area_FilmstripProjects.getX(),copy_area_FilmstripProjects.getY(), FPButtonWidth, filmstripButtonsViewport.getHeight()};
-
+        juce::Rectangle<int> tabButtonArea{ copy_area_FilmstripProjects.getX(),copy_area_FilmstripProjects.getY(), FPButtonWidth, filmstripButtonsViewport.getHeight()};
         
         for (auto& project : filmstripProjects)
         {
             if (project != nullptr)
             {
-                project->setBounds(buttonArea.reduced(1));
-                buttonArea.translate(FPButtonWidth - 1, 0);
+                project->setBounds(tabButtonArea.reduced(1));
+                tabButtonArea.translate(FPButtonWidth - 1, 0);
                 project->tabButton.resized();
 
                 DBG("FILMSTRIP PROJECT BOUNDS: " << project->getBounds().toString());
                 DBG("BUTTON BOUNDS : " << project->tabButton.getBounds().toString());
             }
         }
+
+
+        // PROJECT NAMING VIEWPORT
+        auto copy_area_ProjectNaming = area_ModeButtons;
+
+        projectNamingViewport.setBounds(copy_area_ProjectNaming);
+        projectNamingViewport.setScrollBarsShown(false, false);
+
+        int namingTotalWidth = NamingLabelWidth + NamingLabelEditorWidth;
+
+        projectNamingContainer.setBounds(0, 0, namingTotalWidth, projectNamingViewport.getHeight());
+        projectNamingViewport.setViewedComponent(&projectNamingContainer, false);
+
+        juce::Rectangle<int> namingLabelArea{ projectNamingViewport.getX(), projectNamingViewport.getY(), NamingLabelWidth, projectNamingViewport.getHeight() };
+        juce::Rectangle<int> namingLabelEditorArea{ projectNamingViewport.getX() + (NamingLabelWidth - 1), projectNamingViewport.getY(), NamingLabelEditorWidth, projectNamingViewport.getHeight() };
+
+        naming_Label.setBounds(namingLabelArea.reduced(1));
+        naming_Editor.setBounds(namingLabelEditorArea.reduced(1));
+
+        reloadNamingProjectLabel(projectActiveIndex);
+
     }
 
 
@@ -630,7 +658,8 @@ bool MainComponent::getInputPathState()
 void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
 {
     setupProjectButtons(customLookAndFeel);
-
+    setupTabProjectButtons();
+    setupNamingProjectLabel(customLookAndFeel);
 
     setupKnobToggleButton();
     setupSliderToggleButton();
@@ -694,6 +723,12 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                     project->tabButton.setToggleState(false, juce::dontSendNotification);
                                 }
                                 ptrProject->tabButton.setToggleState(true, juce::dontSendNotification);
+
+                                projectActiveIndex = getActiveProjectIndex(); // GET ACTIVE INDEX
+
+                                // RELOAD WORKSPACE : 
+                                // NAMING, SLIDERS, ETC.
+                                reloadNamingProjectLabel(projectActiveIndex);
                             };
 
                         // using safePointer to MainComponent cause this is lambda deleting object from the object it self, so if the object already deleted
@@ -732,13 +767,20 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                                 {
                                                     mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
                                                 }
+
+                                                mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
+
+                                                mainComp->reloadNamingProjectLabel(mainComp->projectActiveIndex);
                                             }
                                         }
                                         else
                                         {
                                             // ZERO
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
+                                            mainComp->updatePage2WorkVisibility(false);
                                             mainComp->repaint();
+
+                                            mainComp->reloadNamingProjectLabel(-1);
                                         }
                                     }
                                 }
@@ -764,6 +806,10 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                     project->tabButton.setToggleState(false, juce::dontSendNotification);
                                 }
                                 ptrProject->tabButton.setToggleState(true, juce::dontSendNotification);
+
+                                projectActiveIndex = getActiveProjectIndex(); // GET ACTIVE INDEX
+
+                                reloadNamingProjectLabel(projectActiveIndex);
                             };
 
                         ptrProject->onDeleteRequest = [safeThis = juce::Component::SafePointer<MainComponent>(this)](FilmstripProject* projectToDelete)
@@ -799,13 +845,19 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                                 {
                                                     mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
                                                 }
+
+                                                mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
+                                                mainComp->reloadNamingProjectLabel(mainComp->projectActiveIndex);
                                             }
                                         }
                                         else
                                         {
                                             // ZERO
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
+                                            mainComp->updatePage2WorkVisibility(false);
                                             mainComp->repaint();
+
+                                            mainComp->reloadNamingProjectLabel(-1);
                                         }
                                     }
                                 }
@@ -912,6 +964,75 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
             }
         };
     addAndMakeVisible(SW_InfoButton);
+}
+
+void MainComponent::setupTabProjectButtons()
+{
+    // SETUP TAB BUTTONS
+    addAndMakeVisible(filmstripButtonsContainer);
+    addAndMakeVisible(filmstripButtonsViewport);
+}
+
+size_t MainComponent::getActiveProjectIndex() const
+{
+    for (size_t i = 0; i < filmstripProjects.size(); i++)
+    {
+        if (filmstripProjects.at(i)->tabButton.getToggleState() == true)
+        {
+            return i;
+        }
+    }
+    return static_cast<size_t>(-1);
+}
+
+void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel)
+{
+    // SETUP NAMING LABEL
+    addAndMakeVisible(projectNamingContainer);
+    addAndMakeVisible(projectNamingViewport);
+
+    naming_Label.setText("Name : ", juce::dontSendNotification);
+    naming_Label.setComponentID("Label_ID_O1_Naming");
+    naming_Label.setLookAndFeel(customLookAndFeel);
+    naming_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
+    naming_Label.setJustificationType(juce::Justification::centredLeft);
+    naming_Label.setColour(juce::Label::backgroundColourId, juce::Colours::royalblue.darker(0.2F));
+    naming_Label.setEditable(false, false);
+    addAndMakeVisible(naming_Label);
+
+    naming_Editor.setText("Untitled", juce::dontSendNotification);
+    naming_Editor.setComponentID("Label_ID_01_NamingEditor");
+    naming_Editor.setLookAndFeel(customLookAndFeel);
+    naming_Editor.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
+    naming_Editor.setJustificationType(juce::Justification::centredLeft);
+    naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
+    naming_Editor.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey());
+    naming_Editor.setColour(juce::Label::backgroundColourId, juce::Colours::transparentBlack);
+    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().ButtonsID_01.brighter()); // This should follow the layer2 color if not mat
+    naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
+    naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    naming_Editor.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar.darker());
+    naming_Editor.setEditable(false, true);
+    naming_Editor.onTextChange = [this]()
+        {
+            filmstripProjects.at(projectActiveIndex)->setProjectName(naming_Editor.getText());
+        };
+    addAndMakeVisible(naming_Editor);
+
+}
+
+void MainComponent::reloadNamingProjectLabel(size_t activeIndex)
+{
+    if (activeIndex != -1)
+    {
+        naming_Editor.setText(filmstripProjects.at(activeIndex)->getProjectName(), juce::dontSendNotification);
+    }
+    else
+    {
+        naming_Editor.setText("", juce::dontSendNotification);
+    }
 }
 
 void MainComponent::setupKnobToggleButton()
@@ -1167,7 +1288,9 @@ void MainComponent::setupCustomGroupComponents()
         {
             currentSlideWorksPage = previousSlideWorksPage;
 
-            updatePage2WorkVisibility(true);
+            if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE) 
+                updatePage2WorkVisibility(true);
+
             updatePage3InfoVisibility(false);
             repaint();
         };

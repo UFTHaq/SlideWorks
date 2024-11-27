@@ -47,6 +47,11 @@ public:
     void loadSimulationImage();
     void setupButtons(CustomLookAndFeel* customLookAndFeel);
     void setupProjectButtons(CustomLookAndFeel* customLookAndFeel);
+    void setupTabProjectButtons();
+    size_t getActiveProjectIndex() const;
+    void setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel);
+    void reloadNamingProjectLabel(size_t activeIndex);
+
     void setupKnobToggleButton();
     void setupSliderToggleButton();
     void setupBrowseButton();
@@ -110,7 +115,7 @@ private:
     //////////////// NEW UI ////////////////
     const int FooterHeight    { 25 };
     const int MainControlWidth{ 240 };
-    const int FPButtonWidth{ 90 };
+    const int FPButtonWidth{ 95 };
     const int ModeButtonHeight{ 25 };
     const int SubControlWidth { 180 };
 
@@ -128,6 +133,17 @@ private:
     std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
     juce::Viewport filmstripButtonsViewport{};
     juce::Component filmstripButtonsContainer{};
+
+    size_t projectActiveIndex{};
+
+    const int NamingLabelWidth{ 55 };
+    const int NamingLabelEditorWidth{ 200 };
+
+    juce::Viewport projectNamingViewport{};
+    juce::Component projectNamingContainer{};
+
+    juce::Label naming_Label{};
+    juce::Label naming_Editor{};
 
 
     //////////////// NEW BUTTON ////////////////

@@ -78,3 +78,9 @@ juce::String FilmstripProject::getProjectName()
 {
     return this->name;
 }
+
+void FilmstripProject::setProjectName(juce::String newName)
+{
+    this->name = newName;
+    this->tabButton.setButtonText(newName);
+}
