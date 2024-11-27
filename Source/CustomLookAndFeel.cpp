@@ -241,11 +241,28 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		else
 		{
 			fillColor = getCurrentTheme().ButtonsID_01.darker(0.1F);
+			//fillColor = getCurrentTheme().FontBlack;
 
 			//if (shouldDrawButtonAsHighlighted)
 			//{
 			//	fillColor = getCurrentTheme().ButtonsID_01.darker(0.1F);
 			//}
+		}
+	}
+	else if (buttonID == "Buttons_ID_04_FP_CLOSE")
+	{
+		cornerSize = 2.5F;
+
+		//outlineColor = getColorCustomGrey();
+		outlineThick = 0.4F;
+
+	    if (shouldDrawButtonAsDown || shouldDrawButtonAsHighlighted)
+		{
+			fillColor = juce::Colours::red.darker(0.2F);
+		}
+		else
+		{
+			fillColor = juce::Colours::black.withAlpha(0.1F);
 		}
 	}
 
@@ -371,6 +388,19 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(1.1F), cornerSize, 2.0F);
 	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(0.2F), cornerSize, outlineThick);
 	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(outlineThick/2), cornerSize, outlineThick);
+
+	if (buttonID == "Buttons_ID_04_FP_CLOSE")
+	{
+		juce::Path shape;
+		auto crossThickness = 0.1F;
+
+		shape.addLineSegment({ 0.0F, 0.0F, 1.0F, 1.0F }, crossThickness);
+		shape.addLineSegment({ 1.0F, 0.0F, 0.0F, 1.0F }, crossThickness);
+
+		auto reducedRect = button.getLocalBounds().reduced(button.getHeight() * 0.25F);
+		g.setColour(getColorCustomWhite());
+		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+	}
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
@@ -378,6 +408,8 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	const juce::String buttonName = button.getName();
 	const juce::String buttonText = button.getButtonText();
 	const juce::String buttonID = button.getComponentID();
+	auto bounds = button.getLocalBounds();
+	auto justification = juce::Justification::centred;
 	juce::Font font{ juce::FontOptions{} };
 	juce::Colour textColor{};
 
@@ -410,6 +442,10 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	{
 		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
 		textColor = getCurrentTheme().CustomLightGrey.darker(0.1F);
+
+		bounds.removeFromLeft(5);
+		bounds.removeFromRight(20);
+		justification = juce::Justification::centredLeft;
 
 		if (isButtonDown || button.getToggleState() == 1)
 		{
@@ -491,10 +527,11 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		}
 	}
 
-	//g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeRegular()));
+
+
 	g.setFont(font);
 	g.setColour(textColor);
-	g.drawFittedText(buttonText, button.getLocalBounds(), juce::Justification::centred, 1);
+	g.drawFittedText(buttonText, bounds, justification, 1);
 }
 
 

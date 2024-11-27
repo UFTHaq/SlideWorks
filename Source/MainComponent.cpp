@@ -210,15 +210,14 @@ void MainComponent::updatePageContent(juce::Graphics& g)
         g.fillRoundedRectangle(base_Workspace.toFloat(), 1);
         
         groupDialog_2_Info.paint(g);
-
     }
 }
 
 void MainComponent::updatePage2WorkVisibility(bool visible)
 {
-    for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+    for (size_t i = 0; i < filmstripProjects.size(); i++)
     {
-        auto& button = filmstripProjectButtons.at(i);
+        auto& button = filmstripProjects.at(i);
 
         if (button != nullptr)
         {
@@ -269,8 +268,6 @@ void MainComponent::setupLayoutUI()
 
     //////// ==== PAGE 2 WORKSPACE ==== ////////
 
-    bool page2 = (currentSlideWorksPage == PageState::PAGE2_WORKSPACE);
-
     ///== Area Footer ==///
     auto copy_base_Workspace = base_Workspace;
     area_Footer = copy_base_Workspace.removeFromBottom(FooterHeight);
@@ -305,12 +302,14 @@ void MainComponent::setupLayoutUI()
     if (filmstripProjects.size() >= 1)
     {
         auto copy_area_FilmstripProjects = area_FilmstripProjects;
+        DBG("TAB AREA : " << copy_area_FilmstripProjects.toString());
+
 
         filmstripButtonsViewport.setBounds(copy_area_FilmstripProjects);
 
         filmstripButtonsViewport.setScrollBarsShown(false, true, false, true);
 
-        int totalWidth = static_cast<int>(filmstripProjectButtons.size()) * FPButtonWidth;
+        int totalWidth = static_cast<int>(filmstripProjects.size()) * FPButtonWidth;
 
         filmstripButtonsContainer.setBounds(0, 0, totalWidth, filmstripButtonsViewport.getHeight());
 
@@ -329,17 +328,18 @@ void MainComponent::setupLayoutUI()
         juce::Rectangle<int> buttonArea{ copy_area_FilmstripProjects.getX(),copy_area_FilmstripProjects.getY(), FPButtonWidth, filmstripButtonsViewport.getHeight()};
 
         
-
-        for (auto& button : filmstripProjectButtons)
+        for (auto& project : filmstripProjects)
         {
-            if (button != nullptr)
+            if (project != nullptr)
             {
-                button->setBounds(buttonArea.reduced(1));
-                buttonArea.translate((FPButtonWidth), 0);
+                project->setBounds(buttonArea.reduced(1));
+                buttonArea.translate(FPButtonWidth - 1, 0);
+                project->tabButton.resized();
+
+                DBG("FILMSTRIP PROJECT BOUNDS: " << project->getBounds().toString());
+                DBG("BUTTON BOUNDS : " << project->tabButton.getBounds().toString());
             }
         }
-
-
     }
 
 
@@ -442,7 +442,7 @@ void MainComponent::setupLayoutUI()
     auto license = infoArea.removeFromTop(contentHeight);
     auto juceVer = infoArea.removeFromTop(contentHeight);
 
-    auto paramWidht = infoArea.getWidth() * 0.4F;
+    auto paramWidht = static_cast<int>(infoArea.getWidth() * 0.4F);
     author_param.setBounds(author.removeFromLeft(paramWidht));
     author_arg.setBounds(author);
     version_param.setBounds(version.removeFromLeft(paramWidht));
@@ -668,6 +668,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                 buttonMenuEnable = true;
             }
 
+
             juce::PopupMenu menu;
             menu.addSectionHeader("New Filmstrip Project");
             menu.addSeparator();
@@ -681,61 +682,143 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                 {
                     if (result == 1)
                     {
-                        // Create New Knob Filmstrip Project
-                        filmstripProjects.push_back(std::make_unique<KnobFilmstrip>());
+                        //// Create New Knob Filmstrip Project
+                        auto project = std::make_unique<KnobFilmstrip>();
+                        addAndMakeVisible(*project);
 
-                        auto button = std::make_unique<juce::TextButton>();
-                        button->setButtonText(filmstripProjects.back().get()->getProjectName());
-                        button->setComponentID("Buttons_ID_03_FP");
-                        button->setToggleState(false, juce::dontSendNotification);
-                        addAndMakeVisible(*button);
-
-                        auto* buttonPtr = button.get();
-                        buttonPtr->onClick = [this, buttonPtr]()
+                        auto* ptrProject = project.get();
+                        ptrProject->tabButton.onClick = [this, ptrProject]()
                             {
-                                for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+                                for (auto& project : filmstripProjects)
                                 {
-                                    filmstripProjectButtons.at(i)->setToggleState(false, juce::dontSendNotification);
+                                    project->tabButton.setToggleState(false, juce::dontSendNotification);
                                 }
-
-                                // this button toggle true
-                                buttonPtr->setToggleState(true, juce::dontSendNotification);
+                                ptrProject->tabButton.setToggleState(true, juce::dontSendNotification);
                             };
 
-                        filmstripProjectButtons.push_back(std::move(button));
+                        // using safePointer to MainComponent cause this is lambda deleting object from the object it self, so if the object already deleted
+                        // cant access mainComponent::resized() or mainComponent::setupLayoutUI() to recalculate the viewport buttons cause the object already died.
+                        // so need safePointer to outlive the object to run the last task from that object. 
+                        ptrProject->onDeleteRequest = [safeThis = juce::Component::SafePointer<MainComponent>(this)](FilmstripProject* projectToDelete)
+                            {
+                                if (auto* mainComp = safeThis.getComponent())
+
+                                {
+                                    auto it = std::find_if(mainComp->filmstripProjects.begin(), mainComp->filmstripProjects.end(), [projectToDelete](const std::unique_ptr<FilmstripProject>& project)
+                                        {
+                                            return project.get() == projectToDelete;
+                                        });
+
+                                    if (it != mainComp->filmstripProjects.end())
+                                    {
+                                        size_t deletedIndex = std::distance(mainComp->filmstripProjects.begin(), it);
+                                        bool wasActiveProject = mainComp->filmstripProjects.at(deletedIndex)->tabButton.getToggleState();
+
+                                        mainComp->removeChildComponent(it->get());
+                                        mainComp->filmstripProjects.erase(it);
+                                        mainComp->setupLayoutUI();
+
+                                        
+                                        if (mainComp->filmstripProjects.size() > 0)
+                                        {
+                                            if (wasActiveProject)
+                                            {
+                                                // IF active project is in the end
+                                                if (deletedIndex == mainComp->filmstripProjects.size())
+                                                {
+                                                    mainComp->filmstripProjects.at(deletedIndex - 1)->tabButton.setToggleState(true, juce::dontSendNotification);
+                                                }
+                                                else
+                                                {
+                                                    mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // ZERO
+                                            mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
+                                            mainComp->repaint();
+                                        }
+                                    }
+                                }
+                            };
+
+                        filmstripProjects.push_back(std::move(project));
+
+                        
+                        
+
                     }
                     else if (result == 2)
                     {
-                        // Create New Slider Filmstrip Project
-                        filmstripProjects.push_back(std::make_unique<SliderFilmstrip>());
+                        //// Create New Slider Filmstrip Project
+                        auto project = std::make_unique<SliderFilmstrip>();
+                        addAndMakeVisible(*project);
 
-                        auto button = std::make_unique<juce::TextButton>();
-                        button->setButtonText(filmstripProjects.back().get()->getProjectName());
-                        button->setComponentID("Buttons_ID_03_FP");
-                        button->setToggleState(false, juce::dontSendNotification);
-                        addAndMakeVisible(*button);
-
-                        auto* buttonPtr = button.get();
-                        buttonPtr->onClick = [this, buttonPtr]()
+                        auto* ptrProject = project.get();
+                        ptrProject->tabButton.onClick = [this, ptrProject]()
                             {
-                                for (size_t i = 0; i < filmstripProjectButtons.size(); i++)
+                                for (auto& project : filmstripProjects)
                                 {
-                                    filmstripProjectButtons.at(i)->setToggleState(false, juce::dontSendNotification);
+                                    project->tabButton.setToggleState(false, juce::dontSendNotification);
                                 }
-
-                                // this button toggle true
-                                buttonPtr->setToggleState(true, juce::dontSendNotification);
+                                ptrProject->tabButton.setToggleState(true, juce::dontSendNotification);
                             };
 
-                        filmstripProjectButtons.push_back(std::move(button));
+                        ptrProject->onDeleteRequest = [safeThis = juce::Component::SafePointer<MainComponent>(this)](FilmstripProject* projectToDelete)
+                            {
+                                if (auto* mainComp = safeThis.getComponent())
+
+                                {
+                                    auto it = std::find_if(mainComp->filmstripProjects.begin(), mainComp->filmstripProjects.end(), [projectToDelete](const std::unique_ptr<FilmstripProject>& project)
+                                        {
+                                            return project.get() == projectToDelete;
+                                        });
+
+                                    if (it != mainComp->filmstripProjects.end())
+                                    {
+                                        size_t deletedIndex = std::distance(mainComp->filmstripProjects.begin(), it);
+                                        bool wasActiveProject = mainComp->filmstripProjects.at(deletedIndex)->tabButton.getToggleState();
+
+                                        mainComp->removeChildComponent(it->get());
+                                        mainComp->filmstripProjects.erase(it);
+                                        mainComp->setupLayoutUI();
+
+
+                                        if (mainComp->filmstripProjects.size() > 0)
+                                        {
+                                            if (wasActiveProject)
+                                            {
+                                                // IF active project is in the end
+                                                if (deletedIndex == mainComp->filmstripProjects.size())
+                                                {
+                                                    mainComp->filmstripProjects.at(deletedIndex - 1)->tabButton.setToggleState(true, juce::dontSendNotification);
+                                                }
+                                                else
+                                                {
+                                                    mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // ZERO
+                                            mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
+                                            mainComp->repaint();
+                                        }
+                                    }
+                                }
+                            };
+
+                        filmstripProjects.push_back(std::move(project));
                     }
 
-
-                    for (auto& button : filmstripProjectButtons)
+                    for (auto& project : filmstripProjects)
                     {
-                        button.get()->setToggleState(false, juce::dontSendNotification);
+                        project->tabButton.setToggleState(false, juce::dontSendNotification);
                     }
-                    filmstripProjectButtons.back().get()->setToggleState(true, juce::dontSendNotification);
+                    filmstripProjects.back()->tabButton.setToggleState(true, juce::dontSendNotification);
 
                     size_t KnobTotal{};
                     size_t SliderTotal{};
@@ -752,6 +835,9 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                             SliderTotal++;
                         }
                     }
+
+                    DBG("PROJECT BOUNDS: " << filmstripProjects.back()->getBounds().toString());
+                    DBG("BUTTON BOUNDS : " << filmstripProjects.back()->tabButton.getBounds().toString());
 
                     DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
                     DBG("==> Total Projects  : " << filmstripProjects.size());

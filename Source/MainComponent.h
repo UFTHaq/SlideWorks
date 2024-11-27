@@ -126,7 +126,6 @@ private:
     juce::Rectangle<int> area_SubControl{};
 
     std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
-    std::vector < std::unique_ptr<juce::TextButton>> filmstripProjectButtons{};
     juce::Viewport filmstripButtonsViewport{};
     juce::Component filmstripButtonsContainer{};
 

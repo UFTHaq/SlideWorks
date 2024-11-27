@@ -75,7 +75,7 @@ public:
 			double angleRadian = juce::degreesToRadians(startAngle + angleNow);
 
 			juce::Rectangle<int> temp{ 0,0,frameW, frameH };
-			juce::AffineTransform rotating = juce::AffineTransform::rotation((float)angleRadian, temp.getCentreX(), temp.getCentreY());
+			juce::AffineTransform rotating = juce::AffineTransform::rotation((float)angleRadian, float(temp.getCentreX()), float(temp.getCentreY()));
 
 			//juce::Image rotary(juce::Image::PixelFormat::ARGB, frameW, frameH, true);
 			juce::Graphics frames(rotary);
@@ -85,7 +85,7 @@ public:
 
 			g.drawImage(rotary, dest.toFloat(), juce::RectanglePlacement::centred, false);
 
-			juce::Rectangle<int> ellipse{ dest.reduced(dest.getHeight() * 0.35F) };
+			juce::Rectangle<int> ellipse{ dest.reduced(static_cast<int>(dest.getHeight() * 0.35F)) };
 			g.setColour(juce::Colours::darkseagreen.darker(0.5F));
 			g.fillEllipse(ellipse.toFloat());
 

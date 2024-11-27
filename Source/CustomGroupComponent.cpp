@@ -20,7 +20,7 @@ void CustomGroupComponent::paint(juce::Graphics& g)
 	auto cornerSize = getCornerSize(); // Corner size for rounded edges
 	auto width  = getBounds().getWidth();
 	auto height = getBounds().getHeight();
-	auto text = getText();
+	auto textTitle = getText();
 
 	g.saveState();
 
@@ -38,9 +38,9 @@ void CustomGroupComponent::paint(juce::Graphics& g)
 	auto cornerSize2 = 2.0f * cornerSize;
 
 	// Calculate text width and position
-	auto textWidth = text.isEmpty() ? 0
+	auto textWidth = textTitle.isEmpty() ? 0
 		: juce::jlimit(0.0f, juce::jmax(0.0f, w - cornerSize2 - textEdgeGap * 2),
-			(float)juce::GlyphArrangement::getStringWidthInt(f, text) + textEdgeGap * 2.0f);
+			(float)juce::GlyphArrangement::getStringWidthInt(f, textTitle) + textEdgeGap * 2.0f);
 	auto textX = cornerSize + textEdgeGap;
 
 	auto position = getTextLabelPosition();
@@ -77,7 +77,7 @@ void CustomGroupComponent::paint(juce::Graphics& g)
 	// Draw the text at the specified position
 	g.setColour(getFontColour());
 	g.setFont(f);
-	g.drawText(text, juce::roundToInt(x + textX), 0, juce::roundToInt(textWidth), juce::roundToInt(textH), juce::Justification::centred, true);
+	g.drawText(textTitle, juce::roundToInt(x + textX), 0, juce::roundToInt(textWidth), juce::roundToInt(textH), juce::Justification::centred, true);
 
 
 	// Make it normal again
@@ -138,9 +138,9 @@ void CustomGroupComponent::setName(juce::String name)
 {
 	this->groupName = name;
 }
-void CustomGroupComponent::setText(juce::String text)
+void CustomGroupComponent::setText(juce::String textTitle)
 {
-	this->groupText = text;
+	this->groupText = textTitle;
 }
 void CustomGroupComponent::setTextLabelPosition(juce::Justification position)
 {

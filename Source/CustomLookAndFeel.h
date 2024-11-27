@@ -114,7 +114,7 @@ private:
 		.CustomDarkGrey       = juce::Colour::fromString("ff2a2a2c"),
 		.CustomGrey           = juce::Colour::fromString("ff535354"),
 		.CustomLightGrey      = juce::Colour::fromString("ffacadaf"),
-		.CustomWhite          = juce::Colour::fromString("ff2a2a2c"),
+		.CustomWhite          = juce::Colour::fromString("ffffffff"),
 		.CustomTransparent    = juce::Colours::transparentBlack,
 	};
 

@@ -25,7 +25,7 @@ public :
 	const juce::Colour getOutlineColour();
 
 	void setName(juce::String name);
-	void setText(juce::String text);
+	void setText(juce::String textTitle);
 	void setTextLabelPosition(juce::Justification position);
 
 	void setBounds(juce::Rectangle<int> bounds);

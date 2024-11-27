@@ -11,6 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "CustomLookAndFeel.h"
+#include "Globals.h"
 
 enum class FilmstripOrientation
 {
@@ -28,9 +30,15 @@ enum class WorkingMode
 
 
 class FilmstripProject
+    : public juce::Component
 {
 protected:
     juce::String name{ "Untitled" };
+    
+    juce::Label tabLabel{};
+    juce::TextButton closeButton{};
+    juce::Path closeIcon{};
+    std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
     int totalFrames{ 0 };
     FilmstripOrientation orientation{ FilmstripOrientation::VERTICAL_FILMSTRIP };
@@ -42,9 +50,14 @@ public:
     FilmstripProject();
     ~FilmstripProject();
 
+    void resized() override;
+    void paint(juce::Graphics& g) override;
+
     virtual double getFilmstripSizeCalc();
     virtual juce::String getFilmstripSizeStatus();
 
     juce::String getProjectName();
 
+    juce::TextButton tabButton{};
+    std::function<void(FilmstripProject*)> onDeleteRequest{};
 };
