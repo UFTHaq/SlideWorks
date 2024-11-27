@@ -814,45 +814,46 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         filmstripProjects.push_back(std::move(project));
                     }
 
-                    for (auto& project : filmstripProjects)
+                    if (filmstripProjects.empty() == false)
                     {
-                        project->tabButton.setToggleState(false, juce::dontSendNotification);
-                    }
-                    filmstripProjects.back()->tabButton.setToggleState(true, juce::dontSendNotification);
-
-                    size_t KnobTotal{};
-                    size_t SliderTotal{};
-
-                    for (auto& project : filmstripProjects)
-                    {
-                        if (auto* knob = dynamic_cast<KnobFilmstrip*>(project.get()))
+                        for (auto& project : filmstripProjects)
                         {
-                            KnobTotal++;
+                            project->tabButton.setToggleState(false, juce::dontSendNotification);
+                        }
+                        filmstripProjects.back()->tabButton.setToggleState(true, juce::dontSendNotification);
+
+                        size_t KnobTotal{};
+                        size_t SliderTotal{};
+
+                        for (auto& project : filmstripProjects)
+                        {
+                            if (auto* knob = dynamic_cast<KnobFilmstrip*>(project.get()))
+                            {
+                                KnobTotal++;
+                            }
+
+                            if (auto* slider = dynamic_cast<SliderFilmstrip*>(project.get()))
+                            {
+                                SliderTotal++;
+                            }
                         }
 
-                        if (auto* slider = dynamic_cast<SliderFilmstrip*>(project.get()))
-                        {
-                            SliderTotal++;
-                        }
+                        DBG("PROJECT BOUNDS: " << filmstripProjects.back()->getBounds().toString());
+                        DBG("BUTTON BOUNDS : " << filmstripProjects.back()->tabButton.getBounds().toString());
+
+                        DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
+                        DBG("==> Total Projects  : " << filmstripProjects.size());
+                        DBG("==> Total Knobs     : " << KnobTotal);
+                        DBG("==> Total Sliders   : " << SliderTotal);
                     }
 
-                    DBG("PROJECT BOUNDS: " << filmstripProjects.back()->getBounds().toString());
-                    DBG("BUTTON BOUNDS : " << filmstripProjects.back()->tabButton.getBounds().toString());
-
-                    DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
-                    DBG("==> Total Projects  : " << filmstripProjects.size());
-                    DBG("==> Total Knobs     : " << KnobTotal);
-                    DBG("==> Total Sliders   : " << SliderTotal);
-
-                    if (currentSlideWorksPage == PageState::PAGE3_INFO)
+                    if (filmstripProjects.size() > 0) 
                     {
+                        currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
+
                         updatePage2WorkVisibility(true);
                         updatePage3InfoVisibility(false);
                     }
-
-
-                    if (filmstripProjects.size() >= 0) currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
-
 
 
                     resized();
