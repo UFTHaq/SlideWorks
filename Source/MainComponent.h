@@ -58,7 +58,7 @@ public:
     void setupExportButton();
     void setupSimulationButton();
     void setupPreviewButton();
-    void setupResizeButton();
+    void setupEditButton();
     void togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton);
     void togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton1, juce::TextButton& inactiveButton2);
 
@@ -103,7 +103,7 @@ private:
         EDIT
     };
 
-    ModeState SlideWorksMode{ ModeState::EDIT };
+    ModeState SlideWorksMode{ ModeState::SIMULATION };
 
     bool inputPathState{};
 
@@ -113,12 +113,18 @@ private:
     juce::Rectangle<int> right_WorkSpace{};     // page2_right_WorksSpace
 
     //////////////// NEW UI ////////////////
+
+    //////////////// NEW BUTTON ////////////////
+    juce::TextButton SW_NewProjectButton{};
+    juce::TextButton SW_ThemeButton{};
+    juce::TextButton SW_InfoButton{};
+
+    ////////////////----------- PAGE 2 -----------////////////////
     const int FooterHeight    { 25 };
     const int MainControlWidth{ 240 };
-    const int FPButtonWidth{ 95 };
+    const int FPButtonWidth{ 100 };
     const int ModeButtonHeight{ 25 };
-    const int SubControlWidth { 180 };
-
+    const int SubControlWidth { 190 };
 
     juce::Rectangle<int> area_Footer{};
     juce::Rectangle<int> area_MainControl{};
@@ -139,18 +145,27 @@ private:
     const int NamingLabelWidth{ 55 };
     const int NamingLabelEditorWidth{ 200 };
 
-    juce::Viewport projectNamingViewport{};
-    juce::Component projectNamingContainer{};
-
     juce::Label naming_Label{};
     juce::Label naming_Editor{};
 
+    const int MODEButtonWidth{ 80 };
 
-    //////////////// NEW BUTTON ////////////////
-    juce::TextButton SW_NewProjectButton{};
-    juce::TextButton SW_ThemeButton{};
-    juce::TextButton SW_InfoButton{};
+    juce::TextButton mode_SimulationButton{};
+    juce::TextButton mode_PreviewButton{};
+    juce::TextButton mode_EditButton{};
 
+    ////////////////----------- PAGE 3 -----------////////////////
+    CustomGroupComponent groupDialog_2_Info{};
+    juce::Label author_param{};
+    juce::Label author_arg{};
+    juce::Label version_param{};
+    juce::Label version_arg{};
+    juce::Label release_param{};
+    juce::Label release_arg{};
+    juce::Label license_param{};
+    juce::Label license_arg{};
+    juce::Label juceVersion_arg{};
+    juce::TextButton closeDialog_2_Info{};
 
 
     //////////////// OLD BUTTON ////////////////
@@ -178,23 +193,7 @@ private:
     juce::TextButton addKnobScale{};
     juce::TextButton closeDialog1{};
 
-    ////////////////----------- PAGE 2 -----------////////////////
-    juce::TextButton modeSimulationButton{};
-    juce::TextButton modePreviewButton{};
-    juce::TextButton modeResizeButton{};
 
-    ////////////////----------- PAGE 3 -----------////////////////
-    CustomGroupComponent groupDialog_2_Info{};
-    juce::Label author_param{};
-    juce::Label author_arg{};
-    juce::Label version_param{};
-    juce::Label version_arg{};
-    juce::Label release_param{};
-    juce::Label release_arg{};
-    juce::Label license_param{};
-    juce::Label license_arg{};
-    juce::Label juceVersion_arg{};
-    juce::TextButton closeDialog_2_Info{};
 
     ////////////////----------- PAGE 2 -----------////////////////
 

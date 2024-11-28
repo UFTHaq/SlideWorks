@@ -100,7 +100,7 @@ juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
 		fullscreenShape.addRectangle(45.0F, 45.0F, 100.0F, 100.0F);
 		juce::PathStrokeType(15.0F).createStrokedPath(fullscreenShape, fullscreenShape);
 
-		return new LookAndFeel_V4_DocumentWindowButton("maximise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, fullscreenShape);
+		//return new LookAndFeel_V4_DocumentWindowButton("maximise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, fullscreenShape);
 	}
 
 	jassertfalse;
@@ -265,7 +265,28 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = juce::Colours::black.withAlpha(0.1F);
 		}
 	}
+	else if (buttonID == "Buttons_ID_05_MODE")
+	{
+		cornerSize = 1;
 
+		outlineColor = getColorCustomGrey();
+		outlineThick = 0.4F;
+
+		if (button.getToggleState() == 1)
+		{
+			fillColor = getCurrentTheme().ButtonsID_01.brighter();
+
+		}
+		else if (shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().ButtonsID_01.brighter();
+		}
+		else
+		{
+			fillColor = getCurrentTheme().ButtonsID_01.darker(0.1F);
+		}
+	}
+	
 
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
@@ -387,7 +408,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	g.setColour(outlineColor);
 	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(1.1F), cornerSize, 2.0F);
 	//g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(0.2F), cornerSize, outlineThick);
-	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(outlineThick/2), cornerSize, outlineThick);
+	g.drawRoundedRectangle(button.getLocalBounds().toFloat().reduced(outlineThick * 0.65F), cornerSize, outlineThick);
 
 	if (buttonID == "Buttons_ID_04_FP_CLOSE")
 	{
@@ -456,6 +477,23 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getCurrentTheme().CustomGrey;
 		}
 	}
+	else if (buttonID == "Buttons_ID_05_MODE")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().CustomLightGrey.darker(0.1F);
+
+		justification = juce::Justification::centred;
+
+		if (isButtonDown || button.getToggleState() == 1)
+		{
+			textColor = getCurrentTheme().CustomGroupComponent;
+		}
+		else if (isMouseOver)
+		{
+			textColor = getCurrentTheme().CustomGrey;
+		}
+	}
+	
 
 
 

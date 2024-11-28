@@ -18,19 +18,6 @@ FilmstripProject::FilmstripProject() : customLookAndFeel(Globals::getCustomLookA
     tabButton.setLookAndFeel(customLookAndFeel.get());
     addAndMakeVisible(tabButton);
 
-    //tabLabel.setText(name, juce::dontSendNotification);
-    //tabLabel.setColour(juce::Label::backgroundColourId, juce::Colours::transparentWhite);
-    //tabLabel.setColour(juce::Label::textColourId, juce::Colours::black);
-    //tabLabel.setLookAndFeel(customLookAndFeel.get());
-    //tabLabel.setFont(customLookAndFeel.get()->getFontRobotoCondensedRegular().withHeight(16.0F));
-    //tabLabel.setEditable(false, false);
-    //tabLabel.onTextChange = [this]()
-    //    {
-    //        name = tabLabel.getText();
-    //    };
-    //addAndMakeVisible(tabLabel);
-    //tabLabel.setEnabled(false);
-
     closeButton.setButtonText("");
     closeButton.setComponentID("Buttons_ID_04_FP_CLOSE");
     closeButton.setLookAndFeel(customLookAndFeel.get());
@@ -40,7 +27,6 @@ FilmstripProject::FilmstripProject() : customLookAndFeel(Globals::getCustomLookA
                 onDeleteRequest(this);
         };
     addAndMakeVisible(closeButton);
-
 }
 
 FilmstripProject::~FilmstripProject()

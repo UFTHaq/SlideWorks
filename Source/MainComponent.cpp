@@ -3,8 +3,7 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    setSize(800, 540);   // This is mandatory to not trigger error in debug mode
-
+    setSize(820, 540);   // This is mandatory to not trigger error in debug mode
 
     setupLayoutUI();
     setupButtons(ptr_Global_CustomLookAndFeel);
@@ -229,6 +228,10 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
 
     naming_Editor.setVisible(visible);
     naming_Editor.setEnabled(visible);
+
+    mode_SimulationButton.setVisible(visible);
+    mode_PreviewButton.setVisible(visible);
+    mode_EditButton.setVisible(visible);
 }
 
 void MainComponent::updatePage3InfoVisibility(bool visible)
@@ -259,8 +262,8 @@ void MainComponent::setupLayoutUI()
     int componentSpace = 2;
 
     juce::Rectangle<int> area_NewProjectButton{ base_SlideWorks.getX(), base_SlideWorks.getY(), 50, 20 };
-    juce::Rectangle<int> area_ThemeButton{ area_NewProjectButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
-    juce::Rectangle<int> area_InfoButton{ area_ThemeButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+    juce::Rectangle<int> area_ThemeButton{ area_NewProjectButton.getRight() -1 + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+    juce::Rectangle<int> area_InfoButton{ area_ThemeButton.getRight() -1 + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
 
     SW_NewProjectButton.setBounds(area_NewProjectButton);
     SW_ThemeButton.setBounds(area_ThemeButton);
@@ -300,6 +303,7 @@ void MainComponent::setupLayoutUI()
     else {
         area_Canvas = copy_area_Layer3_MainWorkspace;
         area_Canvas = area_Canvas.reduced(1);
+        area_SubControl = { 0,0,0,0 };
     }
 
     if (filmstripProjects.size() >= 1)
@@ -308,20 +312,15 @@ void MainComponent::setupLayoutUI()
         projectActiveIndex = getActiveProjectIndex();
 
         
-
         // TAB BUTTON VIEWPORT
         auto copy_area_FilmstripProjects = area_FilmstripProjects;
-        DBG("TAB AREA : " << copy_area_FilmstripProjects.toString());
-
 
         filmstripButtonsViewport.setBounds(copy_area_FilmstripProjects);
-
         filmstripButtonsViewport.setScrollBarsShown(false, true, false, true);
 
         int tabsTotalWidth = static_cast<int>(filmstripProjects.size()) * FPButtonWidth;
 
         filmstripButtonsContainer.setBounds(0, 0, tabsTotalWidth, filmstripButtonsViewport.getHeight());
-
         filmstripButtonsViewport.setViewedComponent(&filmstripButtonsContainer, false);
 
         if (filmstripButtonsViewport.getViewedComponent() == &filmstripButtonsContainer)
@@ -341,7 +340,6 @@ void MainComponent::setupLayoutUI()
             {
                 project->setBounds(tabButtonArea.reduced(1));
                 tabButtonArea.translate(FPButtonWidth - 1, 0);
-                project->tabButton.resized();
 
                 DBG("FILMSTRIP PROJECT BOUNDS: " << project->getBounds().toString());
                 DBG("BUTTON BOUNDS : " << project->tabButton.getBounds().toString());
@@ -352,22 +350,26 @@ void MainComponent::setupLayoutUI()
         // PROJECT NAMING VIEWPORT
         auto copy_area_ProjectNaming = area_ModeButtons;
 
-        projectNamingViewport.setBounds(copy_area_ProjectNaming);
-        projectNamingViewport.setScrollBarsShown(false, false);
-
-        int namingTotalWidth = NamingLabelWidth + NamingLabelEditorWidth;
-
-        projectNamingContainer.setBounds(0, 0, namingTotalWidth, projectNamingViewport.getHeight());
-        projectNamingViewport.setViewedComponent(&projectNamingContainer, false);
-
-        juce::Rectangle<int> namingLabelArea{ projectNamingViewport.getX(), projectNamingViewport.getY(), NamingLabelWidth, projectNamingViewport.getHeight() };
-        juce::Rectangle<int> namingLabelEditorArea{ projectNamingViewport.getX() + (NamingLabelWidth - 1), projectNamingViewport.getY(), NamingLabelEditorWidth, projectNamingViewport.getHeight() };
+        juce::Rectangle<int> namingLabelArea{ copy_area_ProjectNaming.getX(), copy_area_ProjectNaming.getY(), NamingLabelWidth, copy_area_ProjectNaming.getHeight() };
+        juce::Rectangle<int> namingLabelEditorArea{ copy_area_ProjectNaming.getX() + (NamingLabelWidth - 1), copy_area_ProjectNaming.getY(), NamingLabelEditorWidth, copy_area_ProjectNaming.getHeight() };
 
         naming_Label.setBounds(namingLabelArea.reduced(1));
         naming_Editor.setBounds(namingLabelEditorArea.reduced(1));
 
         reloadNamingProjectLabel(projectActiveIndex);
 
+
+        // MODE BUTTON VIEWPORT
+        auto copy_area_ModeButtons = area_ModeButtons;
+
+        juce::Rectangle<int> modeButtonsArea{ copy_area_ModeButtons.getRight() - MODEButtonWidth, copy_area_ModeButtons.getY(), MODEButtonWidth, copy_area_ModeButtons.getHeight() };
+        mode_SimulationButton.setBounds(modeButtonsArea.reduced(1));
+
+        modeButtonsArea = { modeButtonsArea.getX() - (MODEButtonWidth - 1), copy_area_ModeButtons.getY(), MODEButtonWidth, copy_area_ModeButtons.getHeight() };
+        mode_PreviewButton.setBounds(modeButtonsArea.reduced(1));
+
+        modeButtonsArea = { modeButtonsArea.getX() - (MODEButtonWidth - 1), copy_area_ModeButtons.getY(), MODEButtonWidth, copy_area_ModeButtons.getHeight() };
+        mode_EditButton.setBounds(modeButtonsArea.reduced(1));
     }
 
 
@@ -377,64 +379,64 @@ void MainComponent::setupLayoutUI()
     ///////////////// PAGE 1 COMPONENT /////////////////
     //base_SlideWorks = getLocalBounds().reduced(10);
 
-    knobToggleWorksButton.setBounds(
-        { base_SlideWorks.getX(), 
-        base_SlideWorks.getY(), 
-        75, 25 
-        }
-    );
-    sliderToggleWorksButton.setBounds(
-        {
-            knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
-    browseButton.setBounds(
-        {
-            base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getY(),
-            knobToggleWorksButton.getWidth(),
-            knobToggleWorksButton.getHeight()
-        }
-    );
+    //knobToggleWorksButton.setBounds(
+    //    { base_SlideWorks.getX(), 
+    //    base_SlideWorks.getY(), 
+    //    75, 25 
+    //    }
+    //);
+    //sliderToggleWorksButton.setBounds(
+    //    {
+    //        knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
+    //        knobToggleWorksButton.getY(),
+    //        knobToggleWorksButton.getWidth(),
+    //        knobToggleWorksButton.getHeight()
+    //    }
+    //);
+    //browseButton.setBounds(
+    //    {
+    //        base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
+    //        knobToggleWorksButton.getY(),
+    //        knobToggleWorksButton.getWidth(),
+    //        knobToggleWorksButton.getHeight()
+    //    }
+    //);
 
     //base_WorkSpace = base_SlideWorks;
     //base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
 
     ///////////////// PAGE 2 COMPONENT /////////////////
     {
-        auto buttonW = 90;
-            modeSimulationButton.setBounds
-            (
-                {
-                    base_SlideWorks.getRight() - buttonW,
-                    knobToggleWorksButton.getY(),
-                    buttonW,
-                    knobToggleWorksButton.getHeight()
-                }
-        );
+        //auto buttonW = 90;
+        //    mode_SimulationButton.setBounds
+        //    (
+        //        {
+        //            base_SlideWorks.getRight() - buttonW,
+        //            knobToggleWorksButton.getY(),
+        //            buttonW,
+        //            knobToggleWorksButton.getHeight()
+        //        }
+        //);
 
-        modePreviewButton.setBounds
-        (
-            {
-                modeSimulationButton.getX() - buttonW - 5,
-                modeSimulationButton.getY(),
-                modeSimulationButton.getWidth(),
-                modeSimulationButton.getHeight()
-            }
-        );
+        //mode_PreviewButton.setBounds
+        //(
+        //    {
+        //        mode_SimulationButton.getX() - buttonW - 5,
+        //        mode_SimulationButton.getY(),
+        //        mode_SimulationButton.getWidth(),
+        //        mode_SimulationButton.getHeight()
+        //    }
+        //);
 
-        modeResizeButton.setBounds
-        (
-            {
-                modePreviewButton.getX() - buttonW - 5,
-                modeSimulationButton.getY(),
-                modeSimulationButton.getWidth(),
-                modeSimulationButton.getHeight()
-            }
-        );
+        //mode_EditButton.setBounds
+        //(
+        //    {
+        //        mode_PreviewButton.getX() - buttonW - 5,
+        //        mode_SimulationButton.getY(),
+        //        mode_SimulationButton.getWidth(),
+        //        mode_SimulationButton.getHeight()
+        //    }
+        //);
     }
 
 
@@ -661,14 +663,17 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
     setupTabProjectButtons();
     setupNamingProjectLabel(customLookAndFeel);
 
+    setupSimulationButton();
+    setupPreviewButton();
+    setupEditButton();
+
+
+
     setupKnobToggleButton();
     setupSliderToggleButton();
     setupBrowseButton();
     setupExportButton();
 
-    setupSimulationButton();
-    setupPreviewButton();
-    setupResizeButton();
 
     setupAddKnobButton();
     setupAddKnobScaleButton();
@@ -780,7 +785,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                             mainComp->updatePage2WorkVisibility(false);
                                             mainComp->repaint();
 
-                                            mainComp->reloadNamingProjectLabel(-1);
+                                            mainComp->reloadNamingProjectLabel(static_cast<size_t>(-1));
                                         }
                                     }
                                 }
@@ -857,7 +862,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                             mainComp->updatePage2WorkVisibility(false);
                                             mainComp->repaint();
 
-                                            mainComp->reloadNamingProjectLabel(-1);
+                                            mainComp->reloadNamingProjectLabel(static_cast<size_t>(-1));
                                         }
                                     }
                                 }
@@ -988,9 +993,6 @@ size_t MainComponent::getActiveProjectIndex() const
 void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel)
 {
     // SETUP NAMING LABEL
-    addAndMakeVisible(projectNamingContainer);
-    addAndMakeVisible(projectNamingViewport);
-
     naming_Label.setText("Name : ", juce::dontSendNotification);
     naming_Label.setComponentID("Label_ID_O1_Naming");
     naming_Label.setLookAndFeel(customLookAndFeel);
@@ -1012,7 +1014,7 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
     naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
     naming_Editor.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar.darker());
     naming_Editor.setEditable(false, true);
     naming_Editor.onTextChange = [this]()
@@ -1078,41 +1080,47 @@ void MainComponent::setupExportButton()
 
 void MainComponent::setupSimulationButton()
 {
-    modeSimulationButton.setButtonText("SIMULATION");
-    modeSimulationButton.setName("modeSimulationButton");
-    modeSimulationButton.setToggleState(true, juce::NotificationType::dontSendNotification);
-    modeSimulationButton.onClick = [this]() 
+    mode_SimulationButton.setButtonText("Simulation");
+    mode_SimulationButton.setComponentID("Buttons_ID_05_MODE");
+    mode_SimulationButton.setToggleState(true, juce::NotificationType::dontSendNotification);
+    mode_SimulationButton.onClick = [this]() 
         {
             SlideWorksMode = ModeState::SIMULATION;
-            togglingButtons(modeSimulationButton, modePreviewButton, modeResizeButton);
+            togglingButtons(mode_SimulationButton, mode_PreviewButton, mode_EditButton);
+            setupLayoutUI();
+            repaint();
         };
-    addAndMakeVisible(modeSimulationButton);
+    addAndMakeVisible(mode_SimulationButton);
 }
 
 void MainComponent::setupPreviewButton()
 {
-    modePreviewButton.setButtonText("PREVIEW");
-    modePreviewButton.setName("modePreviewButton");
-    modePreviewButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-    modePreviewButton.onClick = [this]() 
+    mode_PreviewButton.setButtonText("Preview");
+    mode_PreviewButton.setComponentID("Buttons_ID_05_MODE");
+    mode_PreviewButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    mode_PreviewButton.onClick = [this]() 
         {
             SlideWorksMode = ModeState::PREVIEW;
-            togglingButtons(modePreviewButton, modeSimulationButton, modeResizeButton);
+            togglingButtons(mode_PreviewButton, mode_SimulationButton, mode_EditButton);
+            setupLayoutUI();
+            repaint();
         };
-    addAndMakeVisible(modePreviewButton);
+    addAndMakeVisible(mode_PreviewButton);
 }
 
-void MainComponent::setupResizeButton()
+void MainComponent::setupEditButton()
 {
-    modeResizeButton.setButtonText("RESIZE");
-    modeResizeButton.setName("modeResizeButton");
-    modeResizeButton.setToggleState(false, juce::NotificationType::dontSendNotification);
-    modeResizeButton.onClick = [this]() 
+    mode_EditButton.setButtonText("Edit");
+    mode_EditButton.setComponentID("Buttons_ID_05_MODE");
+    mode_EditButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    mode_EditButton.onClick = [this]() 
         {
             SlideWorksMode = ModeState::EDIT;
-            togglingButtons(modeResizeButton, modeSimulationButton, modePreviewButton);
+            togglingButtons(mode_EditButton, mode_SimulationButton, mode_PreviewButton);
+            setupLayoutUI();
+            repaint();
         };
-    addAndMakeVisible(modeResizeButton);
+    addAndMakeVisible(mode_EditButton);
 }
 
 void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton)
@@ -1120,7 +1128,7 @@ void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextBu
     activeButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     inactiveButton.setToggleState(false, juce::NotificationType::dontSendNotification);
 
-    updateUI();
+    //updateUI();
 }
 
 void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextButton& inactiveButton1, juce::TextButton& inactiveButton2)
@@ -1129,7 +1137,7 @@ void MainComponent::togglingButtons(juce::TextButton& activeButton, juce::TextBu
     inactiveButton1.setToggleState(false, juce::NotificationType::dontSendNotification);
     inactiveButton2.setToggleState(false, juce::NotificationType::dontSendNotification);
     
-    updateUI();
+    //updateUI();
 }
 
 
@@ -1641,12 +1649,12 @@ void MainComponent::updateUI()
         sliderMaxAngles.setEnabled(false);
         sliderMaxAngles.setVisible(false);
 
-        modeSimulationButton.setEnabled(false);
-        modeSimulationButton.setVisible(false);
-        modePreviewButton.setEnabled(false);
-        modePreviewButton.setVisible(false);
-        modeResizeButton.setEnabled(false);
-        modeResizeButton.setVisible(false);
+        //mode_SimulationButton.setEnabled(false);
+        //mode_SimulationButton.setVisible(false);
+        //mode_PreviewButton.setEnabled(false);
+        //mode_PreviewButton.setVisible(false);
+        //mode_EditButton.setEnabled(false);
+        //mode_EditButton.setVisible(false);
 
         simulationKnob.setEnabled(false);
         simulationKnob.setVisible(false);
@@ -1699,12 +1707,12 @@ void MainComponent::updateUI()
             sliderMaxAngles.setVisible(false);
         }
 
-        modeSimulationButton.setEnabled(true);
-        modeSimulationButton.setVisible(true);
-        modePreviewButton.setEnabled(true);
-        modePreviewButton.setVisible(true);
-        modeResizeButton.setEnabled(true);
-        modeResizeButton.setVisible(true);
+        //mode_SimulationButton.setEnabled(true);
+        //mode_SimulationButton.setVisible(true);
+        //mode_PreviewButton.setEnabled(true);
+        //mode_PreviewButton.setVisible(true);
+        //mode_EditButton.setEnabled(true);
+        //mode_EditButton.setVisible(true);
 
         if (SlideWorksMode == ModeState::SIMULATION) 
         {

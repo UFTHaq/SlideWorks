@@ -34,10 +34,8 @@ class FilmstripProject
 {
 protected:
     juce::String name{ "Untitled" };
-    
-    juce::Label tabLabel{};
     juce::TextButton closeButton{};
-    juce::Path closeIcon{};
+
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
     int totalFrames{ 0 };
