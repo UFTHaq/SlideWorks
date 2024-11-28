@@ -13,13 +13,13 @@
 FilmstripProject::FilmstripProject() : customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     tabButton.setButtonText(name);
-    tabButton.setComponentID("Buttons_ID_03_FP");
+    tabButton.setComponentID("Buttons_ID_03_TAB");
     tabButton.setToggleState(true, juce::dontSendNotification);
     tabButton.setLookAndFeel(customLookAndFeel.get());
     addAndMakeVisible(tabButton);
 
     closeButton.setButtonText("");
-    closeButton.setComponentID("Buttons_ID_04_FP_CLOSE");
+    closeButton.setComponentID("Buttons_ID_04_TAB_CLOSE");
     closeButton.setLookAndFeel(customLookAndFeel.get());
     closeButton.onClick = [this]()
         {
@@ -40,14 +40,12 @@ void FilmstripProject::resized()
 
     auto space = 5;
     auto copyLocalBounds = getLocalBounds();
-    auto closeButtonArea = copyLocalBounds.removeFromRight(copyLocalBounds.getHeight()).reduced(3);
+    auto closeButtonArea = copyLocalBounds.removeFromRight(copyLocalBounds.getHeight());
     closeButton.setBounds(closeButtonArea);
 }
 
 void FilmstripProject::paint(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::red.darker(0.2F));
-    g.fillRoundedRectangle(closeButton.getLocalBounds().toFloat(), 2.5F);
 }
 
 double FilmstripProject::getFilmstripSizeCalc()

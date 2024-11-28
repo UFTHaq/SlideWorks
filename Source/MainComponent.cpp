@@ -114,34 +114,30 @@ void MainComponent::updatePageContent(juce::Graphics& g)
 
     if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
     {
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01_ON);
         
         g.fillRoundedRectangle(area_Footer.toFloat(), 1);
         g.fillRoundedRectangle(area_MainControl.toFloat(), 1);
         g.fillRoundedRectangle(area_Layer1_MainWorkspace.toFloat(), 1);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01_ON.brighter());
         g.fillRoundedRectangle(area_Layer2_MainWorkspace.toFloat(), 1);
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
-        g.drawRoundedRectangle(area_Layer2_MainWorkspace.toFloat(), 1, 0.15F);
+        g.drawRoundedRectangle(area_Layer2_MainWorkspace.toFloat(), 1, 0.2F);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01_ON.brighter());
         g.fillRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1);
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
-        g.drawRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1, 0.15F);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01.brighter());
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01_ON.brighter());
         g.fillRoundedRectangle(area_Canvas.toFloat(), 1);
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
-        g.drawRoundedRectangle(area_Canvas.toFloat(), 1, 0.15F);
+        g.drawRoundedRectangle(area_Canvas.toFloat(), 1, 0.2F);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01);
+        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().ButtonsID_01_ON);
         g.fillRoundedRectangle(area_SubControl.toFloat(), 1);
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
-        g.drawRoundedRectangle(area_SubControl.toFloat(), 1, 0.15F);
+        g.drawRoundedRectangle(area_SubControl.toFloat(), 1, 0.2F);
 
-        //g.setColour(juce::Colours::red);
-        //g.fillRoundedRectangle(area_FilmstripProjects.toFloat().reduced(2), 1);
     }
     
     //if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
@@ -261,9 +257,9 @@ void MainComponent::setupLayoutUI()
     base_SlideWorks = getLocalBounds().reduced(5);
     int componentSpace = 2;
 
-    juce::Rectangle<int> area_NewProjectButton{ base_SlideWorks.getX(), base_SlideWorks.getY(), 50, 20 };
-    juce::Rectangle<int> area_ThemeButton{ area_NewProjectButton.getRight() -1 + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
-    juce::Rectangle<int> area_InfoButton{ area_ThemeButton.getRight() -1 + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+    juce::Rectangle<int> area_NewProjectButton{ base_SlideWorks.getX(), base_SlideWorks.getY(), 52, 21 };
+    juce::Rectangle<int> area_ThemeButton{ area_NewProjectButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
+    juce::Rectangle<int> area_InfoButton{ area_ThemeButton.getRight() + componentSpace, area_NewProjectButton.getY(), area_NewProjectButton.getWidth(), area_NewProjectButton.getHeight() };
 
     SW_NewProjectButton.setBounds(area_NewProjectButton);
     SW_ThemeButton.setBounds(area_ThemeButton);
@@ -288,21 +284,22 @@ void MainComponent::setupLayoutUI()
 
     auto copy_area_Layer2_MainWorkspace = area_Layer2_MainWorkspace;
     area_ModeButtons = copy_area_Layer2_MainWorkspace.removeFromTop(FooterHeight);
-    area_Layer3_MainWorkspace = copy_area_Layer2_MainWorkspace.reduced(1);
+    copy_area_Layer2_MainWorkspace.removeFromLeft(1);
+    copy_area_Layer2_MainWorkspace.removeFromRight(1);
+    copy_area_Layer2_MainWorkspace.removeFromBottom(1);
+    area_Layer3_MainWorkspace = copy_area_Layer2_MainWorkspace;
 
-    auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace.reduced(1);
+    auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace;
 
     if (SlideWorksMode == ModeState::EDIT)
     {
         area_SubControl = copy_area_Layer3_MainWorkspace.removeFromRight(SubControlWidth);
-        area_SubControl = area_SubControl.reduced(1);
+        copy_area_Layer3_MainWorkspace.removeFromRight(1);
         area_Canvas = copy_area_Layer3_MainWorkspace;
-        area_Canvas = area_Canvas.reduced(1);
 
     }
     else {
         area_Canvas = copy_area_Layer3_MainWorkspace;
-        area_Canvas = area_Canvas.reduced(1);
         area_SubControl = { 0,0,0,0 };
     }
 
@@ -998,7 +995,8 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Label.setLookAndFeel(customLookAndFeel);
     naming_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
     naming_Label.setJustificationType(juce::Justification::centredLeft);
-    naming_Label.setColour(juce::Label::backgroundColourId, juce::Colours::royalblue.darker(0.2F));
+    //naming_Label.setColour(juce::Label::backgroundColourId, juce::Colours::royalblue.darker(0.2F));
+    naming_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().NamingLabel);
     naming_Label.setEditable(false, false);
     addAndMakeVisible(naming_Label);
 
@@ -1010,7 +1008,7 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getColorCustomDarkGrey());
     naming_Editor.setColour(juce::Label::textColourId, customLookAndFeel->getColorCustomDarkGrey());
     naming_Editor.setColour(juce::Label::backgroundColourId, juce::Colours::transparentBlack);
-    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().ButtonsID_01.brighter()); // This should follow the layer2 color if not mat
+    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().ButtonsID_01_ON.brighter()); // This should follow the layer2 color if not mat
     naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
     naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);

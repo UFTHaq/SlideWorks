@@ -18,8 +18,15 @@ struct ThemeColours
 	juce::Colour BackgroundColour{};
 	juce::Colour Page_1{};
 
-	juce::Colour ButtonsID_01{};
+	juce::Colour ButtonsID_01_ON{};
 	juce::Colour ButtonsID_01_Text{};
+
+	juce::Colour TabButtonsID_03_ON{};
+	juce::Colour TabButtonsID_03_OFF{};
+	juce::Colour NamingLabel{};
+
+	juce::Colour ModeButtonsID_05_ON{};
+	juce::Colour ModeButtonsID_05_OFF{};
 
 	juce::Colour CustomGroupComponent{};
 

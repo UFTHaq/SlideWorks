@@ -83,8 +83,15 @@ private:
 		.BackgroundColour     = juce::Colour::fromString("ffbebebe"),
 		.Page_1               = juce::Colour::fromString("ffe1e2e3"),
 						      
-		.ButtonsID_01         = juce::Colour::fromString("ffe1e2e6"),
+		.ButtonsID_01_ON      = juce::Colour::fromString("ffe1e2e6"),
 		.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
+
+		.TabButtonsID_03_ON   = juce::Colour::fromString("ffebeced"),
+		.TabButtonsID_03_OFF  = juce::Colour::fromString("ffe1e2e6"),
+
+		.NamingLabel          = juce::Colour::fromString("ff324a61"),
+		.ModeButtonsID_05_ON  = juce::Colour::fromString("ffebeced"),
+		.ModeButtonsID_05_OFF = juce::Colour::fromString("ffe1e2e6"),
 
 		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
 
@@ -105,8 +112,18 @@ private:
 		.BackgroundColour     = juce::Colour::fromString("ff2a2a2c"),
 		.Page_1               = juce::Colour::fromString("ffb4b5b9"),
 						      
-		.ButtonsID_01         = juce::Colour::fromString("ffb4b5b9"),
+		//.ButtonsID_01_ON      = juce::Colour::fromString("ffb4b5b9"),
+		//.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
+
+		.ButtonsID_01_ON      = juce::Colour::fromString("ffe1e2e6"),
 		.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
+
+		.TabButtonsID_03_ON   = juce::Colour::fromString("ffebeced"),
+		.TabButtonsID_03_OFF  = juce::Colour::fromString("ffe1e2e6"),
+
+		.NamingLabel          = juce::Colour::fromString("ff324a61"),
+		.ModeButtonsID_05_ON  = juce::Colour::fromString("ffebeced"),
+		.ModeButtonsID_05_OFF = juce::Colour::fromString("ffe1e2e6"),
 
 		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
 						      
