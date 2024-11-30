@@ -12,10 +12,16 @@
 
 SliderFilmstrip::SliderFilmstrip()
 {
+    initializeAssets();
 }
 
 SliderFilmstrip::~SliderFilmstrip()
 {
+}
+
+juce::String SliderFilmstrip::getFilmstripType()
+{
+    return filmstripType;
 }
 
 double SliderFilmstrip::getFilmstripSizeCalc()
@@ -28,4 +34,16 @@ double SliderFilmstrip::getFilmstripSizeCalc()
 juce::String SliderFilmstrip::getFilmstripSizeStatus()
 {
     return juce::String("OKAY TESTING SLIDER");
+}
+
+void SliderFilmstrip::initializeAssets()
+{
+    addAsset("Thumb");
+    addAsset("Track");
+    addAsset("Scale");
+}
+
+juce::String SliderFilmstrip::getAnglesOrThumbPosText()
+{
+    return juce::String("Thumb Positions");
 }

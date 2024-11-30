@@ -17,6 +17,7 @@ struct ThemeColours
 	juce::Colour FontTitleBar{};
 	juce::Colour BackgroundColour{};
 	juce::Colour Page_1{};
+	juce::Colour SlideworksBaseColour{};
 
 	juce::Colour ButtonsID_01_ON{};
 	juce::Colour ButtonsID_01_Text{};
@@ -28,10 +29,19 @@ struct ThemeColours
 	juce::Colour ModeButtonsID_05_ON{};
 	juce::Colour ModeButtonsID_05_OFF{};
 
+	juce::Colour OutlineControl{};
+
+	juce::Colour BannerFilmstripType{};
+
 	juce::Colour CustomGroupComponent{};
+
+	juce::Colour SliderThumbColour{};
 
 	juce::Colour FontBlack{};
 	juce::Colour FontWhite{};
+
+	juce::Colour TransparentBlack{};
+	juce::Colour TransparentWhite{};
 
 	juce::Colour CustomDarkest{};
 	juce::Colour CustomDarkGrey{};

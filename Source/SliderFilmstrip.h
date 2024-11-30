@@ -15,6 +15,8 @@
 class SliderFilmstrip : public FilmstripProject
 {
 private:
+    juce::String filmstripType{ "SLIDER" };
+
     // thumbPos use normalize (0 - 1) position
     double minThumbPos{ 0.1 };
     double maxThumbPos{ 0.9 };
@@ -26,6 +28,11 @@ public:
     SliderFilmstrip();
     ~SliderFilmstrip();
 
+    juce::String getFilmstripType() override;
     double getFilmstripSizeCalc() override;
     juce::String getFilmstripSizeStatus() override;
+
+    void initializeAssets() override;
+
+    juce::String getAnglesOrThumbPosText() override;
 };

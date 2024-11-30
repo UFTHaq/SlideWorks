@@ -51,6 +51,14 @@ public:
     size_t getActiveProjectIndex() const;
     void setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel);
     void reloadNamingProjectLabel(size_t activeIndex);
+    void setupBannerProjectTypeLabel(CustomLookAndFeel* customLookAndFeel);
+    void reloadBannerFilmstripType(size_t activeIndex);
+    void setupExportProjectButton();
+    void reloadMainControlProject(size_t activeIndex);
+    void setupAddNewAssetButton();
+    void setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel);
+    void reloadTotalFramesControl(size_t activeIndex);
+    void setupDefaultApplyButton();
 
     void setupKnobToggleButton();
     void setupSliderToggleButton();
@@ -115,6 +123,9 @@ private:
     //////////////// NEW UI ////////////////
 
     //////////////// NEW BUTTON ////////////////
+    const int MenuButtonWidth{ 52 };
+    const int MenuButtonHeight{ 22 };
+
     juce::TextButton SW_NewProjectButton{};
     juce::TextButton SW_ThemeButton{};
     juce::TextButton SW_InfoButton{};
@@ -142,17 +153,74 @@ private:
 
     size_t projectActiveIndex{};
 
+        ///-- LABEL --///
     const int NamingLabelWidth{ 55 };
     const int NamingLabelEditorWidth{ 200 };
 
     juce::Label naming_Label{};
     juce::Label naming_Editor{};
 
+        ///-- MODE BUTTON --//
     const int MODEButtonWidth{ 80 };
 
     juce::TextButton mode_SimulationButton{};
     juce::TextButton mode_PreviewButton{};
     juce::TextButton mode_EditButton{};
+
+    //////////////// MAIN CONTROL ////////////////
+    juce::Rectangle<int> area_MainControl_Banner_And_Export{};
+    juce::Rectangle<int> area_MainControl_Default_And_ApplyButtons{};
+    juce::Rectangle<int> area_MainControl_Group_Angles_Or_ThumbPositions{};
+    juce::Rectangle<int> area_MainControl_Group_Orientations{};
+    juce::Rectangle<int> area_MainControl_Group_TotalFrames{};
+    juce::Rectangle<int> area_MainControl_AssestsManager{};
+
+        ///-- BANNER --///
+    const int BannerHeight{ 34 };
+    const int ExportButtonWidth{ 65 };
+
+    juce::Label banner_FilmstripType_Label{};
+    juce::TextButton export_ProjectButton{};
+
+        ///-- DEFAULT APPLY --///
+    const int DefaultApplyHeight{ 34 };
+    juce::TextButton control_DefaultButton{};
+    juce::TextButton control_ApplyButton{};
+
+        ///-- ANGLES / THUMB POS --///
+    const int group_AnglesOrThumbPos_Height{ 110 };
+
+    CustomGroupComponent group_AnglesOrThumbPos{};
+    double minAngle_Degree{};
+    double maxAngle_Degree{};
+    juce::Label minAngle_Label{};
+    juce::Label maxAngle_Label{};
+    juce::Slider minAngle_Slider{};
+    juce::Slider maxAngle_Slider{};
+
+        ///-- ORIENTATION --///
+    const int group_Orientation_Height{ 70 };
+
+    CustomGroupComponent group_Orientation{};
+
+        ///-- TOTAL FRAMES --///
+    const int group_TotalFrames_Height{ 60 };
+    CustomGroupComponent group_TotalFrames{};
+
+    juce::Slider totalFrames_Slider{};
+    juce::Label totalFrames_Label{};
+
+        ///-- ASSETS MANAGER --///
+    const int NewAssetButtonWidth{ 35 };
+    const int NewAssetButtonHeight{ 20 };
+
+    juce::TextButton add_NewAssetButton{};
+    juce::Rectangle<int> area_assetsManager{};
+
+    juce::Viewport assetsViewport{};
+    juce::Component assetsContainer{};
+
+
 
     ////////////////----------- PAGE 3 -----------////////////////
     CustomGroupComponent groupDialog_2_Info{};

@@ -100,7 +100,7 @@ juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
 		fullscreenShape.addRectangle(45.0F, 45.0F, 100.0F, 100.0F);
 		juce::PathStrokeType(15.0F).createStrokedPath(fullscreenShape, fullscreenShape);
 
-		//return new LookAndFeel_V4_DocumentWindowButton("maximise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, fullscreenShape);
+		return new LookAndFeel_V4_DocumentWindowButton("maximise", getCurrentTheme().CustomWhite.withAlpha(0.1F), shape, fullscreenShape);
 	}
 
 	jassertfalse;
@@ -282,7 +282,55 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getCurrentTheme().ModeButtonsID_05_OFF;
 		}
 	}
-	
+	else if (buttonID == "Buttons_ID_06_EXPORT")
+	{
+		cornerSize = 1;
+
+		outlineColor = getColorCustomGrey();
+		outlineThick = 1.0F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().CustomWhite.withAlpha(0.2F);
+		}
+		else
+		{
+			fillColor = getCurrentTheme().ButtonsID_01_ON;
+		}
+	}
+	else if (buttonID == "Buttons_ID_07_NEW_ASSET")
+	{
+		cornerSize = 1;
+
+		outlineColor = getCurrentTheme().CustomDarkGrey;
+		outlineThick = 0.5F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().CustomLightGrey.withAlpha(0.2F);
+		}
+		else
+		{
+			fillColor = getCurrentTheme().ButtonsID_01_ON;
+		}
+	}
+	else if (buttonID == "Buttons_ID_08_DEFAULT" || buttonID == "Buttons_ID_09_APPLY")
+	{
+		cornerSize = 2;
+
+		outlineColor = getCurrentTheme().OutlineControl;
+		outlineThick = 1.0F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().CustomLightGrey.withAlpha(0.2F);
+		}
+		else
+		{
+			fillColor = getCurrentTheme().TransparentWhite;
+		}
+	}
+
 
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
@@ -402,20 +450,7 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	g.fillRoundedRectangle(bounds, cornerSize);
 
 	g.setColour(outlineColor);
-	g.drawRoundedRectangle(bounds.reduced(outlineThick * 0.65F), cornerSize, outlineThick);
-
-	if (buttonID == "Buttons_ID_04_TAB_CLOSE")
-	{
-		juce::Path shape;
-		auto crossThickness = 0.1F;
-
-		shape.addLineSegment({ 0.0F, 0.0F, 1.0F, 1.0F }, crossThickness);
-		shape.addLineSegment({ 1.0F, 0.0F, 0.0F, 1.0F }, crossThickness);
-
-		auto reducedRect = bounds.reduced(bounds.getHeight() * 0.25F);
-		g.setColour(getColorCustomWhite());
-		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
-	}
+	g.drawRoundedRectangle(bounds.reduced(outlineThick * 1.0F), cornerSize, outlineThick);
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
@@ -471,6 +506,20 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getCurrentTheme().CustomGrey;
 		}
 	}
+	else if (buttonID == "Buttons_ID_04_TAB_CLOSE")
+	{
+		bounds.reduce(3, 3);
+
+		juce::Path shape;
+		auto crossThickness = 0.2F;
+
+		shape.addLineSegment({ 0.0F, 0.0F, 1.0F, 1.0F }, crossThickness);   // Top Left -> Bottom Right
+		shape.addLineSegment({ 0.0F, 1.0F, 1.0F, 0.0F, }, crossThickness);  // Bottom left -> Top Right
+
+		auto reducedRect = bounds.reduced(int(bounds.getHeight() * 0.25F));
+		g.setColour(getCurrentTheme().CustomWhite);
+		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+	}
 	else if (buttonID == "Buttons_ID_05_MODE")
 	{
 		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
@@ -486,6 +535,34 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		{
 			textColor = getCurrentTheme().CustomGrey;
 		}
+	}
+	else if (buttonID == "Buttons_ID_06_EXPORT")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
+
+		justification = juce::Justification::centred;
+	}
+	else if (buttonID == "Buttons_ID_07_NEW_ASSET")
+	{
+		bounds = bounds.withSizeKeepingCentre(bounds.getHeight(), bounds.getHeight());
+
+		juce::Path shape;
+		auto crossThickness = 0.175F;
+
+		shape.addLineSegment({ 0.5F, 0.0F, 0.5F, 1.0F }, crossThickness);
+		shape.addLineSegment({ 0.0F, 0.5F, 1.0F, 0.5F }, crossThickness);
+
+		auto reducedRect = bounds.reduced(int(bounds.getHeight() * 0.25F));
+		g.setColour(getCurrentTheme().CustomGrey);
+		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+	}
+	else if (buttonID == "Buttons_ID_08_DEFAULT" || buttonID == "Buttons_ID_09_APPLY")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
+
+		justification = juce::Justification::centred;
 	}
 	
 
@@ -632,25 +709,43 @@ void CustomLookAndFeel::drawGroupComponentOutline(juce::Graphics& g, int width, 
 
 void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider)
 {
-	juce::Colour trackColour = getColorCustomDarkGrey();
-	juce::Colour thumbColour = getColorCustomLightGrey().brighter();
+	auto ID = slider.getComponentID();
+
+	juce::Colour trackColour = slider.findColour(juce::Slider::trackColourId);
+	juce::Colour thumbColour = slider.findColour(juce::Slider::thumbColourId);
+	juce::Colour outline = getCurrentTheme().CustomDarkest;
 
 	// Draw track
 	float trackHeight = float(height * 1.F);
-	float thumbSizeW  = float(trackHeight * 0.6F);
+	float thumbSizeW  = float(trackHeight * 0.7F);
 	float pad = float(trackHeight * 0.10F);
 
-	juce::Rectangle<float> track{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
+	auto track = juce::Rectangle<float>{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
 	g.setColour(trackColour);
-	g.fillRoundedRectangle(track, getRoundedCornerSize());
+	g.fillRoundedRectangle(track, 1);
+	g.setColour(outline);
+	g.drawRoundedRectangle(track.reduced(0.5F), 1, 0.3F);
 
 	// Draw thumb
 	float thumbWidth  = thumbSizeW;
 	float thumbHeight = float(trackHeight * 0.8F);;
 	float thumbX      = float(sliderPos - (thumbWidth / 2));
-	juce::Rectangle<float> thumb{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
+	auto thumb = juce::Rectangle<float>{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
 	g.setColour(thumbColour);
 	g.fillRoundedRectangle(thumb, getRoundedCornerSize());
+
+	// Draw motif in thumb
+	if (ID == "Slider_ID_01_WithThumb")
+	{
+		auto bounds = thumb;
+		juce::Path shape;
+		auto crossThickness = 0.225F;
+		shape.addLineSegment({ 0.5F, 0.0F, 0.5F, 1.0F }, crossThickness);
+
+		auto reducedRect = bounds.reduced(int(bounds.getHeight() * 0.235F));
+		g.setColour(getCurrentTheme().CustomLightGrey.brighter(0.8F));
+		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+	}
 }
 
 void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
@@ -669,6 +764,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 	auto rectEllipse = juce::Rectangle{ rx, ry, rw, rw };
 
 	auto sliderName = slider.getName();
+	auto ID = slider.getComponentID();
+
 	if (sliderName == "sliderMinAngles" || sliderName == "sliderMaxAngles")
 	{
 		g.setColour(getColorCustomDarkGrey().withAlpha(0.75F));
@@ -726,24 +823,29 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 {
 	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
-
-	g.setColour(label.findColour(juce::Label::backgroundColourId));
-	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
-
 	auto outlineColour = juce::Colours::transparentWhite;
+	auto fillColour = label.findColour(juce::Slider::backgroundColourId);
 	auto bounds = label.getLocalBounds();
 	auto ID = label.getComponentID();
+
 	if (ID == "Label_ID_01_NamingEditor" || ID == "Label_ID_O1_Naming")
 	{
 		bounds.removeFromLeft(5);
 		bounds.removeFromTop(1);
 
 		outlineColour = label.findColour(juce::Label::outlineColourId);
+	} 
+	else if (ID == "Slider_ID_01_WithThumb")
+	{
+		outlineColour = label.findColour(juce::Label::outlineColourId);
 	}
 
+	g.setColour(label.findColour(juce::Label::backgroundColourId));
+	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
+
 	// Set the text color and draw the text
-	g.setColour(label.findColour(juce::Label::textColourId));
 	g.setFont(label.getFont());
+	g.setColour(label.findColour(juce::Label::textColourId));
 	g.drawText(label.getText(), bounds, label.getJustificationType(), true);
 
 	g.setColour(outlineColour);
@@ -755,8 +857,24 @@ void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, i
 	(void)width;
 	(void)height;
 
-	editor.setJustification(editor.getJustificationType());
-	editor.setIndents(editor.getLeftIndent(), 3);	// keep the leftIndent the same, and set topIndent to 0
+	int topIndent{3};
+	auto Justification = editor.getJustificationType();
+
+	// CANT USE THIS FOR LABEL EDITOR MODE THO :[
+	//auto ID = editor.getComponentID();
+
+	//if (ID == "Label_ID_01_NamingEditor" || ID == "Label_ID_O1_Naming")
+	//{
+	//	topIndent = 3;
+	//}
+	//else if ("Slider_ID_01_WithThumb")
+	//{
+	//	topIndent = 0;
+	//	//Justification = juce::Justification::centred;
+	//}
+
+	editor.setJustification(Justification);
+	editor.setIndents(editor.getLeftIndent(), topIndent);	// keep the leftIndent the same, and set topIndent to 0
 
 	g.setColour(editor.findColour(juce::Label::backgroundWhenEditingColourId));
 	g.fillRoundedRectangle(editor.getLocalBounds().toFloat(), getRoundedCornerSize());

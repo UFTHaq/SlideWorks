@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "CustomLookAndFeel.h"
 #include "Globals.h"
+#include "Asset.h"
 
 enum class FilmstripOrientation
 {
@@ -38,7 +39,12 @@ protected:
 
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
-    int totalFrames{ 0 };
+    std::vector< std::unique_ptr<Asset>> assets{};
+
+    int minFrames{ 7 };
+    int maxFrames{ 150 };
+    int totalFrames{ 121 };
+
     FilmstripOrientation orientation{ FilmstripOrientation::VERTICAL_FILMSTRIP };
     WorkingMode workingMode{ WorkingMode::EDIT_MODE };
 
@@ -51,12 +57,24 @@ public:
     void resized() override;
     void paint(juce::Graphics& g) override;
 
+    virtual juce::String getFilmstripType();
     virtual double getFilmstripSizeCalc();
     virtual juce::String getFilmstripSizeStatus();
 
     juce::String getProjectName();
     void setProjectName(juce::String newName);
 
+    void setTotalFrames(int newValue);
+    int getMinFrames() const;
+    int getMaxFrames() const;
+    int getTotalFrames() const;
+
     juce::TextButton tabButton{};
     std::function<void(FilmstripProject*)> onDeleteRequest{};
+
+    const std::vector<std::unique_ptr<Asset>>& getAsset() const;
+    void addAsset(const juce::String& type);
+    virtual void initializeAssets() = 0;
+
+    virtual juce::String getAnglesOrThumbPosText();
 };

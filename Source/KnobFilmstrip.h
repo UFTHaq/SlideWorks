@@ -15,6 +15,8 @@
 class KnobFilmstrip : public FilmstripProject
 {
 private:
+    juce::String filmstripType{ "KNOB" };
+
     double minAngleDegree{ -135 };
     double maxAngleDegree{ 135 };
     double valueAngleDegree{ 0 };
@@ -25,6 +27,11 @@ public:
     KnobFilmstrip();
     ~KnobFilmstrip();
 
+    juce::String getFilmstripType() override;
     double getFilmstripSizeCalc() override;
     juce::String getFilmstripSizeStatus() override;
+
+    void initializeAssets() override;
+
+    juce::String getAnglesOrThumbPosText() override;
 };

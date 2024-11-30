@@ -16,6 +16,12 @@ KnobFilmstrip::KnobFilmstrip()
 
 KnobFilmstrip::~KnobFilmstrip()
 {
+    initializeAssets();
+}
+
+juce::String KnobFilmstrip::getFilmstripType()
+{
+    return filmstripType;
 }
 
 double KnobFilmstrip::getFilmstripSizeCalc()
@@ -29,4 +35,15 @@ juce::String KnobFilmstrip::getFilmstripSizeStatus()
 {
 
     return juce::String("OKAY TESTING KNOB");
+}
+
+void KnobFilmstrip::initializeAssets()
+{
+    addAsset("Knob");
+    addAsset("Scale");
+}
+
+juce::String KnobFilmstrip::getAnglesOrThumbPosText()
+{
+    return juce::String("Angles");
 }

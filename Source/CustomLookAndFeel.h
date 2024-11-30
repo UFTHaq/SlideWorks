@@ -82,6 +82,7 @@ private:
 		.FontTitleBar         = juce::Colour::fromString("ffffffff"),
 		.BackgroundColour     = juce::Colour::fromString("ffbebebe"),
 		.Page_1               = juce::Colour::fromString("ffe1e2e3"),
+		.SlideworksBaseColour = juce::Colour::fromString("ffebeced"),
 						      
 		.ButtonsID_01_ON      = juce::Colour::fromString("ffe1e2e6"),
 		.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
@@ -93,16 +94,25 @@ private:
 		.ModeButtonsID_05_ON  = juce::Colour::fromString("ffebeced"),
 		.ModeButtonsID_05_OFF = juce::Colour::fromString("ffe1e2e6"),
 
+		.OutlineControl       = juce::Colour::fromString("ffababab"),
+
+		.BannerFilmstripType  = juce::Colour::fromString("ffc8c8e6"),
+
 		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
 
+		.SliderThumbColour    = juce::Colour::fromString("ff606164"),
+
 		.FontBlack            = juce::Colour::fromString("ff262525"),
+		.FontWhite            = juce::Colour::fromString("ffffffff"),
+
+		.TransparentBlack     = juce::Colours::transparentBlack,
+		.TransparentWhite     = juce::Colours::transparentWhite,
 						      
 		.CustomDarkest        = juce::Colour::fromString("ff181818"),
 		.CustomDarkGrey       = juce::Colour::fromString("ff2a2a2c"),
 		.CustomGrey           = juce::Colour::fromString("ff535354"),
 		.CustomLightGrey      = juce::Colour::fromString("ffacadaf"),
 		.CustomWhite          = juce::Colour::fromString("ffffffff"),
-		.CustomTransparent    = juce::Colours::transparentBlack,
 	};
 
 	ThemeColours DarkNightTheme
@@ -111,6 +121,7 @@ private:
 		.FontTitleBar         = juce::Colour::fromString("ffffffff"),
 		.BackgroundColour     = juce::Colour::fromString("ff2a2a2c"),
 		.Page_1               = juce::Colour::fromString("ffb4b5b9"),
+		.SlideworksBaseColour = juce::Colour::fromString("ff252525"),
 						      
 		//.ButtonsID_01_ON      = juce::Colour::fromString("ffb4b5b9"),
 		//.ButtonsID_01_Text    = juce::Colour::fromString("ff262525"),
@@ -125,14 +136,23 @@ private:
 		.ModeButtonsID_05_ON  = juce::Colour::fromString("ffebeced"),
 		.ModeButtonsID_05_OFF = juce::Colour::fromString("ffe1e2e6"),
 
+		.OutlineControl       = juce::Colour::fromString("ffababab"),
+
+		.BannerFilmstripType  = juce::Colour::fromString("ffc8c8e6"),
+
 		.CustomGroupComponent = juce::Colour::fromString("ff262525"),
+
+		.FontBlack            = juce::Colour::fromString("ff262525"),
+		.FontWhite            = juce::Colour::fromString("ffffffff"),
+
+		.TransparentBlack     = juce::Colours::transparentBlack,
+		.TransparentWhite     = juce::Colours::transparentWhite,
 						      
 		.CustomDarkest        = juce::Colour::fromString("ff181818"),
 		.CustomDarkGrey       = juce::Colour::fromString("ff2a2a2c"),
 		.CustomGrey           = juce::Colour::fromString("ff535354"),
 		.CustomLightGrey      = juce::Colour::fromString("ffacadaf"),
 		.CustomWhite          = juce::Colour::fromString("ffffffff"),
-		.CustomTransparent    = juce::Colours::transparentBlack,
 	};
 
 	ThemeColours themeColoursNow{ OfficeLightTheme };
