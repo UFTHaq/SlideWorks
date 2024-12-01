@@ -14,20 +14,13 @@
 #include "CustomLookAndFeel.h"
 #include "Globals.h"
 #include "Asset.h"
+#include "WorkingMode.h"
 
 enum class FilmstripOrientation
 {
     VERTICAL_FILMSTRIP,
     HORIZONTAL_FILMSTRIP
 };
-
-enum class WorkingMode
-{
-    EDIT_MODE,
-    PREVIEW_MODE,
-    SIMULATION_MODE
-};
-
 
 
 class FilmstripProject
@@ -63,6 +56,9 @@ public:
 
     juce::String getProjectName();
     void setProjectName(juce::String newName);
+
+    WorkingMode getWorkingMode();
+    void setWorkingMode(WorkingMode mode);
 
     void setTotalFrames(int newValue);
     int getMinFrames() const;

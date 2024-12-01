@@ -2253,6 +2253,9 @@
     <ClInclude Include="..\..\Source\Asset.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\WorkingMode.h">
+      <Filter>SlideWorks\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h">
       <Filter>JUCE Modules\juce_core\containers</Filter>
     </ClInclude>

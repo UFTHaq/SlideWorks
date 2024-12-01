@@ -35,6 +35,7 @@
             file="Source/SliderFilmstrip.cpp"/>
       <FILE id="AIebtz" name="Asset.h" compile="0" resource="0" file="Source/Asset.h"/>
       <FILE id="QeLqfL" name="Asset.cpp" compile="1" resource="0" file="Source/Asset.cpp"/>
+      <FILE id="XruRRW" name="WorkingMode.h" compile="0" resource="0" file="Source/WorkingMode.h"/>
     </GROUP>
     <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>

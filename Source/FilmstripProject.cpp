@@ -74,6 +74,16 @@ void FilmstripProject::setProjectName(juce::String newName)
     this->tabButton.setButtonText(newName);
 }
 
+WorkingMode FilmstripProject::getWorkingMode()
+{
+    return workingMode;
+}
+
+void FilmstripProject::setWorkingMode(WorkingMode mode)
+{
+    this->workingMode = mode;
+}
+
 void FilmstripProject::setTotalFrames(int newValue)
 {
     this->totalFrames = newValue;

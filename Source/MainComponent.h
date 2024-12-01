@@ -7,6 +7,7 @@
 
 #include "ThemeColours.h"
 #include "Globals.h"
+#include "WorkingMode.h"
 
 #include "FilmstripProject.h"
 #include "KnobFilmstrip.h"
@@ -42,6 +43,7 @@ public:
     void updatePage3InfoVisibility(bool visible);
 
     void setupLayoutUI();
+    void setupLayoutWorkingMode(size_t activeIndex);
     bool getInputPathState();
     void checkInputPathState();
     void loadSimulationImage();
@@ -51,6 +53,8 @@ public:
     size_t getActiveProjectIndex() const;
     void setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel);
     void reloadNamingProjectLabel(size_t activeIndex);
+    void togglingWorkingModeButton(WorkingMode mode);
+    void reloadWorkingModeProject(size_t activeIndex);
     void setupBannerProjectTypeLabel(CustomLookAndFeel* customLookAndFeel);
     void reloadBannerFilmstripType(size_t activeIndex);
     void setupExportProjectButton();
@@ -59,6 +63,8 @@ public:
     void setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel);
     void reloadTotalFramesControl(size_t activeIndex);
     void setupDefaultApplyButton();
+
+    void reloadAllControls(size_t activeIndex);
 
     void setupKnobToggleButton();
     void setupSliderToggleButton();
@@ -111,7 +117,9 @@ private:
         EDIT
     };
 
-    ModeState SlideWorksMode{ ModeState::SIMULATION };
+    //ModeState SlideWorksMode{ ModeState::SIMULATION };
+
+    WorkingMode workingMode{ WorkingMode::SIMULATION_MODE };
 
     bool inputPathState{};
 

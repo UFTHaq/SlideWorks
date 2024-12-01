@@ -1889,6 +1889,7 @@
     <ClInclude Include="..\..\Source\KnobFilmstrip.h"/>
     <ClInclude Include="..\..\Source\SliderFilmstrip.h"/>
     <ClInclude Include="..\..\Source\Asset.h"/>
+    <ClInclude Include="..\..\Source\WorkingMode.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

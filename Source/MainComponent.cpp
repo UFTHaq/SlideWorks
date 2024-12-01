@@ -355,17 +355,7 @@ void MainComponent::setupLayoutUI()
 
     auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace;
 
-    if (SlideWorksMode == ModeState::EDIT)
-    {
-        area_SubControl = copy_area_Layer3_MainWorkspace.removeFromRight(SubControlWidth);
-        copy_area_Layer3_MainWorkspace.removeFromRight(1);
-        area_Canvas = copy_area_Layer3_MainWorkspace;
-
-    }
-    else {
-        area_Canvas = copy_area_Layer3_MainWorkspace;
-        area_SubControl = { 0,0,0,0 };
-    }
+    //if (SlideWorksMode == ModeState::EDIT)
 
     if (filmstripProjects.size() >= 1)
     {
@@ -418,9 +408,6 @@ void MainComponent::setupLayoutUI()
         naming_Label.setBounds(namingLabelArea.reduced(1));
         naming_Editor.setBounds(namingLabelEditorArea.reduced(1));
 
-        reloadNamingProjectLabel(projectActiveIndex);
-
-
         // MODE BUTTON VIEWPORT
         auto copy_area_ModeButtons = area_ModeButtons;
 
@@ -442,8 +429,6 @@ void MainComponent::setupLayoutUI()
             area_MainControl_Banner_And_Export.getHeight())
         );
 
-        reloadBannerFilmstripType(projectActiveIndex);
-
         auto area_exportButton = juce::Rectangle<int>(
             area_MainControl_Banner_And_Export.getRight() - ExportButtonWidth,
             area_MainControl_Banner_And_Export.getY(),
@@ -463,8 +448,6 @@ void MainComponent::setupLayoutUI()
         control_ApplyButton.setBounds(copy_area_MainControl_Default_And_ApplyButtons.reduced(2));
 
         // ANGLES / THUMB POSITION
-        reloadMainControlProject(projectActiveIndex);
-
         copy_area_MainControl.setHeight(copy_area_MainControl.getHeight() + 4);
         group_AnglesOrThumbPos.setBounds(copy_area_MainControl.removeFromBottom(group_AnglesOrThumbPos_Height));
 
@@ -479,13 +462,12 @@ void MainComponent::setupLayoutUI()
             area = area.withSizeKeepingCentre(totalWidth, area.getHeight());
             area.removeFromTop(10);
 
-            auto slider = area.removeFromLeft(area.getWidth() * 0.8F);
+            auto slider = area.removeFromLeft(int(area.getWidth() * 0.8F));
             auto label= area;
 
             totalFrames_Slider.setBounds(slider.reduced(2));
             totalFrames_Label.setBounds(label.reduced(2));
         }
-        reloadTotalFramesControl(projectActiveIndex);
 
         // VIEWPORT ASSETS
         copy_area_MainControl.removeFromLeft(5);
@@ -499,6 +481,7 @@ void MainComponent::setupLayoutUI()
         area_assetsManager = copy_area_MainControl;
 
 
+        reloadAllControls(projectActiveIndex);
     }
 
 
@@ -745,6 +728,24 @@ void MainComponent::setupLayoutUI()
     
 }
 
+void MainComponent::setupLayoutWorkingMode(size_t activeIndex)
+{
+    reloadWorkingModeProject(activeIndex);
+
+    auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace;
+    if (workingMode == WorkingMode::EDIT_MODE)
+    {
+        area_SubControl = copy_area_Layer3_MainWorkspace.removeFromRight(SubControlWidth);
+        copy_area_Layer3_MainWorkspace.removeFromRight(1);
+        area_Canvas = copy_area_Layer3_MainWorkspace;
+
+    }
+    else {
+        area_Canvas = copy_area_Layer3_MainWorkspace;
+        area_SubControl = { 0,0,0,0 };
+    }
+}
+
 void MainComponent::checkInputPathState()
 {
     if (inputPathKnob.isNotEmpty() ||
@@ -867,10 +868,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                 // RELOAD WORKSPACE : 
                                 // NAMING, SLIDERS, ETC.
-                                reloadNamingProjectLabel(projectActiveIndex);
-                                reloadBannerFilmstripType(projectActiveIndex);
-                                reloadMainControlProject(projectActiveIndex);
-                                reloadTotalFramesControl(projectActiveIndex);
+                                reloadAllControls(projectActiveIndex);
                             };
 
                         // using safePointer to MainComponent cause this is lambda deleting object from the object it self, so if the object already deleted
@@ -893,7 +891,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                         mainComp->removeChildComponent(it->get());
                                         mainComp->filmstripProjects.erase(it);
-                                        mainComp->setupLayoutUI();
+                                        mainComp->setupLayoutUI();                // RECALCULATE TAB BUTTON COUNTS
 
                                         
                                         if (mainComp->filmstripProjects.size() > 0)
@@ -912,20 +910,15 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                                 mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
 
-                                                mainComp->reloadNamingProjectLabel(mainComp->projectActiveIndex);
-                                                mainComp->reloadBannerFilmstripType(mainComp->projectActiveIndex);
-                                                mainComp->reloadMainControlProject(mainComp->projectActiveIndex);
-                                                mainComp->reloadTotalFramesControl(mainComp->projectActiveIndex);
+                                                mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                             }
                                         }
                                         else
                                         {
                                             // ZERO
                                             size_t index = SIZE_MAX;
-                                            mainComp->reloadNamingProjectLabel(index);
-                                            mainComp->reloadBannerFilmstripType(index);
-                                            mainComp->reloadMainControlProject(index);
-                                            mainComp->reloadTotalFramesControl(index);
+
+                                            mainComp->reloadAllControls(index);
 
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
                                             mainComp->updatePage2WorkVisibility(false);
@@ -958,10 +951,8 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                 projectActiveIndex = getActiveProjectIndex(); // GET ACTIVE INDEX
 
-                                reloadNamingProjectLabel(projectActiveIndex);
-                                reloadBannerFilmstripType(projectActiveIndex);
-                                reloadMainControlProject(projectActiveIndex);
-                                reloadTotalFramesControl(projectActiveIndex);
+                                reloadAllControls(projectActiveIndex);
+
                             };
 
                         ptrProject->onDeleteRequest = [safeThis = juce::Component::SafePointer<MainComponent>(this)](FilmstripProject* projectToDelete)
@@ -999,20 +990,16 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                                 }
 
                                                 mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
-                                                mainComp->reloadNamingProjectLabel(mainComp->projectActiveIndex);
-                                                mainComp->reloadBannerFilmstripType(mainComp->projectActiveIndex);
-                                                mainComp->reloadMainControlProject(mainComp->projectActiveIndex);
-                                                mainComp->reloadTotalFramesControl(mainComp->projectActiveIndex);
+
+                                                mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                             }
                                         }
                                         else
                                         {
                                             // ZERO
                                             size_t index = SIZE_MAX;
-                                            mainComp->reloadNamingProjectLabel(index);
-                                            mainComp->reloadBannerFilmstripType(index);
-                                            mainComp->reloadMainControlProject(index);
-                                            mainComp->reloadTotalFramesControl(index);
+
+                                            mainComp->reloadAllControls(index);
 
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
                                             mainComp->updatePage2WorkVisibility(false);
@@ -1191,6 +1178,35 @@ void MainComponent::reloadNamingProjectLabel(size_t activeIndex)
     }
 }
 
+void MainComponent::togglingWorkingModeButton(WorkingMode mode)
+{
+    if (mode == WorkingMode::EDIT_MODE)
+    {
+        togglingButtons(mode_EditButton, mode_PreviewButton, mode_SimulationButton);
+    }
+    else if (mode == WorkingMode::PREVIEW_MODE)
+    {
+        togglingButtons(mode_PreviewButton, mode_SimulationButton, mode_EditButton);
+    }
+    else if (mode == WorkingMode::SIMULATION_MODE)
+    {
+        togglingButtons(mode_SimulationButton, mode_EditButton, mode_PreviewButton);
+    }
+}
+
+void MainComponent::reloadWorkingModeProject(size_t activeIndex)
+{
+    if (activeIndex != SIZE_MAX)
+    {
+        workingMode = filmstripProjects.at(activeIndex)->getWorkingMode();
+        togglingWorkingModeButton(workingMode);
+    }
+    else
+    {
+        workingMode = WorkingMode::EDIT_MODE;
+    }
+}
+
 void MainComponent::setupBannerProjectTypeLabel(CustomLookAndFeel* customLookAndFeel)
 {
     banner_FilmstripType_Label.setText("", juce::dontSendNotification);
@@ -1269,9 +1285,9 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     totalFrames_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
     totalFrames_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     totalFrames_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-    totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-    totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    //totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    //totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    //totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
 
     //totalFrames_Label.setColour(juce:: TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
     //totalFrames_Label.setColour(juce:: TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
@@ -1304,6 +1320,8 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
                 newValue = minValue;
             }
 
+            DBG("MIN VALUE : " << minValue);
+            DBG("MAX VALUE : " << maxValue);
 
             totalFrames_Slider.setValue(newValue, juce::sendNotification);
             //filmstripTotalFrames = newValue;
@@ -1342,6 +1360,17 @@ void MainComponent::setupDefaultApplyButton()
     control_ApplyButton.setComponentID("Buttons_ID_09_APPLY");
     control_ApplyButton.onClick = [this]() {};
     addAndMakeVisible(control_ApplyButton);
+}
+
+void MainComponent::reloadAllControls(size_t activeIndex)
+{
+    reloadWorkingModeProject(activeIndex);
+    setupLayoutWorkingMode(activeIndex);
+
+    reloadNamingProjectLabel(activeIndex);
+    reloadBannerFilmstripType(activeIndex);
+    reloadMainControlProject(activeIndex);
+    reloadTotalFramesControl(activeIndex);
 }
 
 
@@ -1396,9 +1425,13 @@ void MainComponent::setupSimulationButton()
     mode_SimulationButton.setToggleState(true, juce::NotificationType::dontSendNotification);
     mode_SimulationButton.onClick = [this]() 
         {
-            SlideWorksMode = ModeState::SIMULATION;
+            workingMode = WorkingMode::SIMULATION_MODE;
+
+            filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_SimulationButton, mode_PreviewButton, mode_EditButton);
-            setupLayoutUI();
+
+            //setupLayoutUI();
+            setupLayoutWorkingMode(projectActiveIndex);
             repaint();
         };
     addAndMakeVisible(mode_SimulationButton);
@@ -1411,9 +1444,13 @@ void MainComponent::setupPreviewButton()
     mode_PreviewButton.setToggleState(false, juce::NotificationType::dontSendNotification);
     mode_PreviewButton.onClick = [this]() 
         {
-            SlideWorksMode = ModeState::PREVIEW;
+            workingMode = WorkingMode::PREVIEW_MODE;
+         
+            filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_PreviewButton, mode_SimulationButton, mode_EditButton);
-            setupLayoutUI();
+            
+            //setupLayoutUI();
+            setupLayoutWorkingMode(projectActiveIndex);
             repaint();
         };
     addAndMakeVisible(mode_PreviewButton);
@@ -1426,9 +1463,13 @@ void MainComponent::setupEditButton()
     mode_EditButton.setToggleState(false, juce::NotificationType::dontSendNotification);
     mode_EditButton.onClick = [this]() 
         {
-            SlideWorksMode = ModeState::EDIT;
+            workingMode = WorkingMode::EDIT_MODE;
+
+            filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_EditButton, mode_SimulationButton, mode_PreviewButton);
-            setupLayoutUI();
+
+            //setupLayoutUI();
+            setupLayoutWorkingMode(projectActiveIndex);
             repaint();
         };
     addAndMakeVisible(mode_EditButton);
@@ -2069,21 +2110,21 @@ void MainComponent::updateUI()
         //mode_EditButton.setEnabled(true);
         //mode_EditButton.setVisible(true);
 
-        if (SlideWorksMode == ModeState::SIMULATION) 
-        {
-            simulationKnob.setEnabled(true);
-            simulationKnob.setVisible(true);
-        }
-        else if (SlideWorksMode == ModeState::PREVIEW)
-        {
-            simulationKnob.setEnabled(false);
-            simulationKnob.setVisible(false);
-        }
-        else if (SlideWorksMode == ModeState::EDIT)
-        {
-            simulationKnob.setEnabled(false);
-            simulationKnob.setVisible(false);
-        }
+        //if (SlideWorksMode == ModeState::SIMULATION) 
+        //{
+        //    simulationKnob.setEnabled(true);
+        //    simulationKnob.setVisible(true);
+        //}
+        //else if (SlideWorksMode == ModeState::PREVIEW)
+        //{
+        //    simulationKnob.setEnabled(false);
+        //    simulationKnob.setVisible(false);
+        //}
+        //else if (SlideWorksMode == ModeState::EDIT)
+        //{
+        //    simulationKnob.setEnabled(false);
+        //    simulationKnob.setVisible(false);
+        //}
 
     }
     else if (currentSlideWorksPage == PageState::PAGE3_INFO)
