@@ -739,11 +739,15 @@ void MainComponent::setupLayoutWorkingMode(size_t activeIndex)
         copy_area_Layer3_MainWorkspace.removeFromRight(1);
         area_Canvas = copy_area_Layer3_MainWorkspace;
 
+
     }
     else {
         area_Canvas = copy_area_Layer3_MainWorkspace;
         area_SubControl = { 0,0,0,0 };
     }
+
+    repaint(area_SubControl);
+    repaint(area_Canvas);
 }
 
 void MainComponent::checkInputPathState()
@@ -1053,8 +1057,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         updatePage3InfoVisibility(false);
                     }
 
-
-                    resized();
+                    setupLayoutUI();
                     repaint();
                 }
             );
@@ -1249,7 +1252,9 @@ void MainComponent::reloadMainControlProject(size_t activeIndex)
         group_AnglesOrThumbPos.setText("");
     }
     
-    repaint();
+    reloadTotalFramesControl(activeIndex);
+
+    repaint(area_MainControl);
 }
 
 void MainComponent::setupAddNewAssetButton()
@@ -1266,7 +1271,7 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     totalFrames_Slider.setLookAndFeel(customLookAndFeel);
     totalFrames_Slider.setValue(0);
     totalFrames_Slider.setSliderStyle(juce::Slider::LinearHorizontal);
-    totalFrames_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 40, 20);
+    totalFrames_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     totalFrames_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
     totalFrames_Slider.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
     totalFrames_Slider.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
@@ -1285,14 +1290,14 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     totalFrames_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
     totalFrames_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     totalFrames_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-    //totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    //totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-    //totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
 
-    //totalFrames_Label.setColour(juce:: TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
-    //totalFrames_Label.setColour(juce:: TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
-    //totalFrames_Label.setColour(juce:: TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
-    //totalFrames_Label.setColour(juce:: CaretComponent::caretColourId, customLookAndFeel->getColorCustomWhite());
+    totalFrames_Label.setColour(juce:: TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+    totalFrames_Label.setColour(juce:: TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
+    totalFrames_Label.setColour(juce:: TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+    totalFrames_Label.setColour(juce:: CaretComponent::caretColourId, customLookAndFeel->getColorCustomWhite());
     totalFrames_Label.setLookAndFeel(customLookAndFeel);
     totalFrames_Label.setEditable(false, true);
 
@@ -1365,12 +1370,13 @@ void MainComponent::setupDefaultApplyButton()
 void MainComponent::reloadAllControls(size_t activeIndex)
 {
     reloadWorkingModeProject(activeIndex);
-    setupLayoutWorkingMode(activeIndex);
+    setupLayoutWorkingMode(activeIndex);          // Has 2 repaint(area) 
 
     reloadNamingProjectLabel(activeIndex);
     reloadBannerFilmstripType(activeIndex);
-    reloadMainControlProject(activeIndex);
-    reloadTotalFramesControl(activeIndex);
+    reloadMainControlProject(activeIndex);        // Has 1 repaint(area)
+
+    //repaint();
 }
 
 
@@ -1432,7 +1438,7 @@ void MainComponent::setupSimulationButton()
 
             //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            repaint();
+            //repaint();
         };
     addAndMakeVisible(mode_SimulationButton);
 }
@@ -1451,7 +1457,7 @@ void MainComponent::setupPreviewButton()
             
             //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            repaint();
+            //repaint();
         };
     addAndMakeVisible(mode_PreviewButton);
 }
@@ -1470,7 +1476,7 @@ void MainComponent::setupEditButton()
 
             //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            repaint();
+            //repaint();
         };
     addAndMakeVisible(mode_EditButton);
 }
