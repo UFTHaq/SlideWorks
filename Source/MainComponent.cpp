@@ -728,6 +728,7 @@ void MainComponent::setupLayoutUI()
     
 }
 
+// This function layout need to call repaint() after use
 void MainComponent::setupLayoutWorkingMode(size_t activeIndex)
 {
     reloadWorkingModeProject(activeIndex);
@@ -738,16 +739,11 @@ void MainComponent::setupLayoutWorkingMode(size_t activeIndex)
         area_SubControl = copy_area_Layer3_MainWorkspace.removeFromRight(SubControlWidth);
         copy_area_Layer3_MainWorkspace.removeFromRight(1);
         area_Canvas = copy_area_Layer3_MainWorkspace;
-
-
     }
     else {
         area_Canvas = copy_area_Layer3_MainWorkspace;
         area_SubControl = { 0,0,0,0 };
     }
-
-    repaint(area_SubControl);
-    repaint(area_Canvas);
 }
 
 void MainComponent::checkInputPathState()
@@ -1253,8 +1249,6 @@ void MainComponent::reloadMainControlProject(size_t activeIndex)
     }
     
     reloadTotalFramesControl(activeIndex);
-
-    repaint(area_MainControl);
 }
 
 void MainComponent::setupAddNewAssetButton()
@@ -1369,14 +1363,13 @@ void MainComponent::setupDefaultApplyButton()
 
 void MainComponent::reloadAllControls(size_t activeIndex)
 {
-    reloadWorkingModeProject(activeIndex);
-    setupLayoutWorkingMode(activeIndex);          // Has 2 repaint(area) 
+    setupLayoutWorkingMode(activeIndex);
 
     reloadNamingProjectLabel(activeIndex);
     reloadBannerFilmstripType(activeIndex);
-    reloadMainControlProject(activeIndex);        // Has 1 repaint(area)
+    reloadMainControlProject(activeIndex);
 
-    //repaint();
+    repaint();
 }
 
 
@@ -1436,9 +1429,8 @@ void MainComponent::setupSimulationButton()
             filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_SimulationButton, mode_PreviewButton, mode_EditButton);
 
-            //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            //repaint();
+            repaint();
         };
     addAndMakeVisible(mode_SimulationButton);
 }
@@ -1455,9 +1447,8 @@ void MainComponent::setupPreviewButton()
             filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_PreviewButton, mode_SimulationButton, mode_EditButton);
             
-            //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            //repaint();
+            repaint();
         };
     addAndMakeVisible(mode_PreviewButton);
 }
@@ -1474,9 +1465,8 @@ void MainComponent::setupEditButton()
             filmstripProjects.at(projectActiveIndex)->setWorkingMode(workingMode);
             togglingButtons(mode_EditButton, mode_SimulationButton, mode_PreviewButton);
 
-            //setupLayoutUI();
             setupLayoutWorkingMode(projectActiveIndex);
-            //repaint();
+            repaint();
         };
     addAndMakeVisible(mode_EditButton);
 }
