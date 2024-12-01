@@ -330,6 +330,23 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getCurrentTheme().TransparentWhite;
 		}
 	}
+	else if (buttonID == "Buttons_ID_10_ORIENTATION")
+	{
+		cornerSize = 2;
+
+		outlineColor = getCurrentTheme().OutlineControl;
+		outlineThick = 1.0F;
+
+		if (button.getToggleState() == 1 || shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.5F;
+			fillColor = getCurrentTheme().CustomLightGrey.withAlpha(0.1F);
+		}
+		else
+		{
+			fillColor = getCurrentTheme().TransparentWhite;
+		}
+	}
 
 
 
@@ -564,6 +581,23 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 
 		justification = juce::Justification::centred;
 	}
+	else if (buttonID == "Buttons_ID_10_ORIENTATION")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
+
+		justification = juce::Justification::centred;
+
+
+		if (button.getToggleState() == 1 || isButtonDown)
+		{
+			textColor = getCurrentTheme().FontBlack;
+		}
+		else
+		{
+			textColor = getCurrentTheme().OutlineControl;
+		}
+	}
 	
 
 
@@ -742,7 +776,7 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 		auto crossThickness = 0.225F;
 		shape.addLineSegment({ 0.5F, 0.0F, 0.5F, 1.0F }, crossThickness);
 
-		auto reducedRect = bounds.reduced(int(bounds.getHeight() * 0.235F));
+		auto reducedRect = bounds.reduced(bounds.getHeight() * 0.235F);
 		g.setColour(getCurrentTheme().CustomLightGrey.brighter(0.8F));
 		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
 	}

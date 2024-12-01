@@ -7,7 +7,7 @@
 
 #include "ThemeColours.h"
 #include "Globals.h"
-#include "WorkingMode.h"
+#include "EnumClass.h"
 
 #include "FilmstripProject.h"
 #include "KnobFilmstrip.h"
@@ -62,6 +62,8 @@ public:
     void setupAddNewAssetButton();
     void setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel);
     void reloadTotalFramesControl(size_t activeIndex);
+    void setupOrientationControl(CustomLookAndFeel* customLookAndFeel);
+    void reloadOrientationControl(size_t activeIndex);
     void setupDefaultApplyButton();
 
     void reloadAllControls(size_t activeIndex);
@@ -210,6 +212,9 @@ private:
     const int group_Orientation_Height{ 70 };
 
     CustomGroupComponent group_Orientation{};
+
+    juce::TextButton control_HorizontalButton{};
+    juce::TextButton control_VerticalButton{};
 
         ///-- TOTAL FRAMES --///
     const int group_TotalFrames_Height{ 60 };

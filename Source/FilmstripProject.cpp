@@ -84,11 +84,6 @@ void FilmstripProject::setWorkingMode(WorkingMode mode)
     this->workingMode = mode;
 }
 
-void FilmstripProject::setTotalFrames(int newValue)
-{
-    this->totalFrames = newValue;
-}
-
 int FilmstripProject::getMinFrames() const
 {
     return minFrames;
@@ -102,6 +97,22 @@ int FilmstripProject::getMaxFrames() const
 int FilmstripProject::getTotalFrames() const
 {
     return totalFrames;
+}
+
+void FilmstripProject::setTotalFrames(int newValue)
+{
+    this->totalFrames = newValue;
+}
+
+
+FilmstripOrientation FilmstripProject::getOrientation() const
+{
+    return FilmstripOrientation(orientation);
+}
+
+void FilmstripProject::setOrientation(FilmstripOrientation orientation)
+{
+    this->orientation = orientation;
 }
 
 const std::vector<std::unique_ptr<Asset>>& FilmstripProject::getAsset() const

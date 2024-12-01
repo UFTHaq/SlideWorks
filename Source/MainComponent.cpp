@@ -275,6 +275,12 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
     {
         group_Orientation.setVisible(visible);
         group_Orientation.setEnabled(visible);
+
+        control_HorizontalButton.setVisible(visible);
+        control_HorizontalButton.setEnabled(visible);
+
+        control_VerticalButton.setVisible(visible);
+        control_VerticalButton.setEnabled(visible);
     }
 
     {
@@ -453,6 +459,18 @@ void MainComponent::setupLayoutUI()
 
         // ORIENTATIONS
         group_Orientation.setBounds(copy_area_MainControl.removeFromBottom(group_Orientation_Height));
+        {
+            auto area = group_Orientation.getBounds().reduced(13);
+            auto totalWidth = int(area.getWidth() * 0.95F);
+            area = area.withSizeKeepingCentre(totalWidth, area.getHeight());
+            area.removeFromTop(10);
+
+            auto horizontal = area.removeFromLeft(int(area.getWidth() * 0.5F));
+            auto vertical = area;
+
+            control_HorizontalButton.setBounds(horizontal.reduced(2));
+            control_VerticalButton.setBounds(vertical.reduced(2));
+        }
 
         // TOTAL FRAMES
         group_TotalFrames.setBounds(copy_area_MainControl.removeFromBottom(group_TotalFrames_Height));
@@ -803,6 +821,7 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
     setupDefaultApplyButton();
 
     setupTotalFramesControl(customLookAndFeel);
+    setupOrientationControl(customLookAndFeel);
 
     //setupKnobToggleButton();
     setupSliderToggleButton();
@@ -1249,6 +1268,7 @@ void MainComponent::reloadMainControlProject(size_t activeIndex)
     }
     
     reloadTotalFramesControl(activeIndex);
+    reloadOrientationControl(activeIndex);
 }
 
 void MainComponent::setupAddNewAssetButton()
@@ -1319,12 +1339,13 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
                 newValue = minValue;
             }
 
-            DBG("MIN VALUE : " << minValue);
-            DBG("MAX VALUE : " << maxValue);
 
             totalFrames_Slider.setValue(newValue, juce::sendNotification);
-            //filmstripTotalFrames = newValue;
-            //filmstripProjects.at(activeIndex)->fram
+
+            filmstripProjects.at(projectActiveIndex)->setTotalFrames(int(totalFrames_Slider.getValue()));
+
+            totalFrames_Label.setText(std::to_string(newValue), juce::dontSendNotification);
+
         };
     addAndMakeVisible(totalFrames_Label);
 }
@@ -1345,6 +1366,48 @@ void MainComponent::reloadTotalFramesControl(size_t activeIndex)
     }
     else {
         totalFrames_Slider.setValue(0, juce::dontSendNotification);
+    }
+}
+
+void MainComponent::setupOrientationControl(CustomLookAndFeel* customLookAndFeel)
+{
+    control_HorizontalButton.setButtonText("Horizontal");
+    control_HorizontalButton.setComponentID("Buttons_ID_10_ORIENTATION");
+    control_HorizontalButton.setToggleState(false, juce::dontSendNotification);
+    control_HorizontalButton.setLookAndFeel(customLookAndFeel);
+    control_HorizontalButton.onClick = [this]() 
+        { 
+            togglingButtons(control_HorizontalButton, control_VerticalButton);
+            filmstripProjects.at(projectActiveIndex)->setOrientation(FilmstripOrientation::HORIZONTAL_FILMSTRIP);
+        };
+    addAndMakeVisible(control_HorizontalButton);
+
+    control_VerticalButton.setButtonText("Vertical");
+    control_VerticalButton.setComponentID("Buttons_ID_10_ORIENTATION");
+    control_VerticalButton.setToggleState(true, juce::dontSendNotification);
+    control_VerticalButton.setLookAndFeel(customLookAndFeel);
+    control_VerticalButton.onClick = [this]() 
+        {
+            togglingButtons(control_VerticalButton, control_HorizontalButton);
+            filmstripProjects.at(projectActiveIndex)->setOrientation(FilmstripOrientation::VERTICAL_FILMSTRIP);
+        };
+    addAndMakeVisible(control_VerticalButton);
+}
+
+void MainComponent::reloadOrientationControl(size_t activeIndex)
+{
+    if (activeIndex != SIZE_MAX)
+    {
+        auto project = filmstripProjects.at(activeIndex).get();
+        if (FilmstripOrientation::HORIZONTAL_FILMSTRIP == project->getOrientation())
+        {
+            togglingButtons(control_HorizontalButton, control_VerticalButton);
+        }
+        else {
+            togglingButtons(control_VerticalButton, control_HorizontalButton);
+        }
+    }
+    else {
     }
 }
 

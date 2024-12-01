@@ -14,13 +14,7 @@
 #include "CustomLookAndFeel.h"
 #include "Globals.h"
 #include "Asset.h"
-#include "WorkingMode.h"
-
-enum class FilmstripOrientation
-{
-    VERTICAL_FILMSTRIP,
-    HORIZONTAL_FILMSTRIP
-};
+#include "EnumClass.h"
 
 
 class FilmstripProject
@@ -60,10 +54,13 @@ public:
     WorkingMode getWorkingMode();
     void setWorkingMode(WorkingMode mode);
 
-    void setTotalFrames(int newValue);
     int getMinFrames() const;
     int getMaxFrames() const;
     int getTotalFrames() const;
+    void setTotalFrames(int newValue);
+
+    FilmstripOrientation getOrientation() const;
+    void setOrientation(FilmstripOrientation orientation);
 
     juce::TextButton tabButton{};
     std::function<void(FilmstripProject*)> onDeleteRequest{};
