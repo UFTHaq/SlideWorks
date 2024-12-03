@@ -800,6 +800,31 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 	auto sliderName = slider.getName();
 	auto ID = slider.getComponentID();
 
+	if (ID == "Slider_ID_02_MIN_MAX_Rotary")
+	{
+		g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.5F));
+		g.drawImage(knobScale, rectEllipse.reduced(-(rectEllipse.getHeight() * 0.25F)), juce::RectanglePlacement::centred, true);
+
+		g.setColour(fillColour);
+		g.fillEllipse(rectEllipse.reduced(-3.0F));
+
+		g.setColour(lineColour);
+		g.drawEllipse(rectEllipse, -1.F);
+
+		{
+			juce::Path p{};
+			auto pointerLength = radius * 0.25F;
+			auto pointerThickness = 2.0F;
+			p.addRectangle(-pointerThickness * 0.5F, -radius, pointerThickness, pointerLength);
+			p.applyTransform(juce::AffineTransform::rotation(angle).translated(centreX, centreY));
+
+			g.setColour(tickColour);
+			g.fillPath(p);
+		}
+	}
+
+
+
 	if (sliderName == "sliderMinAngles" || sliderName == "sliderMaxAngles")
 	{
 		g.setColour(getColorCustomDarkGrey().withAlpha(0.75F));

@@ -47,3 +47,28 @@ juce::String KnobFilmstrip::getAnglesOrThumbPosText()
 {
     return juce::String("Angles");
 }
+
+AnglesOrThumbPos KnobFilmstrip::getAnglesOrThumbPos()
+{
+    return AnglesOrThumbPos(AnglesOrThumbPos::ANGLES);
+}
+
+double KnobFilmstrip::getMinAngleDegree()
+{
+    return minAngleDegree;
+}
+
+void KnobFilmstrip::setMinAngleDegree(double angleDegree)
+{
+    this->minAngleDegree = angleDegree;
+}
+
+double KnobFilmstrip::getMaxAngleDegree()
+{
+    return maxAngleDegree;
+}
+
+void KnobFilmstrip::setMaxAngleDegree(double angleDegree)
+{
+    this->maxAngleDegree = angleDegree;
+}

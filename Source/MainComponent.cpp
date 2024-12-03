@@ -270,6 +270,14 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
     {
         group_AnglesOrThumbPos.setVisible(visible);
         group_AnglesOrThumbPos.setEnabled(visible);
+
+        minText_Label.setVisible(visible);
+        minText_Label.setEnabled(visible);
+        maxText_Label.setVisible(visible);
+        maxText_Label.setEnabled(visible);
+
+        anglesOrThumbPosVisibility(visible);
+
     }
 
     {
@@ -297,6 +305,71 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
     {
         add_NewAssetButton.setVisible(visible);
         add_NewAssetButton.setEnabled(visible);
+    }
+}
+
+void MainComponent::anglesOrThumbPosVisibility(bool visible)
+{
+    std::initializer_list<juce::Component*> anglesCompArray =
+    {
+        &minAngle_Slider,
+        &maxAngle_Slider,
+        &minAngleValue_Label,
+        &maxAngleValue_Label
+    };
+
+    std::initializer_list<juce::Component*> thumbPosCompArray =
+    {
+        &minThumbPos_Slider,
+        &maxThumbPos_Slider,
+        &minThumbPosValue_Label,
+        &maxThumbPosValue_Label,
+    };
+
+    if (visible)
+    {
+        if (projectActiveIndex != SIZE_MAX)
+        {
+            auto anglesOrThumbPos = filmstripProjects.at(projectActiveIndex)->getAnglesOrThumbPos();
+            bool anglesVisible{ anglesOrThumbPos == AnglesOrThumbPos::ANGLES };
+            bool thumbPosVisible{ !anglesVisible };
+
+            for (auto* comp : anglesCompArray)
+            {
+                comp->setVisible(anglesVisible);
+                comp->setEnabled(anglesVisible);
+            }
+
+            for (auto* comp : thumbPosCompArray)
+            {
+                comp->setVisible(thumbPosVisible);
+                comp->setEnabled(thumbPosVisible);
+            }
+
+            if (anglesVisible)
+            {
+                minText_Label.setJustificationType(juce::Justification::centred);
+                maxText_Label.setJustificationType(juce::Justification::centred);
+            }
+            else {
+                minText_Label.setJustificationType(juce::Justification::centredLeft);
+                maxText_Label.setJustificationType(juce::Justification::centredLeft);
+            }
+        }
+    }
+    else
+    {
+        for (auto* comp : anglesCompArray)
+        {
+            comp->setVisible(visible);
+            comp->setEnabled(visible);
+        }
+
+        for (auto* comp : thumbPosCompArray)
+        {
+            comp->setVisible(visible);
+            comp->setEnabled(visible);
+        }
     }
 }
 
@@ -456,6 +529,9 @@ void MainComponent::setupLayoutUI()
         // ANGLES / THUMB POSITION
         copy_area_MainControl.setHeight(copy_area_MainControl.getHeight() + 4);
         group_AnglesOrThumbPos.setBounds(copy_area_MainControl.removeFromBottom(group_AnglesOrThumbPos_Height));
+        {
+            setupKnobsOrSlidersMode(projectActiveIndex);
+        }
 
         // ORIENTATIONS
         group_Orientation.setBounds(copy_area_MainControl.removeFromBottom(group_Orientation_Height));
@@ -746,6 +822,85 @@ void MainComponent::setupLayoutUI()
     
 }
 
+void MainComponent::setupKnobsOrSlidersMode(size_t activeIndex)
+{
+    auto area = group_AnglesOrThumbPos.getBounds().reduced(13);
+    auto totalWidth = int(area.getWidth() * 0.95F);
+    area = area.withSizeKeepingCentre(totalWidth, area.getHeight());
+    area.removeFromTop(0);
+    area.removeFromBottom(-5);
+
+    if (activeIndex != SIZE_MAX)
+    {
+        auto anglesOrThumbPosEnum = filmstripProjects.at(activeIndex)->getAnglesOrThumbPos();
+
+        if (anglesOrThumbPosEnum == AnglesOrThumbPos::ANGLES)
+        {
+            auto minArea = area.removeFromLeft(int(area.getWidth() * 0.5F));
+            auto maxArea = area;
+
+            auto textAreaH = 20;
+            auto space = 0;
+
+            auto minTextArea = minArea.removeFromTop(int(textAreaH));
+            minArea.removeFromTop(space);
+            auto minKnobArea = minArea.reduced(-5);
+            auto minValueArea = minKnobArea.withSizeKeepingCentre(28, 14);
+
+            auto maxTextArea = maxArea.removeFromTop(int(textAreaH));
+            maxArea.removeFromTop(space);
+            auto maxKnobArea = maxArea.reduced(-5);;
+            auto maxValueArea = maxKnobArea.withSizeKeepingCentre(28, 14);
+
+            minText_Label.setBounds(minTextArea);
+            minAngle_Slider.setBounds(minKnobArea);
+            minAngleValue_Label.setBounds(minValueArea);
+
+            maxText_Label.setBounds(maxTextArea);
+            maxAngle_Slider.setBounds(maxKnobArea);
+            maxAngleValue_Label.setBounds(maxValueArea);
+        }
+        if (anglesOrThumbPosEnum == AnglesOrThumbPos::THUMB_POS)
+        {
+            //area = area.reduced(5);
+            area.removeFromTop(10);
+            //area.removeFromBottom(-10);
+            //area = area.withSizeKeepingCentre(area.getWidth(), area.getHeight() * 0.9F);
+
+            auto minArea = area.removeFromTop(int(area.getHeight() * 0.5F));
+            auto maxArea = area;
+
+            auto height = 25;
+            minArea = minArea.withSizeKeepingCentre(minArea.getWidth(), height);
+            maxArea = maxArea.withSizeKeepingCentre(maxArea.getWidth(), height);
+
+            auto textAreaW = 30;
+            auto space = 2;
+            auto ratio = 0.735F;
+
+            auto minTextArea = minArea.removeFromLeft(textAreaW);
+            minTextArea.removeFromLeft(3);
+            minArea.removeFromLeft(space);
+            auto minSliderArea = minArea.removeFromLeft(int(minArea.getWidth() * ratio));
+            auto minValueArea = minArea;
+
+            auto maxTextArea = maxArea.removeFromLeft(textAreaW);
+            maxTextArea.removeFromLeft(3);
+            maxArea.removeFromLeft(space);
+            auto maxSliderArea = maxArea.removeFromLeft(int(maxArea.getWidth() * ratio));
+            auto maxValueArea = maxArea;
+
+            minText_Label.setBounds(minTextArea);
+            minThumbPos_Slider.setBounds(minSliderArea.reduced(2));
+            minThumbPosValue_Label.setBounds(minValueArea.reduced(2));
+
+            maxText_Label.setBounds(maxTextArea);
+            maxThumbPos_Slider.setBounds(maxSliderArea.reduced(2));
+            maxThumbPosValue_Label.setBounds(maxValueArea.reduced(2));
+        }
+    }
+}
+
 // This function layout need to call repaint() after use
 void MainComponent::setupLayoutWorkingMode(size_t activeIndex)
 {
@@ -822,6 +977,7 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
 
     setupTotalFramesControl(customLookAndFeel);
     setupOrientationControl(customLookAndFeel);
+    setupAnglesOrThumbPosControl(customLookAndFeel);
 
     //setupKnobToggleButton();
     setupSliderToggleButton();
@@ -912,7 +1068,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                         mainComp->filmstripProjects.erase(it);
                                         mainComp->setupLayoutUI();                // RECALCULATE TAB BUTTON COUNTS
 
-                                        
                                         if (mainComp->filmstripProjects.size() > 0)
                                         {
                                             if (wasActiveProject)
@@ -935,9 +1090,9 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                         else
                                         {
                                             // ZERO
-                                            size_t index = SIZE_MAX;
+                                            mainComp->projectActiveIndex = SIZE_MAX;
 
-                                            mainComp->reloadAllControls(index);
+                                            mainComp->reloadAllControls(mainComp->projectActiveIndex);
 
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
                                             mainComp->updatePage2WorkVisibility(false);
@@ -993,7 +1148,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                         mainComp->filmstripProjects.erase(it);
                                         mainComp->setupLayoutUI();
 
-
                                         if (mainComp->filmstripProjects.size() > 0)
                                         {
                                             if (wasActiveProject)
@@ -1016,9 +1170,9 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                         else
                                         {
                                             // ZERO
-                                            size_t index = SIZE_MAX;
+                                            mainComp->projectActiveIndex = SIZE_MAX;
 
-                                            mainComp->reloadAllControls(index);
+                                            mainComp->reloadAllControls(mainComp->projectActiveIndex);
 
                                             mainComp->currentSlideWorksPage = PageState::PAGE1_GREETINGS;
                                             mainComp->updatePage2WorkVisibility(false);
@@ -1269,6 +1423,9 @@ void MainComponent::reloadMainControlProject(size_t activeIndex)
     
     reloadTotalFramesControl(activeIndex);
     reloadOrientationControl(activeIndex);
+
+    setupKnobsOrSlidersMode(activeIndex);
+    reloadAnglesOrThumbPosControl(activeIndex);
 }
 
 void MainComponent::setupAddNewAssetButton()
@@ -1282,8 +1439,8 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
 {
     totalFrames_Slider.setComponentID("Slider_ID_01_WithThumb");
     totalFrames_Slider.setRange(0, 1, 1.0);
-    totalFrames_Slider.setLookAndFeel(customLookAndFeel);
     totalFrames_Slider.setValue(0);
+    totalFrames_Slider.setLookAndFeel(customLookAndFeel);
     totalFrames_Slider.setSliderStyle(juce::Slider::LinearHorizontal);
     totalFrames_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     totalFrames_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
@@ -1296,7 +1453,7 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     addAndMakeVisible(totalFrames_Slider);
 
     totalFrames_Label.setComponentID("Slider_ID_01_WithThumb");
-    totalFrames_Label.setText(std::to_string(totalFrames_Slider.getValue()), juce::dontSendNotification);
+    totalFrames_Label.setText(juce::String(totalFrames_Slider.getValue()), juce::dontSendNotification);
     totalFrames_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
     totalFrames_Label.setJustificationType(juce::Justification::centred);
     totalFrames_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
@@ -1311,7 +1468,7 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     totalFrames_Label.setColour(juce:: TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
     totalFrames_Label.setColour(juce:: TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
     totalFrames_Label.setColour(juce:: TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
-    totalFrames_Label.setColour(juce:: CaretComponent::caretColourId, customLookAndFeel->getColorCustomWhite());
+    totalFrames_Label.setColour(juce:: CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     totalFrames_Label.setLookAndFeel(customLookAndFeel);
     totalFrames_Label.setEditable(false, true);
 
@@ -1344,7 +1501,7 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
 
             filmstripProjects.at(projectActiveIndex)->setTotalFrames(int(totalFrames_Slider.getValue()));
 
-            totalFrames_Label.setText(std::to_string(newValue), juce::dontSendNotification);
+            totalFrames_Label.setText(juce::String(newValue), juce::dontSendNotification);
 
         };
     addAndMakeVisible(totalFrames_Label);
@@ -1361,7 +1518,7 @@ void MainComponent::reloadTotalFramesControl(size_t activeIndex)
             {
                 auto value = int(totalFrames_Slider.getValue());
                 filmstripProjects.at(activeIndex)->setTotalFrames(value);
-                totalFrames_Label.setText(std::to_string(value), juce::dontSendNotification);
+                totalFrames_Label.setText(juce::String(value), juce::dontSendNotification);
             };
     }
     else {
@@ -1408,6 +1565,415 @@ void MainComponent::reloadOrientationControl(size_t activeIndex)
         }
     }
     else {
+    }
+}
+
+void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAndFeel)
+{
+    // LABEL TEXT
+    minText_Label.setText("Min", juce::dontSendNotification);
+    minText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
+    minText_Label.setLookAndFeel(customLookAndFeel);
+    minText_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
+    minText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+    minText_Label.setJustificationType(juce::Justification::centred);
+    minText_Label.setEditable(false, false);
+    addAndMakeVisible(minText_Label);
+
+    maxText_Label.setText("Max", juce::dontSendNotification);
+    maxText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
+    maxText_Label.setLookAndFeel(customLookAndFeel);
+    maxText_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
+    maxText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+    maxText_Label.setJustificationType(juce::Justification::centred);
+    maxText_Label.setEditable(false, false);
+    addAndMakeVisible(maxText_Label);
+
+    {
+        // ANGLES
+
+        double interval = 1;
+        double threshold = 175;
+        double defaultVal = 135;
+
+        {
+            // MIN
+            minAngle_Slider.setComponentID("Slider_ID_02_MIN_MAX_Rotary");
+            minAngle_Slider.setRange(-threshold, threshold, interval);
+            minAngle_Slider.setValue(-defaultVal);
+            minAngle_Slider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+            minAngle_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+            minAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
+            //minAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
+            minAngle_Slider.setLookAndFeel(customLookAndFeel);
+            minAngle_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+            minAngle_Slider.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+            minAngle_Slider.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            minAngle_Slider.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+            minAngle_Slider.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+            minAngle_Slider.setTextBoxIsEditable(true);
+            minAngle_Slider.onValueChange = [this]() {};
+            addAndMakeVisible(minAngle_Slider);
+
+            minAngleValue_Label.setText("-135", juce::dontSendNotification);
+            minAngleValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
+            minAngleValue_Label.setLookAndFeel(customLookAndFeel);
+            minAngleValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F));
+            minAngleValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
+            minAngleValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+            minAngleValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+            minAngleValue_Label.setJustificationType(juce::Justification::centred);
+            minAngleValue_Label.setEditable(false, true);
+            addAndMakeVisible(minAngleValue_Label);
+        }
+
+        {
+            // MAX
+            maxAngle_Slider.setComponentID("Slider_ID_02_MIN_MAX_Rotary");
+            maxAngle_Slider.setRange(-threshold, threshold, interval);
+            maxAngle_Slider.setValue(defaultVal);
+            maxAngle_Slider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
+            maxAngle_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+            maxAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
+            //maxAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
+            maxAngle_Slider.setLookAndFeel(customLookAndFeel);
+            maxAngle_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+            maxAngle_Slider.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+            maxAngle_Slider.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            maxAngle_Slider.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+            maxAngle_Slider.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+            maxAngle_Slider.setTextBoxIsEditable(true);
+            maxAngle_Slider.onValueChange = [this]() {};
+            addAndMakeVisible(maxAngle_Slider);
+
+            maxAngleValue_Label.setText("135", juce::dontSendNotification);
+            maxAngleValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
+            maxAngleValue_Label.setLookAndFeel(customLookAndFeel);
+            maxAngleValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F));
+            maxAngleValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
+            maxAngleValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+            maxAngleValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+            maxAngleValue_Label.setJustificationType(juce::Justification::centred);
+            maxAngleValue_Label.setEditable(false, true);
+            addAndMakeVisible(maxAngleValue_Label);
+        }
+    }
+
+
+    {
+        // THUMB POSITION
+
+        double interval = 0.01;
+
+        {
+            // MIN
+            minThumbPos_Slider.setComponentID("Slider_ID_01_WithThumb");
+            minThumbPos_Slider.setRange(0, 1, interval);
+            minThumbPos_Slider.setValue(0.15);
+            minThumbPos_Slider.setLookAndFeel(customLookAndFeel);
+            minThumbPos_Slider.setSliderStyle(juce::Slider::LinearHorizontal);
+            minThumbPos_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+            minThumbPos_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            minThumbPos_Slider.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
+            minThumbPos_Slider.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+            minThumbPos_Slider.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
+            minThumbPos_Slider.setMouseClickGrabsKeyboardFocus(false);
+            minThumbPos_Slider.setTextBoxIsEditable(false);
+            minThumbPos_Slider.onValueChange = [this]() {};
+            addAndMakeVisible(minThumbPos_Slider);
+
+            minThumbPosValue_Label.setComponentID("Slider_ID_01_WithThumb");
+            minThumbPosValue_Label.setText(juce::String(minThumbPos_Slider.getValue()), juce::dontSendNotification);
+            minThumbPosValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
+            minThumbPosValue_Label.setJustificationType(juce::Justification::centred);
+            minThumbPosValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            minThumbPosValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            minThumbPosValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            minThumbPosValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            minThumbPosValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+            minThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+            minThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            //minThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+
+            //minThumbPosValue_Label.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+            //minThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
+            //minThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+            minThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            minThumbPosValue_Label.setLookAndFeel(customLookAndFeel);
+            minThumbPosValue_Label.setEditable(false, true);
+            addAndMakeVisible(minThumbPosValue_Label);
+        }
+
+        {
+            // MAX
+            maxThumbPos_Slider.setComponentID("Slider_ID_01_WithThumb");
+            maxThumbPos_Slider.setRange(0, 1, interval);
+            maxThumbPos_Slider.setValue(0.15);
+            maxThumbPos_Slider.setLookAndFeel(customLookAndFeel);
+            maxThumbPos_Slider.setSliderStyle(juce::Slider::LinearHorizontal);
+            maxThumbPos_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+            maxThumbPos_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            maxThumbPos_Slider.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
+            maxThumbPos_Slider.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+            maxThumbPos_Slider.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
+            maxThumbPos_Slider.setMouseClickGrabsKeyboardFocus(false);
+            maxThumbPos_Slider.setTextBoxIsEditable(false);
+            maxThumbPos_Slider.onValueChange = [this]() {};
+            addAndMakeVisible(maxThumbPos_Slider);
+
+            maxThumbPosValue_Label.setComponentID("Slider_ID_01_WithThumb");
+            maxThumbPosValue_Label.setText(juce::String(maxThumbPos_Slider.getValue()), juce::dontSendNotification);
+            maxThumbPosValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
+            maxThumbPosValue_Label.setJustificationType(juce::Justification::centred);
+            maxThumbPosValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            maxThumbPosValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            maxThumbPosValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+            maxThumbPosValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            maxThumbPosValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+            maxThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+            maxThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            //maxThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+
+            //maxThumbPosValue_Label.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
+            //maxThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
+            //maxThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
+            maxThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+            maxThumbPosValue_Label.setLookAndFeel(customLookAndFeel);
+            maxThumbPosValue_Label.setEditable(false, true);
+            addAndMakeVisible(maxThumbPosValue_Label);
+        }
+    }
+
+
+
+}
+
+void MainComponent::reloadAnglesOrThumbPosControl(size_t activeIndex)
+{
+    anglesOrThumbPosVisibility(group_AnglesOrThumbPos.isVisible());
+
+    if (activeIndex != SIZE_MAX)
+    {
+        auto anglesOrThumbPos = filmstripProjects.at(activeIndex)->getAnglesOrThumbPos();
+
+        if (anglesOrThumbPos == AnglesOrThumbPos::ANGLES)
+        {
+            double minimalAngleBetween = 45;
+
+            KnobFilmstrip* knobProject = dynamic_cast<KnobFilmstrip*>(filmstripProjects.at(activeIndex).get());
+
+            minAngle_Slider.setValue(knobProject->getMinAngleDegree());
+            minAngle_Slider.onValueChange = [this, knobProject, minimalAngleBetween]()
+                {
+                    if (maxAngle_Slider.getValue() - minAngle_Slider.getValue() <= minimalAngleBetween)
+                    {
+                        minAngle_Slider.setValue(maxAngle_Slider.getValue() - minimalAngleBetween);
+                    }
+
+                    double value = minAngle_Slider.getValue();
+
+                    knobProject->setMinAngleDegree(value);
+                    minAngleValue_Label.setText(juce::String(value), juce::dontSendNotification);
+                };
+
+            maxAngle_Slider.setValue(knobProject->getMaxAngleDegree());
+            maxAngle_Slider.onValueChange = [this, knobProject, minimalAngleBetween]()
+                {
+                    if (maxAngle_Slider.getValue() - minAngle_Slider.getValue() <= minimalAngleBetween)
+                    {
+                        maxAngle_Slider.setValue(minAngle_Slider.getValue() + minimalAngleBetween);
+                    }
+
+                    double value = maxAngle_Slider.getValue();
+
+                    knobProject->setMaxAngleDegree(value);
+                    maxAngleValue_Label.setText(juce::String(value), juce::dontSendNotification);
+                };
+
+
+            minAngleValue_Label.onTextChange = [this, knobProject, minimalAngleBetween]()
+                {
+                    double newValue = minAngleValue_Label.getText().getDoubleValue();
+
+                    double minValue = -175;
+                    double maxValue = 175;
+
+                    if (newValue >= minValue && newValue <= maxValue)
+                    {
+                        newValue = newValue;
+                    }
+                    else if (newValue <= minValue)
+                    {
+                        newValue = minValue;
+                    }
+                    else if (newValue >= maxValue)
+                    {
+                        newValue = maxValue;
+                    }
+                    else
+                    {
+                        newValue = minValue;
+                    }
+
+                    if (maxAngle_Slider.getValue() - newValue <= minimalAngleBetween)
+                    {
+                        newValue = (maxAngle_Slider.getValue() - minimalAngleBetween);
+                    }
+
+                    minAngle_Slider.setValue(newValue, juce::dontSendNotification);
+                    knobProject->setMinAngleDegree(newValue);
+                    minAngleValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
+
+                };
+
+            maxAngleValue_Label.onTextChange = [this, knobProject, minimalAngleBetween]()
+                {
+                    double newValue = maxAngleValue_Label.getText().getDoubleValue();
+
+                    double minValue = -175;
+                    double maxValue = 175;
+
+                    if (newValue >= minValue && newValue <= maxValue)
+                    {
+                        newValue = newValue;
+                    }
+                    else if (newValue <= minValue)
+                    {
+                        newValue = minValue;
+                    }
+                    else if (newValue >= maxValue)
+                    {
+                        newValue = maxValue;
+                    }
+                    else
+                    {
+                        newValue = minValue;
+                    }
+
+                    if (newValue - minAngle_Slider.getValue() <= minimalAngleBetween)
+                    {
+                        newValue = (minAngle_Slider.getValue() + minimalAngleBetween);
+                    }
+
+                    maxAngle_Slider.setValue(newValue, juce::dontSendNotification);
+                    knobProject->setMaxAngleDegree(newValue);
+                    maxAngleValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
+                };
+        }
+
+        if (anglesOrThumbPos == AnglesOrThumbPos::THUMB_POS)
+        {
+            double minimalPosBetween = 0.2;
+
+            SliderFilmstrip* sliderProject = dynamic_cast<SliderFilmstrip*>(filmstripProjects.at(activeIndex).get());
+
+            minThumbPos_Slider.setValue(sliderProject->getMinThumbPos());
+            minThumbPos_Slider.onValueChange = [this, sliderProject, minimalPosBetween]()
+                {
+                    if (maxThumbPos_Slider.getValue() - minThumbPos_Slider.getValue() <= minimalPosBetween)
+                    {
+                        minThumbPos_Slider.setValue(maxThumbPos_Slider.getValue() - minimalPosBetween);
+                    }
+
+                    double value = minThumbPos_Slider.getValue();
+
+                    sliderProject->setMinThumbPos(value);
+                    minThumbPosValue_Label.setText(juce::String(value), juce::dontSendNotification);
+                };
+
+            maxThumbPos_Slider.setValue(sliderProject->getMaxThumbPos());
+            maxThumbPos_Slider.onValueChange = [this, sliderProject, minimalPosBetween]()
+                {
+                    if (maxThumbPos_Slider.getValue() - minThumbPos_Slider.getValue() <= minimalPosBetween)
+                    {
+                        maxThumbPos_Slider.setValue(minThumbPos_Slider.getValue() + minimalPosBetween);
+                    }
+
+                    double value = maxThumbPos_Slider.getValue();
+
+                    sliderProject->setMaxThumbPos(value);
+                    maxThumbPosValue_Label.setText(juce::String(value), juce::dontSendNotification);
+                };
+
+
+
+            minThumbPosValue_Label.onTextChange = [this, sliderProject, minimalPosBetween]()
+                {
+                    double newValue = minThumbPosValue_Label.getText().getDoubleValue();
+
+                    double minValue = 0;
+                    double maxValue = 1;
+
+                    if (newValue >= minValue && newValue <= maxValue)
+                    {
+                        newValue = newValue;
+                    }
+                    else if (newValue <= minValue)
+                    {
+                        newValue = minValue;
+                    }
+                    else if (newValue >= maxValue)
+                    {
+                        newValue = maxValue;
+                    }
+                    else
+                    {
+                        newValue = minValue;
+                    }
+
+                    if (maxThumbPos_Slider.getValue() - newValue <= minimalPosBetween)
+                    {
+                        newValue = (maxThumbPos_Slider.getValue() - minimalPosBetween);
+                    }
+
+                    minThumbPos_Slider.setValue(newValue, juce::dontSendNotification);
+                    sliderProject->setMinThumbPos(newValue);
+                    minThumbPosValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
+                };
+
+            maxThumbPosValue_Label.onTextChange = [this, sliderProject, minimalPosBetween]()
+                {
+                    double newValue = maxThumbPosValue_Label.getText().getDoubleValue();
+
+                    double minValue = 0;
+                    double maxValue = 1;
+
+                    if (newValue >= minValue && newValue <= maxValue)
+                    {
+                        newValue = newValue;
+                    }
+                    else if (newValue <= minValue)
+                    {
+                        newValue = minValue;
+                    }
+                    else if (newValue >= maxValue)
+                    {
+                        newValue = maxValue;
+                    }
+                    else
+                    {
+                        newValue = minValue;
+                    }
+
+                    if (newValue - minThumbPos_Slider.getValue() <= minimalPosBetween)
+                    {
+                        newValue = (minThumbPos_Slider.getValue() + minimalPosBetween);
+                    }
+
+                    maxThumbPos_Slider.setValue(newValue, juce::dontSendNotification);
+                    sliderProject->setMaxThumbPos(newValue);
+                    maxThumbPosValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
+                };
+        }
+
+    }
+    else
+    {
+        minAngle_Slider.setValue(0, juce::dontSendNotification);
+        maxAngle_Slider.setValue(0, juce::dontSendNotification);
+
+        minThumbPos_Slider.setValue(0, juce::dontSendNotification);
+        maxThumbPos_Slider.setValue(0, juce::dontSendNotification);
     }
 }
 

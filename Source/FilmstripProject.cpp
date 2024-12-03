@@ -130,3 +130,8 @@ juce::String FilmstripProject::getAnglesOrThumbPosText()
 {
     return juce::String();
 }
+
+AnglesOrThumbPos FilmstripProject::getAnglesOrThumbPos()
+{
+    return AnglesOrThumbPos();
+}

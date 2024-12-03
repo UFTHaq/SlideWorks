@@ -40,9 +40,11 @@ public:
     void updatePageContent(juce::Graphics& g);
 
     void updatePage2WorkVisibility(bool visible);
+    void anglesOrThumbPosVisibility(bool visible);
     void updatePage3InfoVisibility(bool visible);
 
     void setupLayoutUI();
+    void setupKnobsOrSlidersMode(size_t activeIndex);
     void setupLayoutWorkingMode(size_t activeIndex);
     bool getInputPathState();
     void checkInputPathState();
@@ -64,6 +66,8 @@ public:
     void reloadTotalFramesControl(size_t activeIndex);
     void setupOrientationControl(CustomLookAndFeel* customLookAndFeel);
     void reloadOrientationControl(size_t activeIndex);
+    void setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAndFeel);
+    void reloadAnglesOrThumbPosControl(size_t activeIndex);
     void setupDefaultApplyButton();
 
     void reloadAllControls(size_t activeIndex);
@@ -201,12 +205,19 @@ private:
     const int group_AnglesOrThumbPos_Height{ 110 };
 
     CustomGroupComponent group_AnglesOrThumbPos{};
-    double minAngle_Degree{};
-    double maxAngle_Degree{};
-    juce::Label minAngle_Label{};
-    juce::Label maxAngle_Label{};
+
+    juce::Label minText_Label{};
+    juce::Label maxText_Label{};
+
     juce::Slider minAngle_Slider{};
     juce::Slider maxAngle_Slider{};
+    juce::Label minAngleValue_Label{};
+    juce::Label maxAngleValue_Label{};
+
+    juce::Slider minThumbPos_Slider{};
+    juce::Slider maxThumbPos_Slider{};
+    juce::Label minThumbPosValue_Label{};
+    juce::Label maxThumbPosValue_Label{};
 
         ///-- ORIENTATION --///
     const int group_Orientation_Height{ 70 };

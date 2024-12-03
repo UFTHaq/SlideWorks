@@ -47,3 +47,28 @@ juce::String SliderFilmstrip::getAnglesOrThumbPosText()
 {
     return juce::String("Thumb Positions");
 }
+
+AnglesOrThumbPos SliderFilmstrip::getAnglesOrThumbPos()
+{
+    return AnglesOrThumbPos(AnglesOrThumbPos::THUMB_POS);
+}
+
+double SliderFilmstrip::getMinThumbPos()
+{
+    return minThumbPos;
+}
+
+void SliderFilmstrip::setMinThumbPos(double value)
+{
+    this->minThumbPos = value;
+}
+
+double SliderFilmstrip::getMaxThumbPos()
+{
+    return maxThumbPos;
+}
+
+void SliderFilmstrip::setMaxThumbPos(double value)
+{
+    this->maxThumbPos = value;
+}

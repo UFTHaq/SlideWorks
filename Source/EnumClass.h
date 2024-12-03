@@ -22,3 +22,9 @@ enum class FilmstripOrientation
     VERTICAL_FILMSTRIP,
     HORIZONTAL_FILMSTRIP
 };
+
+enum class AnglesOrThumbPos
+{
+    ANGLES,
+    THUMB_POS
+};

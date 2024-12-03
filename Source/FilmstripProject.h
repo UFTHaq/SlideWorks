@@ -70,4 +70,5 @@ public:
     virtual void initializeAssets() = 0;
 
     virtual juce::String getAnglesOrThumbPosText();
+    virtual AnglesOrThumbPos getAnglesOrThumbPos();
 };

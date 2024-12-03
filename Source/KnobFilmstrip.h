@@ -34,4 +34,11 @@ public:
     void initializeAssets() override;
 
     juce::String getAnglesOrThumbPosText() override;
+    virtual AnglesOrThumbPos getAnglesOrThumbPos() override;
+
+    double getMinAngleDegree();
+    void setMinAngleDegree(double angleDegree);
+
+    double getMaxAngleDegree();
+    void setMaxAngleDegree(double angleDegree);
 };
