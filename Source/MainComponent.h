@@ -36,6 +36,8 @@ public:
     void buttonClicked(juce::Button* button) override;
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;
+    void mouseDown(const juce::MouseEvent& event) override;
+    void mouseDoubleClick(const juce::MouseEvent& event) override;
 
     void updatePageContent(juce::Graphics& g);
 
@@ -172,7 +174,7 @@ private:
     const int NamingLabelEditorWidth{ 200 };
 
     juce::Label naming_Label{};
-    juce::Label naming_Editor{};
+    juce::TextEditor naming_Editor{};
 
         ///-- MODE BUTTON --//
     const int MODEButtonWidth{ 80 };

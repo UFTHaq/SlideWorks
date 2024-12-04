@@ -916,25 +916,33 @@ void CustomLookAndFeel::fillTextEditorBackground(juce::Graphics& g, int width, i
 	(void)width;
 	(void)height;
 
-	int topIndent{3};
+	int topIndent{};
+	int leftIndent{};
 	auto Justification = editor.getJustificationType();
 
-	// CANT USE THIS FOR LABEL EDITOR MODE THO :[
-	//auto ID = editor.getComponentID();
+	auto ID = editor.getComponentID();
 
-	//if (ID == "Label_ID_01_NamingEditor" || ID == "Label_ID_O1_Naming")
-	//{
-	//	topIndent = 3;
-	//}
-	//else if ("Slider_ID_01_WithThumb")
-	//{
-	//	topIndent = 0;
-	//	//Justification = juce::Justification::centred;
-	//}
+	bool caretActive{ true };
+	if (editor.getHighlightedRegion().getLength() > 0) {
+		caretActive = false;
+	}
+	editor.setCaretVisible(caretActive);
 
-	editor.setJustification(Justification);
-	editor.setIndents(editor.getLeftIndent(), topIndent);	// keep the leftIndent the same, and set topIndent to 0
+	if (ID == "Label_ID_01_NamingEditor")
+	{
+		editor.setTextToShowWhenEmpty("Untitled", getCurrentTheme().CustomDarkGrey);
+		editor.setFont(getFontRobotoCondensedRegular().withHeight(16.0F));
+		editor.setJustification(juce::Justification::verticallyCentred);
+		topIndent = 0;
+		leftIndent = editor.getLeftIndent();
+	}
+	else {
+		editor.setJustification(juce::Justification::centred);
+		topIndent = 0;
+		leftIndent = editor.getLeftIndent();
+	}
 
+	editor.setIndents(leftIndent, topIndent);
 	g.setColour(editor.findColour(juce::Label::backgroundWhenEditingColourId));
 	g.fillRoundedRectangle(editor.getLocalBounds().toFloat(), getRoundedCornerSize());
 }

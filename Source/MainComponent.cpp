@@ -89,6 +89,27 @@ void MainComponent::filesDropped(const juce::StringArray& files, int x, int y)
     juce::Desktop::getInstance().getMainMouseSource().showMouseCursor(normalCursor);
 }
 
+void MainComponent::mouseDown(const juce::MouseEvent& event)
+{
+    if (naming_Editor.getLocalBounds().contains(event.getPosition()))
+    {
+        naming_Editor.grabKeyboardFocus();
+    }
+    else {
+        naming_Editor.giveAwayKeyboardFocus();
+        naming_Editor.setReadOnly(true);
+    }
+}
+
+void MainComponent::mouseDoubleClick(const juce::MouseEvent& event)
+{
+    if (event.eventComponent == &naming_Editor)
+    {
+        naming_Editor.setReadOnly(false);
+        naming_Editor.grabKeyboardFocus();
+    }
+}
+
 void MainComponent::updatePageContent(juce::Graphics& g)
 {
     g.fillAll(ptr_Global_CustomLookAndFeel->getBackgroundColour());
@@ -845,12 +866,12 @@ void MainComponent::setupKnobsOrSlidersMode(size_t activeIndex)
             auto minTextArea = minArea.removeFromTop(int(textAreaH));
             minArea.removeFromTop(space);
             auto minKnobArea = minArea.reduced(-5);
-            auto minValueArea = minKnobArea.withSizeKeepingCentre(28, 14);
+            auto minValueArea = minKnobArea.withSizeKeepingCentre(28, 15);
 
             auto maxTextArea = maxArea.removeFromTop(int(textAreaH));
             maxArea.removeFromTop(space);
             auto maxKnobArea = maxArea.reduced(-5);;
-            auto maxValueArea = maxKnobArea.withSizeKeepingCentre(28, 14);
+            auto maxValueArea = maxKnobArea.withSizeKeepingCentre(28, 15);
 
             minText_Label.setBounds(minTextArea);
             minAngle_Slider.setBounds(minKnobArea);
@@ -1315,25 +1336,35 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Label.setEditable(false, false);
     addAndMakeVisible(naming_Label);
     
-    naming_Editor.setText("Untitled", juce::dontSendNotification);
+    naming_Editor.setText("", juce::dontSendNotification);
     naming_Editor.setComponentID("Label_ID_01_NamingEditor");
     naming_Editor.setLookAndFeel(customLookAndFeel);
     naming_Editor.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
-    naming_Editor.setJustificationType(juce::Justification::centredLeft);
-    naming_Editor.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-    naming_Editor.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour); // This should follow the layer2 color if not mat
-    naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-    naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
+    //naming_Editor.setJustificationType(juce::Justification::centredLeft);
+    //naming_Editor.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    //naming_Editor.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack); // This should follow the layer2 color if not mat
+    //naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    //naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    //naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
+    naming_Editor.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    //naming_Editor.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    //naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    naming_Editor.setColour(juce::TextEditor::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     naming_Editor.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar.darker());
-    naming_Editor.setEditable(false, true);
+    naming_Editor.setReadOnly(true);
+    naming_Editor.setMultiLine(false, false);
+    naming_Editor.onReturnKey = [this]()
+        {
+            naming_Editor.giveAwayKeyboardFocus();
+            naming_Editor.setReadOnly(true);
+        };
     naming_Editor.onTextChange = [this]()
         {
             filmstripProjects.at(projectActiveIndex)->setProjectName(naming_Editor.getText());
         };
+    naming_Editor.addMouseListener(this, true);
     addAndMakeVisible(naming_Editor);
 
 }
@@ -1463,15 +1494,9 @@ void MainComponent::setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel
     totalFrames_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
     totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
     totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-    totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-
-    totalFrames_Label.setColour(juce:: TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
-    totalFrames_Label.setColour(juce:: TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
-    totalFrames_Label.setColour(juce:: TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
     totalFrames_Label.setColour(juce:: CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     totalFrames_Label.setLookAndFeel(customLookAndFeel);
     totalFrames_Label.setEditable(false, true);
-
     totalFrames_Label.onTextChange = [this]()
         {
             auto newValue = totalFrames_Label.getText().getIntValue();
@@ -1619,10 +1644,14 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             minAngleValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
             minAngleValue_Label.setLookAndFeel(customLookAndFeel);
             minAngleValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F));
+            minAngleValue_Label.setJustificationType(juce::Justification::centred);
+            minAngleValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
             minAngleValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
             minAngleValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
             minAngleValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-            minAngleValue_Label.setJustificationType(juce::Justification::centred);
+            minAngleValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+            minAngleValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            minAngleValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
             minAngleValue_Label.setEditable(false, true);
             addAndMakeVisible(minAngleValue_Label);
         }
@@ -1650,10 +1679,14 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             maxAngleValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
             maxAngleValue_Label.setLookAndFeel(customLookAndFeel);
             maxAngleValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F));
+            maxAngleValue_Label.setJustificationType(juce::Justification::centred);
+            maxAngleValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
             maxAngleValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
             maxAngleValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
             maxAngleValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-            maxAngleValue_Label.setJustificationType(juce::Justification::centred);
+            maxAngleValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+            maxAngleValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+            maxAngleValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
             maxAngleValue_Label.setEditable(false, true);
             addAndMakeVisible(maxAngleValue_Label);
         }
@@ -1693,11 +1726,6 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             minThumbPosValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
             minThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
             minThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-            //minThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-
-            //minThumbPosValue_Label.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
-            //minThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
-            //minThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
             minThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
             minThumbPosValue_Label.setLookAndFeel(customLookAndFeel);
             minThumbPosValue_Label.setEditable(false, true);
@@ -1732,11 +1760,6 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             maxThumbPosValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
             maxThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
             maxThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-            //maxThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-
-            //maxThumbPosValue_Label.setColour(juce::TextEditor::textColourId, customLookAndFeel->getColorCustomLightGrey().brighter(1.F));
-            //maxThumbPosValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getColorCustomLightGrey());
-            //maxThumbPosValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getColorCustomDarkGrey());
             maxThumbPosValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
             maxThumbPosValue_Label.setLookAndFeel(customLookAndFeel);
             maxThumbPosValue_Label.setEditable(false, true);
