@@ -993,7 +993,7 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
 
     setupBannerProjectTypeLabel(customLookAndFeel);
     setupExportProjectButton();
-    setupAddNewAssetButton();
+    setupAddNewAssetButton(customLookAndFeel);
     setupDefaultApplyButton();
 
     setupTotalFramesControl(customLookAndFeel);
@@ -1346,7 +1346,7 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack); // This should follow the layer2 color if not mat
     //naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     //naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-    //naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
+    naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
     //naming_Editor.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
@@ -1459,10 +1459,202 @@ void MainComponent::reloadMainControlProject(size_t activeIndex)
     reloadAnglesOrThumbPosControl(activeIndex);
 }
 
-void MainComponent::setupAddNewAssetButton()
+void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
 {
     add_NewAssetButton.setComponentID("Buttons_ID_07_NEW_ASSET");
-    add_NewAssetButton.onClick = [this]() {};
+    add_NewAssetButton.onClick = [this, customLookAndFeel]()
+        {
+            bool buttonMenuEnable{ false };
+            //if (filmstripProjects.at(projectActiveIndex)->getAssets().size() < 7)
+            //if (filmstripProjects.at(projectActiveIndex)->getAssets()->size() < 7)
+            if (filmstripProjects.at(projectActiveIndex)->getAssets().size() < 7)
+            {
+                buttonMenuEnable = true;
+            }
+
+            //projectAssets = &filmstripProjects.at(projectActiveIndex)->getAssets();
+            //projectAssets->at(assetActiveIndex)->getAssetFileName();
+
+            //filmstripProjects.at(projectActiveIndex)->getAssets().at(assetActiveIndex)->getAssetFileName();
+
+            if (filmstripProjects.at(projectActiveIndex)->getFilmstripType() == "KNOB")
+            {
+                juce::PopupMenu menu;
+                menu.addSectionHeader("Assets Manager");
+                menu.addSeparator();
+                menu.addItem(1, "Add Knob", buttonMenuEnable, false);
+                menu.addItem(2, "Add Scale", buttonMenuEnable, false);
+                menu.addItem(3, "Generate Scale", !buttonMenuEnable, false);
+                menu.setLookAndFeel(customLookAndFeel);
+
+                menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(add_NewAssetButton), [this, customLookAndFeel](int result)
+                    {
+                        KnobFilmstrip* knobProject = dynamic_cast<KnobFilmstrip*>(filmstripProjects.at(projectActiveIndex).get());
+                        if (result == 1)
+                        {
+                            auto& filmstripProjectNih = *filmstripProjects.at(projectActiveIndex);
+
+                            if (knobProject != nullptr)
+                            {
+                                // Add a new asset to the project
+                                //knobProject->addAsset("Knob");
+                                //knobProject->addAsset("Knob");
+                                //knobProject->addAsset("Knob");
+                                //filmstripProjects.at(projectActiveIndex)->addAsset("Knob");
+                                juce::String object{ "Knob" };
+                                //filmstripProjects.at(projectActiveIndex)->addAsset(object);
+                                //filmstripProjects.at(projectActiveIndex)->getAssets().emplace_back(Asset(object));
+
+
+                                // Update projectAssets pointer
+                                //projectAssets = &knobProject->getAssets();
+                                //projectAssets = knobProject->getAssets();
+                                //projectAssets = &knobProject->getAssets();
+                                //projectAssets = knobProject->getAssets();
+                                //projectAssets = knobProject->getAssets();
+                                //projectAssets = filmstripProjects.at(projectActiveIndex)->getAssets();
+                                //projectAssets = knobProject->getAssets();
+                                //projectAssets = knobProject->getAssets();
+                                //projectAssets = &filmstripProjects.at(projectActiveIndex)->getAssets();
+
+                                //projectAssets->emplace_back(Asset(object));
+
+                                //auto* projects = &filmstripProjects.at(projectActiveIndex)->getAssets();
+                                //projects->emplace_back(Asset(object));
+
+                                //auto projects = filmstripProjects.at(projectActiveIndex).get();
+                                //auto asstes = projects->getAssets();
+
+                                //filmstripProjects.at(projectActiveIndex)->getAssets().emplace_back(object);
+                                //filmstripProjects.at(projectActiveIndex)->addAsset(object);
+                                
+                                //filmstripProjectNih.addAsset(object);
+                                //filmstripProjectNih.getAssets().emplace_back(object);
+                                filmstripProjectNih.assets.emplace_back(object);
+
+                                // Get the index of the newly added asset
+                                //size_t a = projectAssets->size() - 1;
+                                //size_t a = projectAssets.size() - 1;
+                                //size_t a = projectAssets->size() - 1;
+                                //size_t a = projectAssets->size() - 1;
+                                //size_t a = projectAssets.size() - 1;
+                                //size_t a = projectAssets->size() - 1;
+                                //size_t a = filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1;
+                                //size_t a = projectAssets->size() - 1;
+                                //size_t a = projects->size() - 1;
+                                //size_t a = asstes.size() - 1;
+                                //size_t a = filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1;
+                                //size_t a = filmstripProjectNih.getAssets().size() - 1;
+                                size_t a = filmstripProjectNih.assets.size() - 1;
+
+                                auto& asset = filmstripProjectNih.getAssets().at(a);
+
+                                // Open a dialog to select a file
+                                juce::String name;
+
+                                //if (filmstripProjectNih.getAssets().empty())
+                                if (filmstripProjectNih.assets.size() > 0)
+                                {
+                                    //fileChooserWindows(name);
+                                }
+                                juce::File path = name;
+
+                                //if (*projectAssets).at(a)->get != nullptr)
+                                // Set the file path for the newly added asset
+                                //(*projectAssets).at(a)->setAssetFilePath(juce::File(name));
+                                //projectAssets.at(a).setAssetFilePath(juce::File(name));
+                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
+                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
+                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
+
+                                //projectAssets.at(a).setAssetFilePath(juce::File(name));
+                                //projectAssets->at(a).setAssetFilePath(juce::File(name));
+
+                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).setAssetFilePath(name);
+                                //projectAssets->at(a).setAssetFilePath(name);
+                                //projects->at(a).setAssetFilePath(juce::File(name));
+                                //asstes.at(a).setAssetFilePath(juce::File(name));
+                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).setAssetFilePath(juce::File(name));
+                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).getAssetType();
+
+                                //asset.setAssetFilePath(juce::File(name));
+                                //filmstripProjectNih.assets.at(a).setAssetFileName(name);
+                                filmstripProjectNih.assets.at(a).setAssetFilePath(path);
+                                filmstripProjectNih.assets.at(a).getAssetType();
+
+                                // Example: Retrieve asset type
+                                //DBG("Asset Type: " + (*projectAssets)[a]->getAssetType());
+
+                            }
+                            else
+                            {
+                                DBG("Error: knobProject is nullptr!");
+                            }
+
+                            //// WILL OPEN DIALOG FILE TO LOAD IMAGE KNOB
+                            //knobProject->addAsset("Knob");
+                            //size_t a = knobProject->getAssets().size() - 1;
+
+                            //juce::String name;
+                            //fileChooserWindows(name);
+                            //projectAssets = filmstripProjects.at(projectActiveIndex)->getAssets();
+                            ////projectAssets->at(a)->setAssetFilePath(juce::File(name));
+                            //projectAssets->at(a)->getAssetType();
+                            ////knobProject->getAssets().at(a)->getAssetType();
+                            ////knobProject->getAssets().at(a)->setAssetFilePath(name);
+                        }
+                        else if (result == 2)
+                        {
+                            knobProject->addAsset("Scale");
+                        }
+                        else if (result == 3)
+                        {
+                            knobProject->addAsset("Scale");
+                        }
+                        repaint();
+
+                    }
+                );
+
+            }
+
+            if (filmstripProjects.at(projectActiveIndex)->getFilmstripType() == "SLIDER")
+            {
+                juce::PopupMenu menu;
+                menu.addSectionHeader("Assets Manager");
+                menu.addSeparator();
+                menu.addItem(1, "Add Track", buttonMenuEnable, false);
+                menu.addItem(2, "Add Thumb", buttonMenuEnable, false);
+                menu.addItem(3, "Add Scale", buttonMenuEnable, false);
+                menu.addItem(4, "Generate Scale", !buttonMenuEnable, false);
+                menu.setLookAndFeel(customLookAndFeel);
+
+                menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(add_NewAssetButton), [this, customLookAndFeel](int result)
+                    {
+                        SliderFilmstrip* sliderProject = dynamic_cast<SliderFilmstrip*>(filmstripProjects.at(projectActiveIndex).get());
+                        if (result == 1)
+                        {
+                            sliderProject->addAsset("Track");
+                        }
+                        else if (result == 2)
+                        {
+                            sliderProject->addAsset("Thumb");
+                        }
+                        else if (result == 3)
+                        {
+                            sliderProject->addAsset("Scale");
+                        }
+                        else if (result == 4)
+                        {
+                            sliderProject->addAsset("Scale");
+                        }
+                        repaint();
+
+                    }
+                );
+            }
+
+        };
     addAndMakeVisible(add_NewAssetButton);
 }
 
@@ -2634,14 +2826,16 @@ void MainComponent::fileChooserWindows(juce::String& inputPath)
                 inputPath.clear();      // better than inputPath = "";
             }
 
+
+            /// OLD CODE
             // Set openAddImage_Dialog1 to false after file selection
-            openAddImage_Dialog1 = false;
+            //openAddImage_Dialog1 = false;
 
-            currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
+            //currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
 
-            resetDialog1();
+            //resetDialog1();
 
-            updateUI();
+            //updateUI();
 
         }
     );

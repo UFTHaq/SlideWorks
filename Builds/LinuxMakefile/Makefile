@@ -81,6 +81,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/KnobFilmstrip_91baa69f.o \
   $(JUCE_OBJDIR)/SliderFilmstrip_36e98714.o \
   $(JUCE_OBJDIR)/Asset_ec91be51.o \
+  $(JUCE_OBJDIR)/AssetButtons_6d6dce7a.o \
   $(JUCE_OBJDIR)/BinaryData_ce4232d4.o \
   $(JUCE_OBJDIR)/include_juce_core_f26d17db.o \
   $(JUCE_OBJDIR)/include_juce_core_CompilationTime_9257742c.o \
@@ -149,6 +150,11 @@ $(JUCE_OBJDIR)/SliderFilmstrip_36e98714.o: ../../Source/SliderFilmstrip.cpp
 $(JUCE_OBJDIR)/Asset_ec91be51.o: ../../Source/Asset.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling Asset.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/AssetButtons_6d6dce7a.o: ../../Source/AssetButtons.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling AssetButtons.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/BinaryData_ce4232d4.o: ../../JuceLibraryCode/BinaryData.cpp

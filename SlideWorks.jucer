@@ -36,6 +36,9 @@
       <FILE id="AIebtz" name="Asset.h" compile="0" resource="0" file="Source/Asset.h"/>
       <FILE id="QeLqfL" name="Asset.cpp" compile="1" resource="0" file="Source/Asset.cpp"/>
       <FILE id="XruRRW" name="EnumClass.h" compile="0" resource="0" file="Source/EnumClass.h"/>
+      <FILE id="kB9j37" name="AssetButtons.h" compile="0" resource="0" file="Source/AssetButtons.h"/>
+      <FILE id="YV4gq1" name="AssetButtons.cpp" compile="1" resource="0"
+            file="Source/AssetButtons.cpp"/>
     </GROUP>
     <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>

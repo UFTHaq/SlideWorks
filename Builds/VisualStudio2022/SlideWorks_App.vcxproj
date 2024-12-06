@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\Source\KnobFilmstrip.cpp"/>
     <ClCompile Include="..\..\Source\SliderFilmstrip.cpp"/>
     <ClCompile Include="..\..\Source\Asset.cpp"/>
+    <ClCompile Include="..\..\Source\AssetButtons.cpp"/>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1890,6 +1891,7 @@
     <ClInclude Include="..\..\Source\SliderFilmstrip.h"/>
     <ClInclude Include="..\..\Source\Asset.h"/>
     <ClInclude Include="..\..\Source\EnumClass.h"/>
+    <ClInclude Include="..\..\Source\AssetButtons.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

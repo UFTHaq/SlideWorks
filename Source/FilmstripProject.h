@@ -26,7 +26,12 @@ protected:
 
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
-    std::vector< std::unique_ptr<Asset>> assets{};
+    //std::vector<std::unique_ptr<Asset>> assets{};
+    //std::vector<Asset> assets{};
+    //std::vector<std::shared_ptr<Asset>> assets{};
+    //std::vector<std::unique_ptr<Asset>> assets{};
+
+    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> assets{ std::make_shared<std::vector<std::unique_ptr<Asset>>>() };
 
     int minFrames{ 7 };
     int maxFrames{ 150 };
@@ -40,6 +45,8 @@ protected:
 public:
     FilmstripProject();
     ~FilmstripProject();
+
+    std::vector<Asset> assets{};
 
     void resized() override;
     void paint(juce::Graphics& g) override;
@@ -65,8 +72,19 @@ public:
     juce::TextButton tabButton{};
     std::function<void(FilmstripProject*)> onDeleteRequest{};
 
-    const std::vector<std::unique_ptr<Asset>>& getAsset() const;
-    void addAsset(const juce::String& type);
+    //std::vector<std::unique_ptr<Asset>>& getAssets();
+    //std::vector<Asset>& getAssets();
+    //std::vector<std::shared_ptr<Asset>>& getAssets();
+    //std::shared_ptr<std::vector<std::shared_ptr<Asset>>> getAssets();
+    
+    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
+    //std::unique_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
+     
+    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
+    
+    std::vector<Asset>& getAssets();
+    //void addAsset(const juce::String& type);
+    void addAsset(const juce::String type);
     virtual void initializeAssets() = 0;
 
     virtual juce::String getAnglesOrThumbPosText();

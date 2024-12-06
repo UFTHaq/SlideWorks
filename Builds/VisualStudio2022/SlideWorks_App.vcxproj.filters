@@ -367,6 +367,9 @@
     <ClCompile Include="..\..\Source\Asset.cpp">
       <Filter>SlideWorks\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\AssetButtons.cpp">
+      <Filter>SlideWorks\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <Filter>JUCE Modules\juce_core\containers</Filter>
     </ClCompile>
@@ -2254,6 +2257,9 @@
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\EnumClass.h">
+      <Filter>SlideWorks\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AssetButtons.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h">

@@ -16,7 +16,7 @@ KnobFilmstrip::KnobFilmstrip()
 
 KnobFilmstrip::~KnobFilmstrip()
 {
-    initializeAssets();
+    //initializeAssets();
 }
 
 juce::String KnobFilmstrip::getFilmstripType()

@@ -39,17 +39,17 @@ bool Asset::getAssetVisibility() const
     return assetVisible;
 }
 
-void Asset::setAssetType(const juce::String& type)
+void Asset::setAssetType(const juce::String type)
 {
     this->assetType = type;
 }
 
-void Asset::setAssetFileName(const juce::String& name)
+void Asset::setAssetFileName(const juce::String name)
 {
     this->assetFileName = name;
 }
 
-void Asset::setAssetFilePath(const juce::File& path)
+void Asset::setAssetFilePath(const juce::File path)
 {
     this->assetFilePath = path;
 }

@@ -12,6 +12,7 @@
 #include "FilmstripProject.h"
 #include "KnobFilmstrip.h"
 #include "SliderFilmstrip.h"
+#include "AssetButtons.h"
 
 //==============================================================================
 /*
@@ -63,13 +64,16 @@ public:
     void reloadBannerFilmstripType(size_t activeIndex);
     void setupExportProjectButton();
     void reloadMainControlProject(size_t activeIndex);
-    void setupAddNewAssetButton();
+    void setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel);
     void setupTotalFramesControl(CustomLookAndFeel* customLookAndFeel);
     void reloadTotalFramesControl(size_t activeIndex);
     void setupOrientationControl(CustomLookAndFeel* customLookAndFeel);
     void reloadOrientationControl(size_t activeIndex);
     void setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAndFeel);
     void reloadAnglesOrThumbPosControl(size_t activeIndex);
+    void setupAssetsManager(CustomLookAndFeel* customLookAndFeel);
+    void reloadAssets(size_t activeIndex, size_t activeAsset);
+    size_t getActiveAssetIndex() const;
     void setupDefaultApplyButton();
 
     void reloadAllControls(size_t activeIndex);
@@ -239,6 +243,24 @@ private:
         ///-- ASSETS MANAGER --///
     const int NewAssetButtonWidth{ 35 };
     const int NewAssetButtonHeight{ 20 };
+
+    //std::vector<std::unique_ptr<Asset>>* projectAssets{ nullptr };
+    //std::unique_ptr<std::vector<Asset>> projectAssets{};
+
+    //std::vector<Asset> projectAssets{};
+    //std::vector<std::shared_ptr<Asset>>* projectAssets{ nullptr };
+    //std::shared_ptr<std::vector<std::shared_ptr<Asset>>> projectAssets{};
+
+    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{};
+    //std::vector<std::unique_ptr<Asset>> projectAssets{};
+    //std::unique_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{ nullptr };
+    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{ nullptr };
+
+    //std::vector<Asset> projectAssets{};
+    std::vector<Asset>* projectAssets{ nullptr };
+    size_t assetActiveIndex{};
+    //std::vector<AssetButtons> buttonAssets{};
+    //std::vector<std::vector<AssetButtons>> buttonAssets{};
 
     juce::TextButton add_NewAssetButton{};
     juce::Rectangle<int> area_assetsManager{};
