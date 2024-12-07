@@ -149,7 +149,8 @@ void MainComponent::updatePageContent(juce::Graphics& g)
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().SlideworksBaseColour);
         g.fillRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1);
 
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+        //g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+        g.setColour(canvasColor);
         g.fillRoundedRectangle(area_Canvas.toFloat(), 1);
         g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkest);
         g.drawRoundedRectangle(area_Canvas.toFloat(), 1, 0.2F);
@@ -1529,8 +1530,12 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 //filmstripProjects.at(projectActiveIndex)->addAsset(object);
                                 
                                 //filmstripProjectNih.addAsset(object);
-                                //filmstripProjectNih.getAssets().emplace_back(object);
-                                filmstripProjectNih.assets.emplace_back(object);
+                                
+                                {
+                                    //filmstripProjectNih.getAssets().emplace_back(object);
+                                    //filmstripProjectNih.assets.emplace_back(object);
+                                    filmstripProjectNih.addAsset(object);
+                                }
 
                                 // Get the index of the newly added asset
                                 //size_t a = projectAssets->size() - 1;
@@ -1581,6 +1586,12 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 //filmstripProjectNih.assets.at(a).setAssetFileName(name);
                                 filmstripProjectNih.assets.at(a).setAssetFilePath(path);
                                 filmstripProjectNih.assets.at(a).getAssetType();
+
+                                if (filmstripProjectNih.assets.at(a).getAssetType() == "Knob")
+                                {
+                                    canvasColor = juce::Colours::green;
+                                    repaint();
+                                }
 
                                 // Example: Retrieve asset type
                                 //DBG("Asset Type: " + (*projectAssets)[a]->getAssetType());

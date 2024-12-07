@@ -183,8 +183,8 @@ std::vector<Asset>& FilmstripProject::getAssets()
 
 void FilmstripProject::addAsset(const juce::String type)
 {
-    assets.push_back(Asset(type));
-    //assets.emplace_back(type);
+    //assets.push_back(Asset(type));
+    assets.emplace_back(type);
 }
 
 juce::String FilmstripProject::getAnglesOrThumbPosText()

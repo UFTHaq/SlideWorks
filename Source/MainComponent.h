@@ -167,6 +167,8 @@ private:
     juce::Rectangle<int> area_Canvas{};
     juce::Rectangle<int> area_SubControl{};
 
+    juce::Colour canvasColor = Globals::getCustomLookAndFeel()->getCurrentTheme().SlideworksBaseColour;
+
     std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
     juce::Viewport filmstripButtonsViewport{};
     juce::Component filmstripButtonsContainer{};
