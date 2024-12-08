@@ -38,9 +38,9 @@ juce::String SliderFilmstrip::getFilmstripSizeStatus()
 
 void SliderFilmstrip::initializeAssets()
 {
-    addAsset("Thumb");
-    addAsset("Track");
-    addAsset("Scale");
+    addAsset(juce::String("Thumb"));
+    addAsset(juce::String("Track"));
+    addAsset(juce::String("Scale"));
 }
 
 juce::String SliderFilmstrip::getAnglesOrThumbPosText()

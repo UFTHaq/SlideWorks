@@ -12,11 +12,11 @@
 
 KnobFilmstrip::KnobFilmstrip()
 {
+    //initializeAssets();
 }
 
 KnobFilmstrip::~KnobFilmstrip()
 {
-    //initializeAssets();
 }
 
 juce::String KnobFilmstrip::getFilmstripType()
@@ -39,8 +39,8 @@ juce::String KnobFilmstrip::getFilmstripSizeStatus()
 
 void KnobFilmstrip::initializeAssets()
 {
-    addAsset("Knob");
-    addAsset("Scale");
+    addAsset(juce::String("Knob"));
+    addAsset(juce::String("Scale"));
 }
 
 juce::String KnobFilmstrip::getAnglesOrThumbPosText()

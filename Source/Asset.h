@@ -19,7 +19,7 @@ private:
     juce::File assetFilePath{};
     bool assetVisible{ true };                      // to visible
     bool assetActive{};                             // appear the controls
-    size_t thisIndex{};                             // to delete
+    size_t index{};                                 // to delete
 
 public:
     Asset(const juce::String& type);
@@ -34,4 +34,7 @@ public:
     void setAssetFileName(const juce::String name);
     void setAssetFilePath(const juce::File path);
     void setAssetVisibility(bool visible);
+
+    void setIndex(size_t index);
+    size_t getIndex();
 };

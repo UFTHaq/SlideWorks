@@ -105,6 +105,7 @@ public:
     void openDialog1(juce::Graphics&);
 
     void fileChooserWindows(juce::String& inputPath);
+    void fileChooserNew(std::function<void(juce::String)> onFileSelected);
     void updateUI();
 
     CustomLookAndFeel* ptr_Global_CustomLookAndFeel = Globals::getCustomLookAndFeel().get();
@@ -246,6 +247,10 @@ private:
     const int NewAssetButtonWidth{ 35 };
     const int NewAssetButtonHeight{ 20 };
 
+    juce::String chooserPath{};
+    //std::vector<std::vector<AssetButtons>> assetsManager{};
+    std::vector<std::vector<std::unique_ptr<AssetButtons>>> assetsManagerPtr{};
+
     //std::vector<std::unique_ptr<Asset>>* projectAssets{ nullptr };
     //std::unique_ptr<std::vector<Asset>> projectAssets{};
 
@@ -259,7 +264,7 @@ private:
     //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{ nullptr };
 
     //std::vector<Asset> projectAssets{};
-    std::vector<Asset>* projectAssets{ nullptr };
+    //std::vector<Asset>* projectAssets{ nullptr };
     size_t assetActiveIndex{};
     //std::vector<AssetButtons> buttonAssets{};
     //std::vector<std::vector<AssetButtons>> buttonAssets{};

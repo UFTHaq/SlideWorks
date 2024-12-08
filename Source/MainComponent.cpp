@@ -11,6 +11,8 @@ MainComponent::MainComponent()
     setupCustomGroupComponents();
 
     updateUI();
+
+    //assetsManager.reserve(10);
 }
 
 MainComponent::~MainComponent()
@@ -596,6 +598,8 @@ void MainComponent::setupLayoutUI()
         copy_area_MainControl.removeFromTop(3);
         area_assetsManager = copy_area_MainControl;
 
+        assetsViewport.setBounds(area_assetsManager);
+
 
         reloadAllControls(projectActiveIndex);
     }
@@ -1000,6 +1004,7 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
     setupTotalFramesControl(customLookAndFeel);
     setupOrientationControl(customLookAndFeel);
     setupAnglesOrThumbPosControl(customLookAndFeel);
+    setupAssetsManager(customLookAndFeel);
 
     //setupKnobToggleButton();
     setupSliderToggleButton();
@@ -1126,8 +1131,157 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                         filmstripProjects.push_back(std::move(project));
 
-                        
-                        
+                        //std::vector<juce::String> assetsType{ "Knob", "Scale" };
+                        std::vector<juce::String> assetsType{ "Knob", "Scale", "Turbo", "Bell", "UFTHaq", "Track", "Thumb"};
+
+                        for (const auto& type : assetsType)
+                        {
+                            std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
+
+                            if (assetsManagerPtr.empty() || assetsManagerPtr.back().empty())
+                            {
+                                std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
+
+                                newVectorAsset.emplace_back(std::move(newAsset));
+                                newVectorAsset.back()->assetMainButton.setName(type);
+
+                                assetsManagerPtr.emplace_back(std::move(newVectorAsset));
+                            }
+                            else
+                            {
+                                assetsManagerPtr.back().emplace_back(std::move(newAsset));
+                                assetsManagerPtr.back().back()->assetMainButton.setName(type);
+                            }
+
+                            filmstripProjects.at(projectActiveIndex)->addAsset(type);
+                        }
+
+                        //for (size_t i = 0; i < filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1; i++)
+                        //{
+                        //    auto* assetButton = assetsManagerPtr.back().at(i).get();
+                        //    auto* asset = &filmstripProjects.at(projectActiveIndex)->getAssets().at(i);
+
+                        //    //assetButton->loadImageButton.onClick = [this, i, &asset]()
+                        //    //    {
+                        //    //        juce::String file{};
+                        //    //        fileChooserWindows(file);
+
+                        //    //        juce::File path{ file };
+                        //    //        asset->setAssetFilePath(path);
+
+                        //    //        juce::String name{ path.getFileName() };
+                        //    //        asset->setAssetFileName(name);
+
+                        //    //        asset->setIndex(i);
+                        //    //    };
+
+                        //    assetButton->setIndex(i);
+                        //    assetButton->resized();
+                        //}
+
+                        {
+                            //size_t i{};
+
+                            //juce::String type{};
+
+                            //type = assetsType.at(i);
+                            //{
+                            //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
+
+                            //    std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
+
+                            //    newVectorAsset.emplace_back(std::move(newAsset));
+
+                            //    assetsManagerPtr.emplace_back(std::move(newVectorAsset));
+                            //}
+
+                            //i++;
+                            //type = assetsType.at(i);
+                            //{
+                            //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
+
+                            //    assetsManagerPtr.back().emplace_back(std::move(newAsset));
+                            //}
+
+                        }
+
+
+
+
+                        //std::vector<juce::String> assetsType{ "Knob", "Scale" };
+                        //for (auto& type : assetsType)
+                        //{
+                        //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
+
+                        //    std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
+                        //    
+                        //    newVectorAsset.emplace_back(std::move(newAsset));
+
+                        //    assetsManagerPtr.emplace_back(std::move(newVectorAsset));
+                        //}
+
+                        //{
+                        //    AssetButtons newAsset = AssetButtons("Knob");
+                        //    std::vector<AssetButtons> newVector{};
+                        //    newVector.push_back(std::move(newAsset));
+                        //    //newVector.emplace_back(std::move(newAsset));
+                        //    assetsManager.emplace_back(std::move(newVector));
+                        //}
+
+                        //assetsManagerPtr.emplace_back(std::move(std::vector<AssetButtons>(newAsset)));
+                        //assetsManagerPtr.push_back(std::move(newAsset));
+
+                        // CREATE ASSETS BUTTONS
+                        {
+                            ////juce::String type{};
+                            //size_t projectIndex{};
+                            //auto& thisProject = *filmstripProjects.at(projectActiveIndex);
+
+                            ////thisProject.initializeAssets();
+
+                            ////type = "Knob";
+                            //juce::String knob{ "Knob" };
+                            ////assetsManager.emplace_back("Knob");
+                            ////assetsManager.emplace_back(AssetButtons(knob));
+                            ////assetsManager.emplace_back(std::vector<AssetButtons>{ AssetButtons(knob) });
+                            //assetsManagerPtr.emplace_back(std::vector<std::unique_ptr<AssetButtons>>{std::make_unique<AssetButtons>(knob)});
+
+                            ////assetsManager.back().reserve(10);
+                            //assetsManagerPtr.back().reserve(10);
+
+                            ////projectIndex = assetsManager.size() - 1;
+                            //projectIndex = assetsManagerPtr.size() - 1;
+
+                            //juce::String scale{ "Scale" };
+                            ////assetsManager.at(projectIndex).emplace_back("Scale");
+                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(scale));
+                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(scale));
+
+                            ////auto& assets = thisProject.getAssets();
+                            ////for (size_t i = 0; i < assets.size() - 1; i++)
+                            ////{
+                            ////    //auto* assetButton = &assetsManager.at(projectIndex).at(i);
+                            ////    auto* assetButton = assetsManagerPtr.at(projectIndex).at(i).get();
+                            ////    auto* asset = &assets.at(i);
+
+                            ////    assetButton->loadImageButton.onClick = [this, i, &asset]()
+                            ////        {
+                            ////            juce::String file{};
+                            ////            fileChooserWindows(file);
+
+                            ////            juce::File path{ file };
+                            ////            asset->setAssetFilePath(path);
+
+                            ////            juce::String name{ path.getFileName() };
+                            ////            asset->setAssetFileName(name);
+
+                            ////            asset->setIndex(i);
+                            ////        };
+
+                            ////    assetButton->setIndex(i);
+                            ////    assetButton->resized();      // Change state of load image button to non-active
+                            ////}
+                        }
 
                     }
                     else if (result == 2)
@@ -1205,6 +1359,63 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                             };
 
                         filmstripProjects.push_back(std::move(project));
+
+                        // CREATE ASSETS BUTTONS
+                        {
+                            //size_t projectIndex{};
+                            //auto& thisProject = *filmstripProjects.at(projectActiveIndex);
+
+                            ////thisProject.initializeAssets();
+
+                            //juce::String thumb{ "Thumb" };
+                            ////assetsManager.emplace_back("Thumb");
+                            ////assetsManager.emplace_back(AssetButtons(thumb));
+                            ////assetsManager.emplace_back(std::vector<AssetButtons>{ AssetButtons(thumb) });
+                            //assetsManagerPtr.emplace_back(std::vector<std::unique_ptr<AssetButtons>>{std::make_unique<AssetButtons>(thumb)});
+
+                            ////assetsManager.back().reserve(10);
+                            //assetsManagerPtr.back().reserve(10);
+
+                            ////projectIndex = assetsManager.size() - 1;
+                            //projectIndex = assetsManagerPtr.size() - 1;
+
+                            //juce::String track{ "Track" };
+                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(track));
+                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(track));
+
+
+                            ////projectIndex = assetsManager.size() - 1;
+                            //
+                            //juce::String scale{ "Scale" };
+                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(scale));
+                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(scale));
+
+                            ////auto& assets = thisProject.getAssets();
+                            ////for (size_t i = 0; i < assets.size() - 1; i++)
+                            ////{
+                            ////    //auto* assetButton = &assetsManager.at(projectIndex).at(i);
+                            ////    auto* assetButton = assetsManagerPtr.at(projectIndex).at(i).get();
+                            ////    auto* asset = &assets.at(i);
+
+                            ////    assetButton->loadImageButton.onClick = [this, i, &asset]()
+                            ////        {
+                            ////            juce::String file{};
+                            ////            fileChooserWindows(file);
+
+                            ////            juce::File path{ file };
+                            ////            asset->setAssetFilePath(path);
+
+                            ////            juce::String name{ path.getFileName() };
+                            ////            asset->setAssetFileName(name);
+
+                            ////            asset->setIndex(i);
+                            ////        };
+
+                            ////    assetButton->setIndex(i);
+                            ////    assetButton->resized();      // Change state of load image button to non-active
+                            ////}
+                        }
+
                     }
 
                     if (filmstripProjects.empty() == false)
@@ -1485,7 +1696,7 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                 menu.addSeparator();
                 menu.addItem(1, "Add Knob", buttonMenuEnable, false);
                 menu.addItem(2, "Add Scale", buttonMenuEnable, false);
-                menu.addItem(3, "Generate Scale", !buttonMenuEnable, false);
+                menu.addItem(3, "Generate Scale", false, false);
                 menu.setLookAndFeel(customLookAndFeel);
 
                 menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(add_NewAssetButton), [this, customLookAndFeel](int result)
@@ -1493,16 +1704,31 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                         KnobFilmstrip* knobProject = dynamic_cast<KnobFilmstrip*>(filmstripProjects.at(projectActiveIndex).get());
                         if (result == 1)
                         {
-                            auto& filmstripProjectNih = *filmstripProjects.at(projectActiveIndex);
+                            auto& project = *filmstripProjects.at(projectActiveIndex);
 
                             if (knobProject != nullptr)
                             {
+                                juce::String type{ "Knob" };
+
+                                project.addAsset(type);
+                                
+                                size_t index = project.getAssets().size() - 1;
+
+                                project.getAssets().at(index).setIndex(index);
+                                //project.getAssets().at(index).getAssetType();
+
+                                
+                                //size_t projectIndex = assetsManager.size() - 1;
+                                //assetsManager.at(projectIndex).emplace_back(type);
+
+
+
                                 // Add a new asset to the project
                                 //knobProject->addAsset("Knob");
                                 //knobProject->addAsset("Knob");
                                 //knobProject->addAsset("Knob");
                                 //filmstripProjects.at(projectActiveIndex)->addAsset("Knob");
-                                juce::String object{ "Knob" };
+                                //juce::String object{ "Knob" };
                                 //filmstripProjects.at(projectActiveIndex)->addAsset(object);
                                 //filmstripProjects.at(projectActiveIndex)->getAssets().emplace_back(Asset(object));
 
@@ -1534,7 +1760,7 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 {
                                     //filmstripProjectNih.getAssets().emplace_back(object);
                                     //filmstripProjectNih.assets.emplace_back(object);
-                                    filmstripProjectNih.addAsset(object);
+                                    //filmstripProjectNih.addAsset(object);
                                 }
 
                                 // Get the index of the newly added asset
@@ -1550,19 +1776,19 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 //size_t a = asstes.size() - 1;
                                 //size_t a = filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1;
                                 //size_t a = filmstripProjectNih.getAssets().size() - 1;
-                                size_t a = filmstripProjectNih.assets.size() - 1;
+                                //size_t a = filmstripProjectNih.assets.size() - 1;
 
-                                auto& asset = filmstripProjectNih.getAssets().at(a);
+                                //auto& asset = filmstripProjectNih.getAssets().at(a);
 
                                 // Open a dialog to select a file
-                                juce::String name;
+                                //juce::String name;
 
                                 //if (filmstripProjectNih.getAssets().empty())
-                                if (filmstripProjectNih.assets.size() > 0)
+                                //if (filmstripProjectNih.assets.size() > 0)
                                 {
                                     //fileChooserWindows(name);
                                 }
-                                juce::File path = name;
+                                //juce::File path = name;
 
                                 //if (*projectAssets).at(a)->get != nullptr)
                                 // Set the file path for the newly added asset
@@ -1584,13 +1810,13 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
 
                                 //asset.setAssetFilePath(juce::File(name));
                                 //filmstripProjectNih.assets.at(a).setAssetFileName(name);
-                                filmstripProjectNih.assets.at(a).setAssetFilePath(path);
-                                filmstripProjectNih.assets.at(a).getAssetType();
+                                //filmstripProjectNih.assets.at(a).setAssetFilePath(path);
+                                //filmstripProjectNih.assets.at(a).getAssetType();
 
-                                if (filmstripProjectNih.assets.at(a).getAssetType() == "Knob")
+                                //if (filmstripProjectNih.assets.at(a).getAssetType() == "Knob")
                                 {
-                                    canvasColor = juce::Colours::green;
-                                    repaint();
+                                    //canvasColor = juce::Colours::green;
+                                    //repaint();
                                 }
 
                                 // Example: Retrieve asset type
@@ -1599,7 +1825,7 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                             }
                             else
                             {
-                                DBG("Error: knobProject is nullptr!");
+                                //DBG("Error: knobProject is nullptr!");
                             }
 
                             //// WILL OPEN DIALOG FILE TO LOAD IMAGE KNOB
@@ -2203,6 +2429,115 @@ void MainComponent::reloadAnglesOrThumbPosControl(size_t activeIndex)
     }
 }
 
+void MainComponent::setupAssetsManager(CustomLookAndFeel* customLookAndFeel)
+{
+    //assetsContainer
+
+    assetsViewport.setViewedComponent(&assetsContainer, false);
+    assetsViewport.setScrollBarsShown(true, false);
+    
+    addAndMakeVisible(assetsViewport);
+}
+
+void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
+{
+    if (activeIndex != SIZE_MAX)
+    {
+        auto bounds = assetsViewport.getLocalBounds();
+
+        int buttonHeight{ 25 };
+        int spacing{ 1 };
+        int totalHeight{};
+        int thickness{};
+
+        int y{};
+        int buttonWidth{};
+
+        for (size_t i = 0; i < assetsManagerPtr.at(activeIndex).size(); i++)
+        {
+            y = (int)i * (buttonHeight + spacing);
+
+        }
+
+        totalHeight = y + buttonHeight + 2;
+
+        if (totalHeight < assetsViewport.getHeight())
+        {
+            thickness = 0;
+            buttonWidth = bounds.getWidth() - 1;
+        }
+        else
+        {
+            thickness = 10;
+            buttonWidth = bounds.getWidth() - 1 - thickness;
+        }
+
+        for (size_t i = 0; i < assetsManagerPtr.at(activeIndex).size(); i++)
+        {
+            y = (int)i * (buttonHeight + spacing);
+
+            auto theBounds = juce::Rectangle{ 1, 1 + y, buttonWidth, buttonHeight };
+
+            auto assetButton = assetsManagerPtr.at(activeIndex).at(i).get();
+            assetButton->setBounds(theBounds);
+            assetButton->assetMainButton.onClick = [this, assetButton, activeIndex, &activeAsset]()
+                {
+                    if (assetButton->assetMainButton.getToggleState())
+                    {
+                        assetButton->assetMainButton.setToggleState(false, juce::dontSendNotification);
+                    }
+                    else
+                    {
+                        for (auto& mainButton : assetsManagerPtr.at(activeIndex))
+                        {
+                            mainButton->assetMainButton.setToggleState(false, juce::dontSendNotification);
+                        }
+                        assetButton->assetMainButton.setToggleState(true, juce::dontSendNotification);
+                        activeAsset = assetButton->getIndex();
+                    }
+                };
+
+
+            auto* assetObject = &filmstripProjects.at(projectActiveIndex)->getAssets().at(i);
+            assetButton->loadImageButton.onClick = [this, i , assetButton, assetObject]()
+                {
+                    fileChooserNew([this, i, assetButton, assetObject](juce::String chooserPath)
+                        {
+                            if (chooserPath.isEmpty())
+                            {
+                                DBG("No valid file selected.");
+                                return;
+                            } 
+                            
+                            juce::File path = chooserPath;
+                            assetObject->setAssetFilePath(path);
+
+                            juce::String name = path.getFileName();
+                            assetObject->setAssetFileName(name);
+
+                            assetButton->setNameDisplay(name);
+
+                            assetButton->reloadButtonVisibility();
+                        }
+                    );
+                };
+
+            assetsContainer.addAndMakeVisible(assetButton);
+
+        }
+
+        assetsContainer.setSize(bounds.getWidth(), totalHeight);
+
+        assetsViewport.setScrollBarThickness(thickness);
+
+        filmstripProjects.at(activeIndex)->getAssets();
+    }
+    else
+    {
+
+    }
+}
+
 void MainComponent::setupDefaultApplyButton()
 {
     control_DefaultButton.setButtonText("Default");
@@ -2222,6 +2557,7 @@ void MainComponent::reloadAllControls(size_t activeIndex)
 
     reloadNamingProjectLabel(activeIndex);
     reloadBannerFilmstripType(activeIndex);
+    reloadAssets(activeIndex, 1);
     reloadMainControlProject(activeIndex);
 
     repaint();
@@ -2848,6 +3184,42 @@ void MainComponent::fileChooserWindows(juce::String& inputPath)
 
             //updateUI();
 
+        }
+    );
+}
+
+void MainComponent::fileChooserNew(std::function<void(juce::String)> onFileSelected)
+{
+    fileChooser.reset(new juce::FileChooser("Select a file", juce::File(), "*.png"));
+
+    auto fileChooserFlags = juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles;
+
+    fileChooser->launchAsync(fileChooserFlags, [onFileSelected](const juce::FileChooser& chooser)
+        {
+            juce::File selectedFile = chooser.getResult();
+            juce::String inputPath{};
+
+            if (selectedFile.existsAsFile())
+            {
+                inputPath = selectedFile.getFullPathName();
+
+                if (selectedFile.hasFileExtension(".png"))
+                {
+                    DBG("Selected file is a valid PNG: " << inputPath);
+                }
+                else
+                {
+                    DBG("Selected file is NOT a PNG: " << inputPath);
+                    inputPath.clear();
+                }
+            }
+            else
+            {
+                DBG("No file selected");
+                inputPath.clear();
+            }
+
+            onFileSelected(inputPath);
         }
     );
 }

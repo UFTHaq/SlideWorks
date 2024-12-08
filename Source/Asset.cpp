@@ -59,3 +59,13 @@ void Asset::setAssetVisibility(bool visible)
     this->assetVisible = visible;
 }
 
+
+void Asset::setIndex(size_t index)
+{
+    this->index = index;
+}
+
+size_t Asset::getIndex()
+{
+    return index;
+}

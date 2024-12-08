@@ -181,7 +181,7 @@ std::vector<Asset>& FilmstripProject::getAssets()
 //    assets->push_back(std::make_unique<Asset>(type));
 //}
 
-void FilmstripProject::addAsset(const juce::String type)
+void FilmstripProject::addAsset(const juce::String& type)
 {
     //assets.push_back(Asset(type));
     assets.emplace_back(type);

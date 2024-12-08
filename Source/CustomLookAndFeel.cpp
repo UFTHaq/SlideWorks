@@ -347,8 +347,39 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getCurrentTheme().TransparentWhite;
 		}
 	}
+	else if (buttonID == "Buttons_ID_11_MAIN_ASSET")
+	{
+		cornerSize = 1;
 
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.4F;
 
+		if (button.getToggleState() == 1 || shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().NamingLabel;
+		}
+		else
+		{
+			fillColor = getCurrentTheme().TransparentWhite;
+		}
+	}
+	else if (buttonID == "Buttons_ID_14_LOAD_ASSET")
+	{
+		cornerSize = 1;
+
+		outlineColor = getCurrentTheme().OutlineControl;
+		outlineThick = 0.4F;
+
+		if (button.getToggleState() == 1 || shouldDrawButtonAsDown)
+		{
+			fillColor = getCurrentTheme().BannerFilmstripType.brighter();
+		}
+		else
+		{
+			fillColor = getCurrentTheme().BannerFilmstripType;
+		}
+	}
+	
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
 	{
@@ -472,13 +503,14 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
 {
-	const juce::String buttonName = button.getName();
-	const juce::String buttonText = button.getButtonText();
+	juce::String buttonName = button.getName();
+	juce::String buttonText = button.getButtonText();
 	const juce::String buttonID = button.getComponentID();
 	auto bounds = button.getLocalBounds();
 	auto justification = juce::Justification::centred;
 	juce::Font font{ juce::FontOptions{} };
 	juce::Colour textColor{};
+	juce::String text{ buttonText };
 
 
 	if (buttonID == "Buttons_ID_01_SW")
@@ -598,8 +630,46 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getCurrentTheme().OutlineControl;
 		}
 	}
-	
+	else if (buttonID == "Buttons_ID_11_MAIN_ASSET")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
 
+		justification = juce::Justification::centredLeft;
+
+		text = buttonName;
+		//text = "Thumb";
+
+		bounds.removeFromLeft(5);
+		bounds = bounds.removeFromLeft(35);
+
+		if (button.getToggleState() == 1 || isButtonDown)
+		{
+			textColor = getCurrentTheme().FontWhite;
+		}
+		else
+		{
+			textColor = getCurrentTheme().FontBlack;
+		}
+	}
+	else if (buttonID == "Buttons_ID_14_LOAD_ASSET")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
+
+		justification = juce::Justification::centred;
+
+
+		if (button.getToggleState() == 1 || isButtonDown)
+		{
+			textColor = getCurrentTheme().FontBlack;
+		}
+		else
+		{
+			textColor = getCurrentTheme().FontBlack;
+		}
+	}
+	
 
 
 	if (buttonName == "knobWorks" || buttonName == "sliderWorks" || buttonName == "modeSimulationButton" || buttonName == "modePreviewButton" || buttonName == "modeResizeButton")
@@ -674,7 +744,21 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 
 	g.setFont(font);
 	g.setColour(textColor);
-	g.drawFittedText(buttonText, bounds, justification, 1);
+	g.drawFittedText(text, bounds, justification, 1);
+
+	if (buttonID == "Buttons_ID_11_MAIN_ASSET")
+	{
+		bounds = button.getLocalBounds();
+		text = ": " + buttonText;
+
+		if (button.isEnabled())
+		{
+			bounds.removeFromLeft(45);
+			bounds.removeFromRight(50);
+			g.drawFittedText(text, bounds, justification, 1, 0.75F);
+			//g.drawText(text, bounds, justification, 1);
+		}
+	}
 }
 
 

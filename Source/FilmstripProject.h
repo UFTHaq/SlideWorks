@@ -25,6 +25,7 @@ protected:
     juce::TextButton closeButton{};
 
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
+    std::vector<Asset> assets{};
 
     //std::vector<std::unique_ptr<Asset>> assets{};
     //std::vector<Asset> assets{};
@@ -45,8 +46,6 @@ protected:
 public:
     FilmstripProject();
     ~FilmstripProject();
-
-    std::vector<Asset> assets{};
 
     void resized() override;
     void paint(juce::Graphics& g) override;
@@ -84,7 +83,7 @@ public:
     
     std::vector<Asset>& getAssets();
     //void addAsset(const juce::String& type);
-    void addAsset(const juce::String type);
+    void addAsset(const juce::String& type);
     virtual void initializeAssets() = 0;
 
     virtual juce::String getAnglesOrThumbPosText();
