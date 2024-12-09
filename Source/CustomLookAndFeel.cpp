@@ -1038,7 +1038,8 @@ void CustomLookAndFeel::drawTextEditorOutline(juce::Graphics& g, int width, int 
 	(void)height;
 	//(void)editor;
 	
-	auto outlineColour = editor.findColour(juce::Label::outlineWhenEditingColourId);
+	juce::Colour outlineColour{};
+	outlineColour = editor.findColour(juce::TextEditor::outlineColourId);
 
 	g.setColour(outlineColour);
 	g.drawRoundedRectangle(editor.getLocalBounds().toFloat().reduced(0.5F), 1.0F, 0.4F);

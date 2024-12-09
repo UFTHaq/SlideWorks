@@ -329,6 +329,12 @@ void MainComponent::updatePage2WorkVisibility(bool visible)
     {
         add_NewAssetButton.setVisible(visible);
         add_NewAssetButton.setEnabled(visible);
+
+        assetsViewport.setVisible(visible);
+        assetsViewport.setEnabled(visible);
+
+        assetsContainer.setVisible(visible);
+        assetsContainer.setEnabled(visible);
     }
 }
 
@@ -1039,14 +1045,12 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                 buttonMenuEnable = true;
             }
 
-
             juce::PopupMenu menu;
             menu.addSectionHeader("New Filmstrip Project");
             menu.addSeparator();
             menu.addItem(1, "Knob Filmstrip", buttonMenuEnable, false);
             menu.addItem(2, "Slider Filmstrip", buttonMenuEnable, false);
             menu.setLookAndFeel(customLookAndFeel);
-
 
 
             menu.showMenuAsync(juce::PopupMenu::Options{}.withTargetComponent(SW_NewProjectButton), [this](int result)
@@ -1076,6 +1080,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         // using safePointer to MainComponent cause this is lambda deleting object from the object it self, so if the object already deleted
                         // cant access mainComponent::resized() or mainComponent::setupLayoutUI() to recalculate the viewport buttons cause the object already died.
                         // so need safePointer to outlive the object to run the last task from that object. 
+
                         ptrProject->onDeleteRequest = [safeThis = juce::Component::SafePointer<MainComponent>(this)](FilmstripProject* projectToDelete)
                             {
                                 if (auto* mainComp = safeThis.getComponent())
@@ -1093,6 +1098,8 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                         mainComp->removeChildComponent(it->get());
                                         mainComp->filmstripProjects.erase(it);
+                                        mainComp->deleteAssetsProject(deletedIndex);
+
                                         mainComp->setupLayoutUI();                // RECALCULATE TAB BUTTON COUNTS
 
                                         if (mainComp->filmstripProjects.size() > 0)
@@ -1108,11 +1115,10 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                                 {
                                                     mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
                                                 }
-
-                                                mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
-
-                                                mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                             }
+
+                                            mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
+                                            mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                         }
                                         else
                                         {
@@ -1130,159 +1136,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                             };
 
                         filmstripProjects.push_back(std::move(project));
-
-                        //std::vector<juce::String> assetsType{ "Knob", "Scale" };
-                        std::vector<juce::String> assetsType{ "Knob", "Scale", "Turbo", "Bell", "UFTHaq", "Track", "Thumb"};
-
-                        for (const auto& type : assetsType)
-                        {
-                            std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
-
-                            if (assetsManagerPtr.empty() || assetsManagerPtr.back().empty())
-                            {
-                                std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
-
-                                newVectorAsset.emplace_back(std::move(newAsset));
-                                newVectorAsset.back()->assetMainButton.setName(type);
-
-                                assetsManagerPtr.emplace_back(std::move(newVectorAsset));
-                            }
-                            else
-                            {
-                                assetsManagerPtr.back().emplace_back(std::move(newAsset));
-                                assetsManagerPtr.back().back()->assetMainButton.setName(type);
-                            }
-
-                            filmstripProjects.at(projectActiveIndex)->addAsset(type);
-                        }
-
-                        //for (size_t i = 0; i < filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1; i++)
-                        //{
-                        //    auto* assetButton = assetsManagerPtr.back().at(i).get();
-                        //    auto* asset = &filmstripProjects.at(projectActiveIndex)->getAssets().at(i);
-
-                        //    //assetButton->loadImageButton.onClick = [this, i, &asset]()
-                        //    //    {
-                        //    //        juce::String file{};
-                        //    //        fileChooserWindows(file);
-
-                        //    //        juce::File path{ file };
-                        //    //        asset->setAssetFilePath(path);
-
-                        //    //        juce::String name{ path.getFileName() };
-                        //    //        asset->setAssetFileName(name);
-
-                        //    //        asset->setIndex(i);
-                        //    //    };
-
-                        //    assetButton->setIndex(i);
-                        //    assetButton->resized();
-                        //}
-
-                        {
-                            //size_t i{};
-
-                            //juce::String type{};
-
-                            //type = assetsType.at(i);
-                            //{
-                            //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
-
-                            //    std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
-
-                            //    newVectorAsset.emplace_back(std::move(newAsset));
-
-                            //    assetsManagerPtr.emplace_back(std::move(newVectorAsset));
-                            //}
-
-                            //i++;
-                            //type = assetsType.at(i);
-                            //{
-                            //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
-
-                            //    assetsManagerPtr.back().emplace_back(std::move(newAsset));
-                            //}
-
-                        }
-
-
-
-
-                        //std::vector<juce::String> assetsType{ "Knob", "Scale" };
-                        //for (auto& type : assetsType)
-                        //{
-                        //    std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
-
-                        //    std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
-                        //    
-                        //    newVectorAsset.emplace_back(std::move(newAsset));
-
-                        //    assetsManagerPtr.emplace_back(std::move(newVectorAsset));
-                        //}
-
-                        //{
-                        //    AssetButtons newAsset = AssetButtons("Knob");
-                        //    std::vector<AssetButtons> newVector{};
-                        //    newVector.push_back(std::move(newAsset));
-                        //    //newVector.emplace_back(std::move(newAsset));
-                        //    assetsManager.emplace_back(std::move(newVector));
-                        //}
-
-                        //assetsManagerPtr.emplace_back(std::move(std::vector<AssetButtons>(newAsset)));
-                        //assetsManagerPtr.push_back(std::move(newAsset));
-
-                        // CREATE ASSETS BUTTONS
-                        {
-                            ////juce::String type{};
-                            //size_t projectIndex{};
-                            //auto& thisProject = *filmstripProjects.at(projectActiveIndex);
-
-                            ////thisProject.initializeAssets();
-
-                            ////type = "Knob";
-                            //juce::String knob{ "Knob" };
-                            ////assetsManager.emplace_back("Knob");
-                            ////assetsManager.emplace_back(AssetButtons(knob));
-                            ////assetsManager.emplace_back(std::vector<AssetButtons>{ AssetButtons(knob) });
-                            //assetsManagerPtr.emplace_back(std::vector<std::unique_ptr<AssetButtons>>{std::make_unique<AssetButtons>(knob)});
-
-                            ////assetsManager.back().reserve(10);
-                            //assetsManagerPtr.back().reserve(10);
-
-                            ////projectIndex = assetsManager.size() - 1;
-                            //projectIndex = assetsManagerPtr.size() - 1;
-
-                            //juce::String scale{ "Scale" };
-                            ////assetsManager.at(projectIndex).emplace_back("Scale");
-                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(scale));
-                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(scale));
-
-                            ////auto& assets = thisProject.getAssets();
-                            ////for (size_t i = 0; i < assets.size() - 1; i++)
-                            ////{
-                            ////    //auto* assetButton = &assetsManager.at(projectIndex).at(i);
-                            ////    auto* assetButton = assetsManagerPtr.at(projectIndex).at(i).get();
-                            ////    auto* asset = &assets.at(i);
-
-                            ////    assetButton->loadImageButton.onClick = [this, i, &asset]()
-                            ////        {
-                            ////            juce::String file{};
-                            ////            fileChooserWindows(file);
-
-                            ////            juce::File path{ file };
-                            ////            asset->setAssetFilePath(path);
-
-                            ////            juce::String name{ path.getFileName() };
-                            ////            asset->setAssetFileName(name);
-
-                            ////            asset->setIndex(i);
-                            ////        };
-
-                            ////    assetButton->setIndex(i);
-                            ////    assetButton->resized();      // Change state of load image button to non-active
-                            ////}
-                        }
-
+                        
                     }
                     else if (result == 2)
                     {
@@ -1322,6 +1176,8 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                                         mainComp->removeChildComponent(it->get());
                                         mainComp->filmstripProjects.erase(it);
+                                        mainComp->deleteAssetsProject(deletedIndex);
+
                                         mainComp->setupLayoutUI();
 
                                         if (mainComp->filmstripProjects.size() > 0)
@@ -1337,11 +1193,10 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                                 {
                                                     mainComp->filmstripProjects.at(deletedIndex)->tabButton.setToggleState(true, juce::dontSendNotification);
                                                 }
-
-                                                mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
-
-                                                mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                             }
+
+                                            mainComp->projectActiveIndex = mainComp->getActiveProjectIndex();
+                                            mainComp->reloadAllControls(mainComp->projectActiveIndex);
                                         }
                                         else
                                         {
@@ -1360,95 +1215,50 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                         filmstripProjects.push_back(std::move(project));
 
-                        // CREATE ASSETS BUTTONS
-                        {
-                            //size_t projectIndex{};
-                            //auto& thisProject = *filmstripProjects.at(projectActiveIndex);
-
-                            ////thisProject.initializeAssets();
-
-                            //juce::String thumb{ "Thumb" };
-                            ////assetsManager.emplace_back("Thumb");
-                            ////assetsManager.emplace_back(AssetButtons(thumb));
-                            ////assetsManager.emplace_back(std::vector<AssetButtons>{ AssetButtons(thumb) });
-                            //assetsManagerPtr.emplace_back(std::vector<std::unique_ptr<AssetButtons>>{std::make_unique<AssetButtons>(thumb)});
-
-                            ////assetsManager.back().reserve(10);
-                            //assetsManagerPtr.back().reserve(10);
-
-                            ////projectIndex = assetsManager.size() - 1;
-                            //projectIndex = assetsManagerPtr.size() - 1;
-
-                            //juce::String track{ "Track" };
-                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(track));
-                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(track));
-
-
-                            ////projectIndex = assetsManager.size() - 1;
-                            //
-                            //juce::String scale{ "Scale" };
-                            ////assetsManager.at(projectIndex).emplace_back(AssetButtons(scale));
-                            //assetsManagerPtr.at(projectIndex).emplace_back(std::make_unique<AssetButtons>(scale));
-
-                            ////auto& assets = thisProject.getAssets();
-                            ////for (size_t i = 0; i < assets.size() - 1; i++)
-                            ////{
-                            ////    //auto* assetButton = &assetsManager.at(projectIndex).at(i);
-                            ////    auto* assetButton = assetsManagerPtr.at(projectIndex).at(i).get();
-                            ////    auto* asset = &assets.at(i);
-
-                            ////    assetButton->loadImageButton.onClick = [this, i, &asset]()
-                            ////        {
-                            ////            juce::String file{};
-                            ////            fileChooserWindows(file);
-
-                            ////            juce::File path{ file };
-                            ////            asset->setAssetFilePath(path);
-
-                            ////            juce::String name{ path.getFileName() };
-                            ////            asset->setAssetFileName(name);
-
-                            ////            asset->setIndex(i);
-                            ////        };
-
-                            ////    assetButton->setIndex(i);
-                            ////    assetButton->resized();      // Change state of load image button to non-active
-                            ////}
-                        }
-
                     }
 
-                    if (filmstripProjects.empty() == false)
+                    if (filmstripProjects.size() > 0)
                     {
-                        for (auto& project : filmstripProjects)
                         {
-                            project->tabButton.setToggleState(false, juce::dontSendNotification);
-                        }
-                        filmstripProjects.back()->tabButton.setToggleState(true, juce::dontSendNotification);
+                            setNewProjectActiveAfterCreated();
+                            projectActiveIndex = getActiveProjectIndex();
 
-                        size_t KnobTotal{};
-                        size_t SliderTotal{};
+                            std::vector<juce::String> assetsType{};
 
-                        for (auto& project : filmstripProjects)
-                        {
-                            if (auto* knob = dynamic_cast<KnobFilmstrip*>(project.get()))
-                            {
-                                KnobTotal++;
-                            }
+                            if (result == 1)
+                                //assetsType = { "Knob", "Scale" };
+                                assetsType = { "Knob", "Scale", "Turbo", "M416", "ZUF", "Tirakat", "Zen" };
+                            else
+                                assetsType = { "Track", "Thumb", "Scale" };
 
-                            if (auto* slider = dynamic_cast<SliderFilmstrip*>(project.get()))
-                            {
-                                SliderTotal++;
-                            }
+                            initializeDefaultAssets(assetsType, projectActiveIndex);
                         }
 
-                        DBG("PROJECT BOUNDS: " << filmstripProjects.back()->getBounds().toString());
-                        DBG("BUTTON BOUNDS : " << filmstripProjects.back()->tabButton.getBounds().toString());
+                        {
+                            size_t KnobTotal{};
+                            size_t SliderTotal{};
 
-                        DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
-                        DBG("==> Total Projects  : " << filmstripProjects.size());
-                        DBG("==> Total Knobs     : " << KnobTotal);
-                        DBG("==> Total Sliders   : " << SliderTotal);
+                            for (auto& project : filmstripProjects)
+                            {
+                                if (auto* knob = dynamic_cast<KnobFilmstrip*>(project.get()))
+                                {
+                                    KnobTotal++;
+                                }
+
+                                if (auto* slider = dynamic_cast<SliderFilmstrip*>(project.get()))
+                                {
+                                    SliderTotal++;
+                                }
+                            }
+
+                            DBG("PROJECT BOUNDS: " << filmstripProjects.back()->getBounds().toString());
+                            DBG("BUTTON BOUNDS : " << filmstripProjects.back()->tabButton.getBounds().toString());
+
+                            DBG("==> TESTING POINTER : " << filmstripProjects.back()->getFilmstripSizeStatus());
+                            DBG("==> Total Projects  : " << filmstripProjects.size());
+                            DBG("==> Total Knobs     : " << KnobTotal);
+                            DBG("==> Total Sliders   : " << SliderTotal);
+                        }
                     }
 
                     if (filmstripProjects.size() > 0) 
@@ -1536,6 +1346,18 @@ size_t MainComponent::getActiveProjectIndex() const
     return static_cast<size_t>(-1);
 }
 
+void MainComponent::setNewProjectActiveAfterCreated()
+{
+    if (filmstripProjects.size() > 0)
+    {
+        for (auto& project : filmstripProjects)
+        {
+            project->tabButton.setToggleState(false, juce::dontSendNotification);
+        }
+        filmstripProjects.back()->tabButton.setToggleState(true, juce::dontSendNotification);
+    }
+}
+
 void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel)
 {
     // SETUP NAMING LABEL
@@ -1552,17 +1374,9 @@ void MainComponent::setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel
     naming_Editor.setComponentID("Label_ID_01_NamingEditor");
     naming_Editor.setLookAndFeel(customLookAndFeel);
     naming_Editor.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
-    //naming_Editor.setJustificationType(juce::Justification::centredLeft);
-    //naming_Editor.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-    //naming_Editor.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack); // This should follow the layer2 color if not mat
-    //naming_Editor.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    //naming_Editor.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-    naming_Editor.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
+    naming_Editor.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack); // This should follow the layer2 color if not match
     naming_Editor.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomGrey.brighter());
     naming_Editor.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    //naming_Editor.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-    //naming_Editor.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
     naming_Editor.setColour(juce::TextEditor::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     naming_Editor.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().TitleBar.darker());
     naming_Editor.setReadOnly(true);
@@ -2057,8 +1871,8 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             minAngle_Slider.setValue(-defaultVal);
             minAngle_Slider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
             minAngle_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-            minAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
-            //minAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
+            //minAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
+            minAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
             minAngle_Slider.setLookAndFeel(customLookAndFeel);
             minAngle_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
             minAngle_Slider.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
@@ -2092,8 +1906,8 @@ void MainComponent::setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAn
             maxAngle_Slider.setValue(defaultVal);
             maxAngle_Slider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
             maxAngle_Slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-            maxAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
-            //maxAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
+            //maxAngle_Slider.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);     // TRUE
+            maxAngle_Slider.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);                      // TEMPORARY CAUSE BUG WHILE DEBUG
             maxAngle_Slider.setLookAndFeel(customLookAndFeel);
             maxAngle_Slider.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
             maxAngle_Slider.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
@@ -2431,15 +2245,47 @@ void MainComponent::reloadAnglesOrThumbPosControl(size_t activeIndex)
 
 void MainComponent::setupAssetsManager(CustomLookAndFeel* customLookAndFeel)
 {
-    //assetsContainer
-
     assetsViewport.setViewedComponent(&assetsContainer, false);
     assetsViewport.setScrollBarsShown(true, false);
     
     addAndMakeVisible(assetsViewport);
 }
 
-void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
+void MainComponent::initializeDefaultAssets(std::vector<juce::String>& assetsType, size_t activeIndex)
+{
+    size_t index{};
+    for (const auto& type : assetsType)
+    {
+        std::unique_ptr<AssetButtons> newAsset = std::make_unique<AssetButtons>(type);
+
+        if (assetsManagerPtr.empty() || assetsManagerPtr.back().empty() || assetsManagerPtr.size() == activeIndex)
+        {
+            std::vector<std::unique_ptr<AssetButtons>> newVectorAsset{};
+
+            newVectorAsset.emplace_back(std::move(newAsset));
+
+            newVectorAsset.back()->assetMainButton.setName(type);
+            newVectorAsset.back()->setIndex(index);
+
+            assetsManagerPtr.emplace_back(std::move(newVectorAsset));
+        }
+        else
+        {
+            assetsManagerPtr.back().emplace_back(std::move(newAsset));
+
+            assetsManagerPtr.back().back()->assetMainButton.setName(type);
+            assetsManagerPtr.back().back()->setIndex(index);
+        }
+
+
+        filmstripProjects.at(activeIndex)->addAsset(type);
+        filmstripProjects.at(activeIndex)->getAssets().at(index).setIndex(index);
+
+        index += 1;
+    }
+}
+
+void MainComponent::reloadAssets(size_t activeIndex)
 {
     if (activeIndex != SIZE_MAX)
     {
@@ -2453,10 +2299,21 @@ void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
         int y{};
         int buttonWidth{};
 
+        for (auto& assets : assetsManagerPtr)
+        {
+            for (auto& asset : assets)
+            {
+                asset->setVisible(false);
+                asset->setEnabled(false);
+            }
+        }
+
         for (size_t i = 0; i < assetsManagerPtr.at(activeIndex).size(); i++)
         {
             y = (int)i * (buttonHeight + spacing);
 
+            assetsManagerPtr.at(activeIndex).at(i).get()->setVisible(true);
+            assetsManagerPtr.at(activeIndex).at(i).get()->setEnabled(true);
         }
 
         totalHeight = y + buttonHeight + 2;
@@ -2464,7 +2321,7 @@ void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
         if (totalHeight < assetsViewport.getHeight())
         {
             thickness = 0;
-            buttonWidth = bounds.getWidth() - 1;
+            buttonWidth = bounds.getWidth() - 2;
         }
         else
         {
@@ -2480,7 +2337,7 @@ void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
 
             auto assetButton = assetsManagerPtr.at(activeIndex).at(i).get();
             assetButton->setBounds(theBounds);
-            assetButton->assetMainButton.onClick = [this, assetButton, activeIndex, &activeAsset]()
+            assetButton->assetMainButton.onClick = [this, assetButton, activeIndex]()
                 {
                     if (assetButton->assetMainButton.getToggleState())
                     {
@@ -2493,12 +2350,11 @@ void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
                             mainButton->assetMainButton.setToggleState(false, juce::dontSendNotification);
                         }
                         assetButton->assetMainButton.setToggleState(true, juce::dontSendNotification);
-                        activeAsset = assetButton->getIndex();
                     }
                 };
 
 
-            auto* assetObject = &filmstripProjects.at(projectActiveIndex)->getAssets().at(i);
+            auto* assetObject = &filmstripProjects.at(activeIndex)->getAssets().at(i);
             assetButton->loadImageButton.onClick = [this, i , assetButton, assetObject]()
                 {
                     fileChooserNew([this, i, assetButton, assetObject](juce::String chooserPath)
@@ -2530,13 +2386,36 @@ void MainComponent::reloadAssets(size_t activeIndex, size_t activeAsset)
 
         assetsViewport.setScrollBarThickness(thickness);
 
-        filmstripProjects.at(activeIndex)->getAssets();
     }
     else
     {
-
+        assetsContainer.setSize(assetsViewport.getWidth(), assetsViewport.getHeight());
     }
 }
+
+void MainComponent::deleteAssetsProject(size_t index)
+{
+    if (index < assetsManagerPtr.size())
+    {
+        assetsManagerPtr.erase(assetsManagerPtr.begin() + index);
+    }
+
+    DBG("]---> TOTAL ASSETS MANAGER PTR : " << assetsManagerPtr.size());
+
+    // TODO:
+    // after delete,  need to reload the assets, need to change container size to new assets, 
+    // if assetsManagerPtr size = 0, then make container notVisible and not enable
+    if (assetsManagerPtr.empty())
+    {
+        bool visible{ false };
+        assetsViewport.setVisible(visible);
+        assetsViewport.setEnabled(visible);
+
+        assetsContainer.setVisible(visible);
+        assetsContainer.setEnabled(visible);
+    }
+}
+
 
 void MainComponent::setupDefaultApplyButton()
 {
@@ -2557,7 +2436,7 @@ void MainComponent::reloadAllControls(size_t activeIndex)
 
     reloadNamingProjectLabel(activeIndex);
     reloadBannerFilmstripType(activeIndex);
-    reloadAssets(activeIndex, 1);
+    reloadAssets(activeIndex);
     reloadMainControlProject(activeIndex);
 
     repaint();

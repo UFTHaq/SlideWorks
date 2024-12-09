@@ -104,7 +104,6 @@ void FilmstripProject::setTotalFrames(int newValue)
     this->totalFrames = newValue;
 }
 
-
 FilmstripOrientation FilmstripProject::getOrientation() const
 {
     return FilmstripOrientation(orientation);
@@ -115,75 +114,13 @@ void FilmstripProject::setOrientation(FilmstripOrientation orientation)
     this->orientation = orientation;
 }
 
-//const std::vector<std::unique_ptr<Asset>>& FilmstripProject::getAssets() const
-//{
-//    return assets;
-//}
-
-//std::vector<Asset>& FilmstripProject::getAssets()
-//{
-//    return assets;
-//}
-
-//std::vector<std::shared_ptr<Asset>>& FilmstripProject::getAssets()
-//{
-//    return assets;
-//}
-
-//std::shared_ptr<std::vector<std::shared_ptr<Asset>>> FilmstripProject::getAssets()
-//{
-//    return std::make_shared<std::vector<std::shared_ptr<Asset>>>(assets);
-//}
-
-//std::shared_ptr<std::vector<std::unique_ptr<Asset>>> FilmstripProject::getAssets()
-//{
-//    return std::make_shared<std::vector<std::unique_ptr<Asset>>>(assets);
-//}
-
-//std::unique_ptr<std::vector<std::unique_ptr<Asset>>> FilmstripProject::getAssets()
-//{
-//    return std::make_unique<std::vector<std::unique_ptr<Asset>>>(assets);
-//}
-
-//std::shared_ptr<std::vector<std::unique_ptr<Asset>>> FilmstripProject::getAssets()
-//{
-//    return assets;
-//}
-
 std::vector<Asset>& FilmstripProject::getAssets()
 {
     return assets;
 }
 
-
-//void FilmstripProject::addAsset(const juce::String& type)
-//{
-//    assets.push_back(std::make_unique<Asset>(type));
-//}
-
-//void FilmstripProject::addAsset(const juce::String& type)
-//{
-//    assets.push_back(Asset(type));
-//}
-
-//void FilmstripProject::addAsset(const juce::String& type)
-//{
-//    assets.push_back(std::make_shared<Asset>(type));
-//}
-
-//void FilmstripProject::addAsset(const juce::String& type)
-//{
-//    assets.push_back(std::make_unique<Asset>(type));
-//}
-
-//void FilmstripProject::addAsset(const juce::String& type)
-//{
-//    assets->push_back(std::make_unique<Asset>(type));
-//}
-
 void FilmstripProject::addAsset(const juce::String& type)
 {
-    //assets.push_back(Asset(type));
     assets.emplace_back(type);
 }
 

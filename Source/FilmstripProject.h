@@ -71,18 +71,7 @@ public:
     juce::TextButton tabButton{};
     std::function<void(FilmstripProject*)> onDeleteRequest{};
 
-    //std::vector<std::unique_ptr<Asset>>& getAssets();
-    //std::vector<Asset>& getAssets();
-    //std::vector<std::shared_ptr<Asset>>& getAssets();
-    //std::shared_ptr<std::vector<std::shared_ptr<Asset>>> getAssets();
-    
-    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
-    //std::unique_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
-     
-    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> getAssets();
-    
     std::vector<Asset>& getAssets();
-    //void addAsset(const juce::String& type);
     void addAsset(const juce::String& type);
     virtual void initializeAssets() = 0;
 

@@ -56,6 +56,7 @@ public:
     void setupProjectButtons(CustomLookAndFeel* customLookAndFeel);
     void setupTabProjectButtons();
     size_t getActiveProjectIndex() const;
+    void setNewProjectActiveAfterCreated();
     void setupNamingProjectLabel(CustomLookAndFeel* customLookAndFeel);
     void reloadNamingProjectLabel(size_t activeIndex);
     void togglingWorkingModeButton(WorkingMode mode);
@@ -72,8 +73,10 @@ public:
     void setupAnglesOrThumbPosControl(CustomLookAndFeel* customLookAndFeel);
     void reloadAnglesOrThumbPosControl(size_t activeIndex);
     void setupAssetsManager(CustomLookAndFeel* customLookAndFeel);
-    void reloadAssets(size_t activeIndex, size_t activeAsset);
+    void initializeDefaultAssets(std::vector<juce::String>& assetsType, size_t activeIndex);
+    void reloadAssets(size_t activeIndex);
     size_t getActiveAssetIndex() const;
+    void deleteAssetsProject(size_t index);
     void setupDefaultApplyButton();
 
     void reloadAllControls(size_t activeIndex);
@@ -174,7 +177,7 @@ private:
     juce::Viewport filmstripButtonsViewport{};
     juce::Component filmstripButtonsContainer{};
 
-    size_t projectActiveIndex{};
+    size_t projectActiveIndex{ SIZE_MAX };
 
         ///-- LABEL --///
     const int NamingLabelWidth{ 55 };
@@ -248,7 +251,6 @@ private:
     const int NewAssetButtonHeight{ 20 };
 
     juce::String chooserPath{};
-    //std::vector<std::vector<AssetButtons>> assetsManager{};
     std::vector<std::vector<std::unique_ptr<AssetButtons>>> assetsManagerPtr{};
 
     //std::vector<std::unique_ptr<Asset>>* projectAssets{ nullptr };
