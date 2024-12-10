@@ -39,6 +39,97 @@
       <FILE id="kB9j37" name="AssetButtons.h" compile="0" resource="0" file="Source/AssetButtons.h"/>
       <FILE id="YV4gq1" name="AssetButtons.cpp" compile="1" resource="0"
             file="Source/AssetButtons.cpp"/>
+      <GROUP id="{7543759C-FBD0-6DF6-285B-89B778CDA2C4}" name="FilmstripProject">
+        <FILE id="wTaArk" name="New_FilmstripProject.cpp" compile="1" resource="0"
+              file="Source/FilmstripProject/New_FilmstripProject.cpp"/>
+        <FILE id="bvAwRv" name="New_FilmstripProject.h" compile="0" resource="0"
+              file="Source/FilmstripProject/New_FilmstripProject.h"/>
+        <FILE id="zpi3Ys" name="New_TabButton.cpp" compile="1" resource="0"
+              file="Source/FilmstripProject/New_TabButton.cpp"/>
+        <FILE id="VjUi7u" name="New_TabButton.h" compile="0" resource="0" file="Source/FilmstripProject/New_TabButton.h"/>
+        <FILE id="FvkDnb" name="New_Asset.cpp" compile="1" resource="0" file="Source/FilmstripProject/New_Asset.cpp"/>
+        <FILE id="O9OcdU" name="New_Asset.h" compile="0" resource="0" file="Source/FilmstripProject/New_Asset.h"/>
+        <GROUP id="{5529B702-E71D-7952-FFF6-EFE2C69DC3BD}" name="MainControls">
+          <FILE id="vPwerj" name="New_MainControls.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_MainControls.cpp"/>
+          <FILE id="iRdM4F" name="New_MainControls.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_MainControls.h"/>
+          <FILE id="oODmRS" name="New_AssetsViewport.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetsViewport.cpp"/>
+          <FILE id="Agfl67" name="New_AssetsViewport.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetsViewport.h"/>
+          <FILE id="dUK7K7" name="New_AssetButtons.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetButtons.cpp"/>
+          <FILE id="Yo4n5i" name="New_AssetButtons.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetButtons.h"/>
+          <FILE id="pb7tmr" name="New_FilmstripOrientation.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_FilmstripOrientation.cpp"/>
+          <FILE id="SIY0Be" name="New_FilmstripOrientation.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_FilmstripOrientation.h"/>
+          <FILE id="lq1q7S" name="New_KnobAngles.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_KnobAngles.cpp"/>
+          <FILE id="YvAyYD" name="New_KnobAngles.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_KnobAngles.h"/>
+          <FILE id="UrmzQD" name="New_ThumbPositions.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_ThumbPositions.cpp"/>
+          <FILE id="qWZEzK" name="New_ThumbPositions.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_ThumbPositions.h"/>
+          <FILE id="b1Dywz" name="New_TotalFrames.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_TotalFrames.cpp"/>
+          <FILE id="glrskq" name="New_TotalFrames.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_TotalFrames.h"/>
+        </GROUP>
+        <GROUP id="{B0154AB6-F0BE-E9B3-D10E-19C2D617EAEE}" name="Canvas">
+          <FILE id="zFpGjh" name="New_Canvas.cpp" compile="1" resource="0" file="Source/FilmstripProject/Canvas/New_Canvas.cpp"/>
+          <FILE id="LAUbi6" name="New_Canvas.h" compile="0" resource="0" file="Source/FilmstripProject/Canvas/New_Canvas.h"/>
+          <FILE id="QJ37TL" name="New_CanvasEdit.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasEdit.cpp"/>
+          <FILE id="xIcAdf" name="New_CanvasEdit.h" compile="0" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasEdit.h"/>
+          <FILE id="XDK9Hl" name="New_CanvasPreview.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasPreview.cpp"/>
+          <FILE id="VBdPxp" name="New_CanvasPreview.h" compile="0" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasPreview.h"/>
+          <FILE id="i81w0Y" name="New_CanvasSimulation.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasSimulation.cpp"/>
+          <FILE id="UzbZ4O" name="New_CanvasSimulation.h" compile="0" resource="0"
+                file="Source/FilmstripProject/Canvas/New_CanvasSimulation.h"/>
+        </GROUP>
+        <GROUP id="{1AE5DC87-F759-3B22-F62F-A0C085872133}" name="SubControls">
+          <FILE id="DiegtN" name="New_SubControls.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_SubControls.cpp"/>
+          <FILE id="qS0DcM" name="New_SubControls.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_SubControls.h"/>
+          <FILE id="pKNvk1" name="New_ControlAssetKnob.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetKnob.cpp"/>
+          <FILE id="y4x09s" name="New_ControlAssetKnob.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetKnob.h"/>
+          <FILE id="dVSZwi" name="New_ControlAssetKnobScale.cpp" compile="1"
+                resource="0" file="Source/FilmstripProject/SubControls/New_ControlAssetKnobScale.cpp"/>
+          <FILE id="nahIB6" name="New_ControlAssetKnobScale.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetKnobScale.h"/>
+          <FILE id="HwPHGS" name="New_ControlAssetThumb.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetThumb.cpp"/>
+          <FILE id="Ek8eqq" name="New_ControlAssetThumb.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetThumb.h"/>
+          <FILE id="AvSdeH" name="New_ControlAssetTrack.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetTrack.cpp"/>
+          <FILE id="pVivEs" name="New_ControlAssetTrack.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetTrack.h"/>
+          <FILE id="fwJ5zN" name="New_ControlAssetTrackScale.cpp" compile="1"
+                resource="0" file="Source/FilmstripProject/SubControls/New_ControlAssetTrackScale.cpp"/>
+          <FILE id="QGnx6N" name="New_ControlAssetTrackScale.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAssetTrackScale.h"/>
+          <FILE id="UCVQRO" name="New_ControlCanvas.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlCanvas.cpp"/>
+          <FILE id="mEUrWP" name="New_ControlCanvas.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlCanvas.h"/>
+          <FILE id="ojSfx4" name="New_ControlLighting.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlLighting.cpp"/>
+          <FILE id="bDqz3y" name="New_ControlLighting.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlLighting.h"/>
+        </GROUP>
+      </GROUP>
     </GROUP>
     <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
           file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>

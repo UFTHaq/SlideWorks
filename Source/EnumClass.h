@@ -28,3 +28,12 @@ enum class AnglesOrThumbPos
     ANGLES,
     THUMB_POS
 };
+
+enum class AssetType
+{
+    KNOB,
+    KNOB_SCALE,
+    THUMB,
+    TRACK,
+    TRACK_SCALE
+};

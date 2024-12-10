@@ -2,6 +2,18 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="SlideWorks\Source\FilmstripProject\MainControls">
+      <UniqueIdentifier>{12B7C870-B102-E729-DD04-B4518E572425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SlideWorks\Source\FilmstripProject\Canvas">
+      <UniqueIdentifier>{3E94F0CC-D7ED-EC60-8C35-9795C932BA86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SlideWorks\Source\FilmstripProject\SubControls">
+      <UniqueIdentifier>{747006F7-F2DF-3C9A-32DA-11D999B76F6C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SlideWorks\Source\FilmstripProject">
+      <UniqueIdentifier>{E6E612AD-E679-F7CC-053E-9AFF9E311017}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SlideWorks\Source">
       <UniqueIdentifier>{276D2ADD-A954-2082-83E0-7E65F77645BF}</UniqueIdentifier>
     </Filter>
@@ -369,6 +381,72 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\AssetButtons.cpp">
       <Filter>SlideWorks\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\New_TabButton.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\New_Asset.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_FilmstripOrientation.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_KnobAngles.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_ThumbPositions.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_TotalFrames.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_Canvas.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasEdit.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetThumb.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrack.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <Filter>JUCE Modules\juce_core\containers</Filter>
@@ -2261,6 +2339,72 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\AssetButtons.h">
       <Filter>SlideWorks\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\New_TabButton.h">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\New_Asset.h">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_FilmstripOrientation.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_KnobAngles.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_ThumbPositions.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_TotalFrames.h">
+      <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_Canvas.h">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasEdit.h">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.h">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.h">
+      <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetThumb.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrack.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h">
       <Filter>JUCE Modules\juce_core\containers</Filter>
