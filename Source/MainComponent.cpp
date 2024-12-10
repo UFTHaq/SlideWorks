@@ -611,87 +611,6 @@ void MainComponent::setupLayoutUI()
     }
 
 
-
-
-
-    ///////////////// PAGE 1 COMPONENT /////////////////
-    //base_SlideWorks = getLocalBounds().reduced(10);
-
-    //knobToggleWorksButton.setBounds(
-    //    { base_SlideWorks.getX(), 
-    //    base_SlideWorks.getY(), 
-    //    75, 25 
-    //    }
-    //);
-    //sliderToggleWorksButton.setBounds(
-    //    {
-    //        knobToggleWorksButton.getX() + knobToggleWorksButton.getWidth() + 5,
-    //        knobToggleWorksButton.getY(),
-    //        knobToggleWorksButton.getWidth(),
-    //        knobToggleWorksButton.getHeight()
-    //    }
-    //);
-    //browseButton.setBounds(
-    //    {
-    //        base_SlideWorks.getRight() - knobToggleWorksButton.getWidth(),
-    //        knobToggleWorksButton.getY(),
-    //        knobToggleWorksButton.getWidth(),
-    //        knobToggleWorksButton.getHeight()
-    //    }
-    //);
-
-    //base_WorkSpace = base_SlideWorks;
-    //base_WorkSpace.removeFromTop(knobToggleWorksButton.getHeight() + 5);
-
-    ///////////////// PAGE 2 COMPONENT /////////////////
-    {
-        //auto buttonW = 90;
-        //    mode_SimulationButton.setBounds
-        //    (
-        //        {
-        //            base_SlideWorks.getRight() - buttonW,
-        //            knobToggleWorksButton.getY(),
-        //            buttonW,
-        //            knobToggleWorksButton.getHeight()
-        //        }
-        //);
-
-        //mode_PreviewButton.setBounds
-        //(
-        //    {
-        //        mode_SimulationButton.getX() - buttonW - 5,
-        //        mode_SimulationButton.getY(),
-        //        mode_SimulationButton.getWidth(),
-        //        mode_SimulationButton.getHeight()
-        //    }
-        //);
-
-        //mode_EditButton.setBounds
-        //(
-        //    {
-        //        mode_PreviewButton.getX() - buttonW - 5,
-        //        mode_SimulationButton.getY(),
-        //        mode_SimulationButton.getWidth(),
-        //        mode_SimulationButton.getHeight()
-        //    }
-        //);
-    }
-
-
-    auto area = base_Workspace;
-    //left_WorkSpace = area.removeFromLeft(275);
-    left_WorkSpace = area.removeFromLeft(int(area.getWidth() * 0.35F));
-    area.removeFromLeft(5);
-    right_WorkSpace = area;
-
-    auto left_area = left_WorkSpace.reduced(5);
-    auto left_area_H = left_area.getHeight();
-    auto spacing = int(left_area_H * 0.035F);
-
-    filmstripBanner = left_area.removeFromTop(25);
-    left_area = left_area.withSizeKeepingCentre(left_area.getWidth() - 25, left_area.getHeight());
-    left_area.removeFromTop(int(spacing * 1.5));
-
     ////////------------ INFO CARD GROUP ------------////////
     auto base_groupDialog_2_Info{ base_Workspace.withSizeKeepingCentre(275, 240) };
     auto groupDialog_2_Info_Area = base_groupDialog_2_Info.reduced(10);
@@ -733,6 +652,25 @@ void MainComponent::setupLayoutUI()
         };
         closeDialog_2_Info.setBounds(dialog2_Close);
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    auto area = base_Workspace;
+    //left_WorkSpace = area.removeFromLeft(275);
+    left_WorkSpace = area.removeFromLeft(int(area.getWidth() * 0.35F));
+    area.removeFromLeft(5);
+    right_WorkSpace = area;
+
+    auto left_area = left_WorkSpace.reduced(5);
+    auto left_area_H = left_area.getHeight();
+    auto spacing = int(left_area_H * 0.035F);
+
+    filmstripBanner = left_area.removeFromTop(25);
+    left_area = left_area.withSizeKeepingCentre(left_area.getWidth() - 25, left_area.getHeight());
+    left_area.removeFromTop(int(spacing * 1.5));
+
+
     
     ////////------------ INFO CARD GROUP ------------////////
 
@@ -1012,11 +950,13 @@ void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
     setupAnglesOrThumbPosControl(customLookAndFeel);
     setupAssetsManager(customLookAndFeel);
 
-    //setupKnobToggleButton();
-    setupSliderToggleButton();
-    setupBrowseButton();
-    setupExportButton();
 
+
+    //// OLD CODE ////
+    //setupKnobToggleButton();
+    //setupSliderToggleButton();
+    //setupBrowseButton();
+    //setupExportButton();
 
     setupAddKnobButton();
     setupAddKnobScaleButton();
@@ -1491,17 +1431,10 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
     add_NewAssetButton.onClick = [this, customLookAndFeel]()
         {
             bool buttonMenuEnable{ false };
-            //if (filmstripProjects.at(projectActiveIndex)->getAssets().size() < 7)
-            //if (filmstripProjects.at(projectActiveIndex)->getAssets()->size() < 7)
             if (filmstripProjects.at(projectActiveIndex)->getAssets().size() < 7)
             {
                 buttonMenuEnable = true;
             }
-
-            //projectAssets = &filmstripProjects.at(projectActiveIndex)->getAssets();
-            //projectAssets->at(assetActiveIndex)->getAssetFileName();
-
-            //filmstripProjects.at(projectActiveIndex)->getAssets().at(assetActiveIndex)->getAssetFileName();
 
             if (filmstripProjects.at(projectActiveIndex)->getFilmstripType() == "KNOB")
             {
@@ -1529,112 +1462,6 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 size_t index = project.getAssets().size() - 1;
 
                                 project.getAssets().at(index).setIndex(index);
-                                //project.getAssets().at(index).getAssetType();
-
-                                
-                                //size_t projectIndex = assetsManager.size() - 1;
-                                //assetsManager.at(projectIndex).emplace_back(type);
-
-
-
-                                // Add a new asset to the project
-                                //knobProject->addAsset("Knob");
-                                //knobProject->addAsset("Knob");
-                                //knobProject->addAsset("Knob");
-                                //filmstripProjects.at(projectActiveIndex)->addAsset("Knob");
-                                //juce::String object{ "Knob" };
-                                //filmstripProjects.at(projectActiveIndex)->addAsset(object);
-                                //filmstripProjects.at(projectActiveIndex)->getAssets().emplace_back(Asset(object));
-
-
-                                // Update projectAssets pointer
-                                //projectAssets = &knobProject->getAssets();
-                                //projectAssets = knobProject->getAssets();
-                                //projectAssets = &knobProject->getAssets();
-                                //projectAssets = knobProject->getAssets();
-                                //projectAssets = knobProject->getAssets();
-                                //projectAssets = filmstripProjects.at(projectActiveIndex)->getAssets();
-                                //projectAssets = knobProject->getAssets();
-                                //projectAssets = knobProject->getAssets();
-                                //projectAssets = &filmstripProjects.at(projectActiveIndex)->getAssets();
-
-                                //projectAssets->emplace_back(Asset(object));
-
-                                //auto* projects = &filmstripProjects.at(projectActiveIndex)->getAssets();
-                                //projects->emplace_back(Asset(object));
-
-                                //auto projects = filmstripProjects.at(projectActiveIndex).get();
-                                //auto asstes = projects->getAssets();
-
-                                //filmstripProjects.at(projectActiveIndex)->getAssets().emplace_back(object);
-                                //filmstripProjects.at(projectActiveIndex)->addAsset(object);
-                                
-                                //filmstripProjectNih.addAsset(object);
-                                
-                                {
-                                    //filmstripProjectNih.getAssets().emplace_back(object);
-                                    //filmstripProjectNih.assets.emplace_back(object);
-                                    //filmstripProjectNih.addAsset(object);
-                                }
-
-                                // Get the index of the newly added asset
-                                //size_t a = projectAssets->size() - 1;
-                                //size_t a = projectAssets.size() - 1;
-                                //size_t a = projectAssets->size() - 1;
-                                //size_t a = projectAssets->size() - 1;
-                                //size_t a = projectAssets.size() - 1;
-                                //size_t a = projectAssets->size() - 1;
-                                //size_t a = filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1;
-                                //size_t a = projectAssets->size() - 1;
-                                //size_t a = projects->size() - 1;
-                                //size_t a = asstes.size() - 1;
-                                //size_t a = filmstripProjects.at(projectActiveIndex)->getAssets().size() - 1;
-                                //size_t a = filmstripProjectNih.getAssets().size() - 1;
-                                //size_t a = filmstripProjectNih.assets.size() - 1;
-
-                                //auto& asset = filmstripProjectNih.getAssets().at(a);
-
-                                // Open a dialog to select a file
-                                //juce::String name;
-
-                                //if (filmstripProjectNih.getAssets().empty())
-                                //if (filmstripProjectNih.assets.size() > 0)
-                                {
-                                    //fileChooserWindows(name);
-                                }
-                                //juce::File path = name;
-
-                                //if (*projectAssets).at(a)->get != nullptr)
-                                // Set the file path for the newly added asset
-                                //(*projectAssets).at(a)->setAssetFilePath(juce::File(name));
-                                //projectAssets.at(a).setAssetFilePath(juce::File(name));
-                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
-                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
-                                //projectAssets->at(a)->setAssetFilePath(juce::File(name));
-
-                                //projectAssets.at(a).setAssetFilePath(juce::File(name));
-                                //projectAssets->at(a).setAssetFilePath(juce::File(name));
-
-                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).setAssetFilePath(name);
-                                //projectAssets->at(a).setAssetFilePath(name);
-                                //projects->at(a).setAssetFilePath(juce::File(name));
-                                //asstes.at(a).setAssetFilePath(juce::File(name));
-                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).setAssetFilePath(juce::File(name));
-                                //filmstripProjects.at(projectActiveIndex)->getAssets().at(a).getAssetType();
-
-                                //asset.setAssetFilePath(juce::File(name));
-                                //filmstripProjectNih.assets.at(a).setAssetFileName(name);
-                                //filmstripProjectNih.assets.at(a).setAssetFilePath(path);
-                                //filmstripProjectNih.assets.at(a).getAssetType();
-
-                                //if (filmstripProjectNih.assets.at(a).getAssetType() == "Knob")
-                                {
-                                    //canvasColor = juce::Colours::green;
-                                    //repaint();
-                                }
-
-                                // Example: Retrieve asset type
-                                //DBG("Asset Type: " + (*projectAssets)[a]->getAssetType());
 
                             }
                             else
@@ -1642,17 +1469,6 @@ void MainComponent::setupAddNewAssetButton(CustomLookAndFeel* customLookAndFeel)
                                 //DBG("Error: knobProject is nullptr!");
                             }
 
-                            //// WILL OPEN DIALOG FILE TO LOAD IMAGE KNOB
-                            //knobProject->addAsset("Knob");
-                            //size_t a = knobProject->getAssets().size() - 1;
-
-                            //juce::String name;
-                            //fileChooserWindows(name);
-                            //projectAssets = filmstripProjects.at(projectActiveIndex)->getAssets();
-                            ////projectAssets->at(a)->setAssetFilePath(juce::File(name));
-                            //projectAssets->at(a)->getAssetType();
-                            ////knobProject->getAssets().at(a)->getAssetType();
-                            ////knobProject->getAssets().at(a)->setAssetFilePath(name);
                         }
                         else if (result == 2)
                         {

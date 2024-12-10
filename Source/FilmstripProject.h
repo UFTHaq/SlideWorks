@@ -27,13 +27,6 @@ protected:
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
     std::vector<Asset> assets{};
 
-    //std::vector<std::unique_ptr<Asset>> assets{};
-    //std::vector<Asset> assets{};
-    //std::vector<std::shared_ptr<Asset>> assets{};
-    //std::vector<std::unique_ptr<Asset>> assets{};
-
-    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> assets{ std::make_shared<std::vector<std::unique_ptr<Asset>>>() };
-
     int minFrames{ 7 };
     int maxFrames{ 150 };
     int totalFrames{ 121 };

@@ -253,23 +253,7 @@ private:
     juce::String chooserPath{};
     std::vector<std::vector<std::unique_ptr<AssetButtons>>> assetsManagerPtr{};
 
-    //std::vector<std::unique_ptr<Asset>>* projectAssets{ nullptr };
-    //std::unique_ptr<std::vector<Asset>> projectAssets{};
-
-    //std::vector<Asset> projectAssets{};
-    //std::vector<std::shared_ptr<Asset>>* projectAssets{ nullptr };
-    //std::shared_ptr<std::vector<std::shared_ptr<Asset>>> projectAssets{};
-
-    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{};
-    //std::vector<std::unique_ptr<Asset>> projectAssets{};
-    //std::unique_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{ nullptr };
-    //std::shared_ptr<std::vector<std::unique_ptr<Asset>>> projectAssets{ nullptr };
-
-    //std::vector<Asset> projectAssets{};
-    //std::vector<Asset>* projectAssets{ nullptr };
     size_t assetActiveIndex{};
-    //std::vector<AssetButtons> buttonAssets{};
-    //std::vector<std::vector<AssetButtons>> buttonAssets{};
 
     juce::TextButton add_NewAssetButton{};
     juce::Rectangle<int> area_assetsManager{};
@@ -277,7 +261,7 @@ private:
     juce::Viewport assetsViewport{};
     juce::Component assetsContainer{};
 
-
+    /////////////////////////////////////////////////////////////////
 
     ////////////////----------- PAGE 3 -----------////////////////
     CustomGroupComponent groupDialog_2_Info{};
