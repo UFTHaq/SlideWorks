@@ -6,10 +6,8 @@
   <MAINGROUP id="AE0vwg" name="SlideWorks">
     <GROUP id="{9B76F44F-3BA7-17FC-5C7D-40530BB67C0E}" name="Resources">
       <FILE id="DDgw4O" name="icon_Delete.png" compile="0" resource="1" file="Resources/Icons/icon_Delete.png"/>
-      <FILE id="HZVgVv" name="icon_On_Visible.png" compile="0" resource="1"
+      <FILE id="uJJdCP" name="icon_On_Visible.png" compile="0" resource="1"
             file="Resources/Icons/icon_On_Visible.png"/>
-      <FILE id="uJJdCP" name="icon_On_Visible2.png" compile="0" resource="1"
-            file="Resources/Icons/icon_On_Visible2.png"/>
       <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
             file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>
       <FILE id="PO9Zkl" name="RobotoCondensed-Regular.ttf" compile="0" resource="1"
@@ -39,23 +37,7 @@
       <FILE id="HZGwtf" name="ThemeColours.h" compile="0" resource="0" file="Source/ThemeColours.h"/>
       <FILE id="RVc28g" name="Globals.h" compile="0" resource="0" file="Source/Globals.h"/>
       <FILE id="w206rb" name="Globals.cpp" compile="1" resource="0" file="Source/Globals.cpp"/>
-      <FILE id="AvDlKQ" name="FilmstripProject.h" compile="0" resource="0"
-            file="Source/FilmstripProject.h"/>
-      <FILE id="eoQlGo" name="FilmstripProject.cpp" compile="1" resource="0"
-            file="Source/FilmstripProject.cpp"/>
-      <FILE id="pab9bx" name="KnobFilmstrip.h" compile="0" resource="0" file="Source/KnobFilmstrip.h"/>
-      <FILE id="KHVv4o" name="KnobFilmstrip.cpp" compile="1" resource="0"
-            file="Source/KnobFilmstrip.cpp"/>
-      <FILE id="saOf2v" name="SliderFilmstrip.h" compile="0" resource="0"
-            file="Source/SliderFilmstrip.h"/>
-      <FILE id="OjAao8" name="SliderFilmstrip.cpp" compile="1" resource="0"
-            file="Source/SliderFilmstrip.cpp"/>
-      <FILE id="AIebtz" name="Asset.h" compile="0" resource="0" file="Source/Asset.h"/>
-      <FILE id="QeLqfL" name="Asset.cpp" compile="1" resource="0" file="Source/Asset.cpp"/>
       <FILE id="XruRRW" name="EnumClass.h" compile="0" resource="0" file="Source/EnumClass.h"/>
-      <FILE id="kB9j37" name="AssetButtons.h" compile="0" resource="0" file="Source/AssetButtons.h"/>
-      <FILE id="YV4gq1" name="AssetButtons.cpp" compile="1" resource="0"
-            file="Source/AssetButtons.cpp"/>
       <GROUP id="{7543759C-FBD0-6DF6-285B-89B778CDA2C4}" name="FilmstripProject">
         <FILE id="wTaArk" name="New_FilmstripProject.cpp" compile="1" resource="0"
               file="Source/FilmstripProject/New_FilmstripProject.cpp"/>

@@ -373,21 +373,6 @@
     <ClCompile Include="..\..\Source\Globals.cpp">
       <Filter>SlideWorks\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FilmstripProject.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\KnobFilmstrip.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\SliderFilmstrip.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\Asset.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\AssetButtons.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
     </ClCompile>
@@ -2334,22 +2319,7 @@
     <ClInclude Include="..\..\Source\Globals.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FilmstripProject.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\KnobFilmstrip.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\SliderFilmstrip.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\Asset.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\EnumClass.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\AssetButtons.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h">
@@ -4995,9 +4965,6 @@
       <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Icons\icon_On_Visible.png">
-      <Filter>SlideWorks\Resources</Filter>
-    </None>
-    <None Include="..\..\Resources\Icons\icon_On_Visible2.png">
       <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf">

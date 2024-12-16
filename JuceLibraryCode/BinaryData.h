@@ -12,10 +12,7 @@ namespace BinaryData
     const int            icon_Delete_pngSize = 1395;
 
     extern const char*   icon_On_Visible_png;
-    const int            icon_On_Visible_pngSize = 5414;
-
-    extern const char*   icon_On_Visible2_png;
-    const int            icon_On_Visible2_pngSize = 4787;
+    const int            icon_On_Visible_pngSize = 4787;
 
     extern const char*   RobotoCondensedMedium_ttf;
     const int            RobotoCondensedMedium_ttfSize = 144888;
@@ -33,7 +30,7 @@ namespace BinaryData
     const int            small_scale_black_pngSize = 7374;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 8;
+    const int namedResourceListSize = 7;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

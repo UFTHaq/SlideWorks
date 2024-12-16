@@ -146,11 +146,6 @@
     <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\CustomGroupComponent.cpp"/>
     <ClCompile Include="..\..\Source\Globals.cpp"/>
-    <ClCompile Include="..\..\Source\FilmstripProject.cpp"/>
-    <ClCompile Include="..\..\Source\KnobFilmstrip.cpp"/>
-    <ClCompile Include="..\..\Source\SliderFilmstrip.cpp"/>
-    <ClCompile Include="..\..\Source\Asset.cpp"/>
-    <ClCompile Include="..\..\Source\AssetButtons.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_TabButton.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_NameAndMode.cpp"/>
@@ -1910,12 +1905,7 @@
     <ClInclude Include="..\..\Source\OpenGLComponent.h"/>
     <ClInclude Include="..\..\Source\ThemeColours.h"/>
     <ClInclude Include="..\..\Source\Globals.h"/>
-    <ClInclude Include="..\..\Source\FilmstripProject.h"/>
-    <ClInclude Include="..\..\Source\KnobFilmstrip.h"/>
-    <ClInclude Include="..\..\Source\SliderFilmstrip.h"/>
-    <ClInclude Include="..\..\Source\Asset.h"/>
     <ClInclude Include="..\..\Source\EnumClass.h"/>
-    <ClInclude Include="..\..\Source\AssetButtons.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_TabButton.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_NameAndMode.h"/>
@@ -2799,7 +2789,6 @@
   <ItemGroup>
     <None Include="..\..\Resources\Icons\icon_Delete.png"/>
     <None Include="..\..\Resources\Icons\icon_On_Visible.png"/>
-    <None Include="..\..\Resources\Icons\icon_On_Visible2.png"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Regular.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf"/>

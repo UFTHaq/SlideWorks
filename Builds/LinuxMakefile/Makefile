@@ -77,11 +77,6 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/CustomLookAndFeel_ab3d772e.o \
   $(JUCE_OBJDIR)/CustomGroupComponent_f8a42018.o \
   $(JUCE_OBJDIR)/Globals_d339a991.o \
-  $(JUCE_OBJDIR)/FilmstripProject_bbbdf06e.o \
-  $(JUCE_OBJDIR)/KnobFilmstrip_91baa69f.o \
-  $(JUCE_OBJDIR)/SliderFilmstrip_36e98714.o \
-  $(JUCE_OBJDIR)/Asset_ec91be51.o \
-  $(JUCE_OBJDIR)/AssetButtons_6d6dce7a.o \
   $(JUCE_OBJDIR)/New_FilmstripProject_fa8dd2f.o \
   $(JUCE_OBJDIR)/New_TabButton_b1873367.o \
   $(JUCE_OBJDIR)/New_NameAndMode_26fc788f.o \
@@ -154,31 +149,6 @@ $(JUCE_OBJDIR)/CustomGroupComponent_f8a42018.o: ../../Source/CustomGroupComponen
 $(JUCE_OBJDIR)/Globals_d339a991.o: ../../Source/Globals.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling Globals.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/FilmstripProject_bbbdf06e.o: ../../Source/FilmstripProject.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling FilmstripProject.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/KnobFilmstrip_91baa69f.o: ../../Source/KnobFilmstrip.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling KnobFilmstrip.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/SliderFilmstrip_36e98714.o: ../../Source/SliderFilmstrip.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling SliderFilmstrip.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/Asset_ec91be51.o: ../../Source/Asset.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling Asset.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
-$(JUCE_OBJDIR)/AssetButtons_6d6dce7a.o: ../../Source/AssetButtons.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling AssetButtons.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_FilmstripProject_fa8dd2f.o: ../../Source/FilmstripProject/New_FilmstripProject.cpp
