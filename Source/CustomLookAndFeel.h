@@ -35,6 +35,8 @@ public:
 	void fillTextEditorBackground(juce::Graphics& g, int width, int height, juce::TextEditor& editor) override;
 	void drawTextEditorOutline(juce::Graphics& g, int width, int height, juce::TextEditor& editor) override;
 
+	void drawScrollbar(juce::Graphics& g, juce::ScrollBar& scrollbar, int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, bool isMouseOver, bool isMouseDown) override;
+
 	// Load all fonts
 	void LoadFonts();
 
@@ -177,6 +179,11 @@ private:
 	float fontSizeTitle{ 19.0F };
 	//float fontSizeRegular{ 16.50F };
 	float fontSizeRegular{ 16.0F };
+
+	// Icons
+	juce::Image iconOnVisible{};
+	juce::Image iconDelete{};
+
 
 	juce::Image knobScale{};
 

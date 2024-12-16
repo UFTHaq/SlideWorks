@@ -4,6 +4,23 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="UFTHaq"
               cppLanguageStandard="20">
   <MAINGROUP id="AE0vwg" name="SlideWorks">
+    <GROUP id="{9B76F44F-3BA7-17FC-5C7D-40530BB67C0E}" name="Resources">
+      <FILE id="DDgw4O" name="icon_Delete.png" compile="0" resource="1" file="Resources/Icons/icon_Delete.png"/>
+      <FILE id="HZVgVv" name="icon_On_Visible.png" compile="0" resource="1"
+            file="Resources/Icons/icon_On_Visible.png"/>
+      <FILE id="uJJdCP" name="icon_On_Visible2.png" compile="0" resource="1"
+            file="Resources/Icons/icon_On_Visible2.png"/>
+      <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
+            file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>
+      <FILE id="PO9Zkl" name="RobotoCondensed-Regular.ttf" compile="0" resource="1"
+            file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Regular.ttf"/>
+      <FILE id="bbBBjQ" name="RobotoCondensed-SemiBold.ttf" compile="0" resource="1"
+            file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-SemiBold.ttf"/>
+      <FILE id="v410u7" name="RobotoMono-Medium.ttf" compile="0" resource="1"
+            file="Resources/Fonts/Roboto_Mono/static/RobotoMono-Medium.ttf"/>
+      <FILE id="QgjCIt" name="small_scale_black.png" compile="0" resource="1"
+            file="C:/Users/ukhem/Downloads/small_scale_black.png"/>
+    </GROUP>
     <GROUP id="{B32546A8-A4C3-4D72-0316-45060034BEC6}" name="Source">
       <FILE id="I1p09o" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="fBYcnJ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
@@ -47,6 +64,10 @@
         <FILE id="zpi3Ys" name="New_TabButton.cpp" compile="1" resource="0"
               file="Source/FilmstripProject/New_TabButton.cpp"/>
         <FILE id="VjUi7u" name="New_TabButton.h" compile="0" resource="0" file="Source/FilmstripProject/New_TabButton.h"/>
+        <FILE id="bzP1Jw" name="New_NameAndMode.cpp" compile="1" resource="0"
+              file="Source/FilmstripProject/New_NameAndMode.cpp"/>
+        <FILE id="T9rrFp" name="New_NameAndMode.h" compile="0" resource="0"
+              file="Source/FilmstripProject/New_NameAndMode.h"/>
         <FILE id="FvkDnb" name="New_Asset.cpp" compile="1" resource="0" file="Source/FilmstripProject/New_Asset.cpp"/>
         <FILE id="O9OcdU" name="New_Asset.h" compile="0" resource="0" file="Source/FilmstripProject/New_Asset.h"/>
         <GROUP id="{5529B702-E71D-7952-FFF6-EFE2C69DC3BD}" name="MainControls">
@@ -54,10 +75,10 @@
                 file="Source/FilmstripProject/MainControls/New_MainControls.cpp"/>
           <FILE id="iRdM4F" name="New_MainControls.h" compile="0" resource="0"
                 file="Source/FilmstripProject/MainControls/New_MainControls.h"/>
-          <FILE id="oODmRS" name="New_AssetsViewport.cpp" compile="1" resource="0"
-                file="Source/FilmstripProject/MainControls/New_AssetsViewport.cpp"/>
-          <FILE id="Agfl67" name="New_AssetsViewport.h" compile="0" resource="0"
-                file="Source/FilmstripProject/MainControls/New_AssetsViewport.h"/>
+          <FILE id="Na3rQR" name="New_AssetsManager.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetsManager.cpp"/>
+          <FILE id="MmOZ1D" name="New_AssetsManager.h" compile="0" resource="0"
+                file="Source/FilmstripProject/MainControls/New_AssetsManager.h"/>
           <FILE id="dUK7K7" name="New_AssetButtons.cpp" compile="1" resource="0"
                 file="Source/FilmstripProject/MainControls/New_AssetButtons.cpp"/>
           <FILE id="Yo4n5i" name="New_AssetButtons.h" compile="0" resource="0"
@@ -95,6 +116,10 @@
           <FILE id="UzbZ4O" name="New_CanvasSimulation.h" compile="0" resource="0"
                 file="Source/FilmstripProject/Canvas/New_CanvasSimulation.h"/>
         </GROUP>
+        <GROUP id="{0B720116-962A-3D37-4E49-BD51A7B33B1E}" name="Footer">
+          <FILE id="UpuskW" name="Footer.cpp" compile="1" resource="0" file="Source/FilmstripProject/Footer/Footer.cpp"/>
+          <FILE id="ujoznQ" name="Footer.h" compile="0" resource="0" file="Source/FilmstripProject/Footer/Footer.h"/>
+        </GROUP>
         <GROUP id="{1AE5DC87-F759-3B22-F62F-A0C085872133}" name="SubControls">
           <FILE id="DiegtN" name="New_SubControls.cpp" compile="1" resource="0"
                 file="Source/FilmstripProject/SubControls/New_SubControls.cpp"/>
@@ -131,16 +156,6 @@
         </GROUP>
       </GROUP>
     </GROUP>
-    <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
-          file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>
-    <FILE id="PO9Zkl" name="RobotoCondensed-Regular.ttf" compile="0" resource="1"
-          file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Regular.ttf"/>
-    <FILE id="bbBBjQ" name="RobotoCondensed-SemiBold.ttf" compile="0" resource="1"
-          file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-SemiBold.ttf"/>
-    <FILE id="v410u7" name="RobotoMono-Medium.ttf" compile="0" resource="1"
-          file="Resources/Fonts/Roboto_Mono/static/RobotoMono-Medium.ttf"/>
-    <FILE id="QgjCIt" name="small_scale_black.png" compile="0" resource="1"
-          file="C:/Users/ukhem/Downloads/small_scale_black.png"/>
   </MAINGROUP>
   <MODULES>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

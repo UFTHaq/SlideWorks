@@ -363,6 +363,24 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getCurrentTheme().TransparentWhite;
 		}
 	}
+	else if (buttonID == "Buttons_ID_12_VISIBLE_ASSET")
+	{
+		cornerSize = 1;
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.4F;
+
+		fillColor = getCurrentTheme().SlideworksBaseColour;
+	}
+	else if (buttonID == "Buttons_ID_13_DELETE_ASSET")
+	{
+		cornerSize = 1;
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.4F;
+
+		fillColor = getCurrentTheme().SlideworksBaseColour;
+	}
 	else if (buttonID == "Buttons_ID_14_LOAD_ASSET")
 	{
 		cornerSize = 1;
@@ -499,6 +517,19 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 
 	g.setColour(outlineColor);
 	g.drawRoundedRectangle(bounds.reduced(outlineThick * 1.0F), cornerSize, outlineThick);
+
+	// DRAW IMAGE ON BUTTON
+	auto imageBounds = button.getLocalBounds().reduced(4).toFloat();
+	if (buttonID == "Buttons_ID_12_VISIBLE_ASSET")
+	{
+		if (button.getToggleState() == true)
+			g.drawImage(iconOnVisible, imageBounds.reduced(-1), juce::RectanglePlacement::centred, false);
+	}
+	else if (buttonID == "Buttons_ID_13_DELETE_ASSET")
+	{
+		g.setColour(juce::Colours::grey.withAlpha(0.8F));
+		g.drawImage(iconDelete, imageBounds, juce::RectanglePlacement::centred ,true);
+	}
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
@@ -638,7 +669,6 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 		justification = juce::Justification::centredLeft;
 
 		text = buttonName;
-		//text = "Thumb";
 
 		bounds.removeFromLeft(5);
 		bounds = bounds.removeFromLeft(35);
@@ -970,6 +1000,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	auto fillColour = label.findColour(juce::Slider::backgroundColourId);
 	auto bounds = label.getLocalBounds();
 	auto ID = label.getComponentID();
+	auto font = label.getFont();
 
 	if (ID == "Label_ID_01_NamingEditor" || ID == "Label_ID_O1_Naming")
 	{
@@ -982,12 +1013,16 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	{
 		outlineColour = label.findColour(juce::Label::outlineColourId);
 	}
+	else if (ID == "Label_ID_03_MIN_MAX_VALUE")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(16.0F);
+	}
 
 	g.setColour(label.findColour(juce::Label::backgroundColourId));
 	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
 
 	// Set the text color and draw the text
-	g.setFont(label.getFont());
+	g.setFont(font);
 	g.setColour(label.findColour(juce::Label::textColourId));
 	g.drawText(label.getText(), bounds, label.getJustificationType(), true);
 
@@ -1045,6 +1080,47 @@ void CustomLookAndFeel::drawTextEditorOutline(juce::Graphics& g, int width, int 
 	g.drawRoundedRectangle(editor.getLocalBounds().toFloat().reduced(0.5F), 1.0F, 0.4F);
 }
 
+void CustomLookAndFeel::drawScrollbar
+(
+	juce::Graphics& g, juce::ScrollBar& scrollbar, 
+	int x, int y, int width, int height, bool isScrollbarVertical, int thumbStartPosition, int thumbSize, 
+	bool isMouseOver, bool isMouseDown
+)
+{
+	auto bounds = juce::Rectangle<int>{ x, y, width, height };
+	auto barBounds = juce::Rectangle<int>{};
+	auto* parentViewport = scrollbar.findParentComponentOfClass<juce::Viewport>();
+
+	auto backgroundColor = getCurrentTheme().TransparentBlack;
+	auto barColor = getCurrentTheme().TitleBar.brighter();
+
+	if (parentViewport != nullptr)
+	{
+		auto ID = parentViewport->getComponentID();
+
+		if (ID == "Viewport_O1_Main")
+		{
+			backgroundColor = getCurrentTheme().TransparentBlack;
+			barColor = getCurrentTheme().CustomDarkGrey.brighter();
+		}
+		else if (ID == "Viewport_O2_SubControl")
+		{
+
+		}
+	}
+
+	if (isScrollbarVertical)
+		barBounds = { x, thumbStartPosition, width, thumbSize };
+	else
+		barBounds = { thumbStartPosition, y, thumbSize, height };
+
+	g.setColour(backgroundColor);
+	g.fillRoundedRectangle(bounds.toFloat(), 1);
+
+	g.setColour(barColor);
+	g.fillRoundedRectangle(barBounds.toFloat().reduced(0.5), 1);
+}
+
 
 ////////////////////////// ========= LOAD FONTS ========= //////////////////////////
 void CustomLookAndFeel::LoadFonts()
@@ -1066,11 +1142,14 @@ void CustomLookAndFeel::LoadFonts()
 	fontRobotoCondensedRegular = juce::FontOptions{ customFontRobotoCondensedRegular };
 }
 
+// NEED TO LOAD THE IMAGE BUTTON ICON FOR EYE VISIBLE AND DELETE BUTTON //
 void CustomLookAndFeel::loadImages()
 {
+	iconOnVisible = juce::ImageCache::getFromMemory(BinaryData::icon_On_Visible_png, BinaryData::icon_On_Visible_pngSize);
+	iconDelete    = juce::ImageCache::getFromMemory(BinaryData::icon_Delete_png, BinaryData::icon_Delete_pngSize);
+
 	knobScale = juce::ImageCache::getFromMemory(BinaryData::small_scale_black_png, BinaryData::small_scale_black_pngSize);
 }
-
 
 ////////////////////////// ========= GET COLOURS ========= //////////////////////////
 const juce::Colour CustomLookAndFeel::getColorTitleBar()

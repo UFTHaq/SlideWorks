@@ -2,11 +2,17 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="SlideWorks\Resources">
+      <UniqueIdentifier>{6D18D1DA-CBE3-4719-FE67-08AA0BE1DDE5}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SlideWorks\Source\FilmstripProject\MainControls">
       <UniqueIdentifier>{12B7C870-B102-E729-DD04-B4518E572425}</UniqueIdentifier>
     </Filter>
     <Filter Include="SlideWorks\Source\FilmstripProject\Canvas">
       <UniqueIdentifier>{3E94F0CC-D7ED-EC60-8C35-9795C932BA86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SlideWorks\Source\FilmstripProject\Footer">
+      <UniqueIdentifier>{37C7E447-94BE-F643-A8DB-52FD03E2C81E}</UniqueIdentifier>
     </Filter>
     <Filter Include="SlideWorks\Source\FilmstripProject\SubControls">
       <UniqueIdentifier>{747006F7-F2DF-3C9A-32DA-11D999B76F6C}</UniqueIdentifier>
@@ -388,13 +394,16 @@
     <ClCompile Include="..\..\Source\FilmstripProject\New_TabButton.cpp">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\New_NameAndMode.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\New_Asset.cpp">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.cpp">
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetsManager.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.cpp">
@@ -423,6 +432,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
@@ -2346,13 +2358,16 @@
     <ClInclude Include="..\..\Source\FilmstripProject\New_TabButton.h">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\New_NameAndMode.h">
+      <Filter>SlideWorks\Source\FilmstripProject</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\New_Asset.h">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.h">
       <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.h">
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetsManager.h">
       <Filter>SlideWorks\Source\FilmstripProject\MainControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.h">
@@ -2381,6 +2396,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.h">
       <Filter>SlideWorks\Source\FilmstripProject\Canvas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h">
+      <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
@@ -4973,20 +4991,29 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Icons\icon_Delete.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Icons\icon_On_Visible.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Icons\icon_On_Visible2.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf">
-      <Filter>SlideWorks</Filter>
+      <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Regular.ttf">
-      <Filter>SlideWorks</Filter>
+      <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf">
-      <Filter>SlideWorks</Filter>
+      <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Fonts\Roboto_Mono\static\RobotoMono-Medium.ttf">
-      <Filter>SlideWorks</Filter>
+      <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="C:\Users\ukhem\Downloads\small_scale_black.png">
-      <Filter>SlideWorks</Filter>
+      <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\javascript\choc\JUCE_CHANGES.txt">
       <Filter>JUCE Modules\juce_core\javascript\choc</Filter>

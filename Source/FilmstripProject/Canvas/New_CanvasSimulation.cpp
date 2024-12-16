@@ -9,3 +9,16 @@
 */
 
 #include "New_CanvasSimulation.h"
+
+New_CanvasSimulation::New_CanvasSimulation()
+{
+}
+
+New_CanvasSimulation::~New_CanvasSimulation()
+{
+}
+
+WorkingMode New_CanvasSimulation::getMode() const
+{
+    return mode;
+}

@@ -153,9 +153,10 @@
     <ClCompile Include="..\..\Source\AssetButtons.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_TabButton.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\New_NameAndMode.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_Asset.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.cpp"/>
-    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetsManager.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_FilmstripOrientation.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\MainControls\New_KnobAngles.cpp"/>
@@ -165,6 +166,7 @@
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasEdit.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.cpp"/>
@@ -1916,9 +1918,10 @@
     <ClInclude Include="..\..\Source\AssetButtons.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_TabButton.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\New_NameAndMode.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_Asset.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_MainControls.h"/>
-    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetsViewport.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetsManager.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_AssetButtons.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_FilmstripOrientation.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\MainControls\New_KnobAngles.h"/>
@@ -1928,6 +1931,7 @@
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasEdit.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.h"/>
@@ -2793,6 +2797,9 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Icons\icon_Delete.png"/>
+    <None Include="..\..\Resources\Icons\icon_On_Visible.png"/>
+    <None Include="..\..\Resources\Icons\icon_On_Visible2.png"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Regular.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf"/>

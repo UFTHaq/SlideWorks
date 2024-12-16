@@ -17,3 +17,30 @@
 // image
 
 #pragma once
+
+#include <JuceHeader.h>
+
+#include "../Source/EnumClass.h"
+
+class New_Asset
+{
+protected:
+    AssetType assetType{};
+    juce::String assetTypeStr{};
+    juce::File assetFilePath{};
+    juce::String assetName{};
+    juce::Image assetImage{};
+
+public:
+    New_Asset(const AssetType& type);
+    ~New_Asset();
+
+    AssetType getAssetType() const;
+    const juce::String& getAssetTypeStr() const;
+    const juce::File& getAssetFilePath() const;
+    const juce::String& getAssetName() const;
+    juce::Image getAssetImage() const;
+
+    void setAssetFilePathAndLoadImage(const juce::File& filePath);
+    void setAssetName(const juce::String& name);
+};

@@ -20,3 +20,21 @@
 // juce::TextButton Refresh
 
 #pragma once
+
+#include <JuceHeader.h>
+
+#include "../Source/EnumClass.h"
+
+class New_CanvasPreview
+    : public juce::Component
+{
+protected:
+    WorkingMode mode{ WorkingMode::PREVIEW_MODE };
+
+
+public:
+    New_CanvasPreview();
+    ~New_CanvasPreview();
+
+    WorkingMode getMode() const;
+};

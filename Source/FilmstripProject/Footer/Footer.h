@@ -1,29 +1,21 @@
 /*
   ==============================================================================
 
-    New_Canvas.h
-    Created: 10 Dec 2024 6:15:51pm
+    Footer.h
+    Created: 15 Dec 2024 8:52:43pm
     Author:  UFTHaq
 
   ==============================================================================
 */
-
-// Put this to -> New_FilmstripProject
-// inherit juce::Component
 
 #pragma once
 
 #include <JuceHeader.h>
 
 #include "../Source/Globals.h"
-#include "../Source/EnumClass.h"
 #include "../Source/CustomLookAndFeel.h"
 
-#include "New_CanvasEdit.h"
-#include "New_CanvasPreview.h"
-#include "New_CanvasSimulation.h"
-
-class New_Canvas
+class Footer
     : public juce::Component
 {
 protected:
@@ -31,17 +23,12 @@ protected:
 
     juce::Rectangle<int> bounds{};
 
-    New_CanvasEdit canvasEdit{};
-    New_CanvasPreview canvasPreview{};
-    New_CanvasSimulation canvasSimulation{};
-
 public:
-    New_Canvas();
-    ~New_Canvas();
+    Footer();
+    ~Footer();
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
     void drawBackground(juce::Graphics& g);
-    void setMode(WorkingMode mode);
 };

@@ -9,3 +9,16 @@
 */
 
 #include "New_CanvasEdit.h"
+
+New_CanvasEdit::New_CanvasEdit()
+{
+}
+
+New_CanvasEdit::~New_CanvasEdit()
+{
+}
+
+WorkingMode New_CanvasEdit::getMode() const
+{
+    return mode;
+}

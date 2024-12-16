@@ -29,11 +29,19 @@ enum class AnglesOrThumbPos
     THUMB_POS
 };
 
+enum class FilmstripType
+{
+    KNOB,
+    SLIDER
+};
+
 enum class AssetType
 {
     KNOB,
     KNOB_SCALE,
+    KNOB_SCALE_GENERATED,
     THUMB,
     TRACK,
-    TRACK_SCALE
+    TRACK_SCALE,
+    TRACK_SCALE_GENERATED,
 };

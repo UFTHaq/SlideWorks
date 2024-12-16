@@ -84,9 +84,10 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/AssetButtons_6d6dce7a.o \
   $(JUCE_OBJDIR)/New_FilmstripProject_fa8dd2f.o \
   $(JUCE_OBJDIR)/New_TabButton_b1873367.o \
+  $(JUCE_OBJDIR)/New_NameAndMode_26fc788f.o \
   $(JUCE_OBJDIR)/New_Asset_d11b4030.o \
   $(JUCE_OBJDIR)/New_MainControls_49255fcd.o \
-  $(JUCE_OBJDIR)/New_AssetsViewport_3978a47.o \
+  $(JUCE_OBJDIR)/New_AssetsManager_d8650476.o \
   $(JUCE_OBJDIR)/New_AssetButtons_45c675af.o \
   $(JUCE_OBJDIR)/New_FilmstripOrientation_27ee79da.o \
   $(JUCE_OBJDIR)/New_KnobAngles_5d123714.o \
@@ -96,6 +97,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/New_CanvasEdit_a0ddd397.o \
   $(JUCE_OBJDIR)/New_CanvasPreview_ab79eba5.o \
   $(JUCE_OBJDIR)/New_CanvasSimulation_66240314.o \
+  $(JUCE_OBJDIR)/Footer_a37e256e.o \
   $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnob_7d40016c.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnobScale_8b1ce288.o \
@@ -189,6 +191,11 @@ $(JUCE_OBJDIR)/New_TabButton_b1873367.o: ../../Source/FilmstripProject/New_TabBu
 	@echo "Compiling New_TabButton.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/New_NameAndMode_26fc788f.o: ../../Source/FilmstripProject/New_NameAndMode.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling New_NameAndMode.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/New_Asset_d11b4030.o: ../../Source/FilmstripProject/New_Asset.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling New_Asset.cpp"
@@ -199,9 +206,9 @@ $(JUCE_OBJDIR)/New_MainControls_49255fcd.o: ../../Source/FilmstripProject/MainCo
 	@echo "Compiling New_MainControls.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/New_AssetsViewport_3978a47.o: ../../Source/FilmstripProject/MainControls/New_AssetsViewport.cpp
+$(JUCE_OBJDIR)/New_AssetsManager_d8650476.o: ../../Source/FilmstripProject/MainControls/New_AssetsManager.cpp
 	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling New_AssetsViewport.cpp"
+	@echo "Compiling New_AssetsManager.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_AssetButtons_45c675af.o: ../../Source/FilmstripProject/MainControls/New_AssetButtons.cpp
@@ -247,6 +254,11 @@ $(JUCE_OBJDIR)/New_CanvasPreview_ab79eba5.o: ../../Source/FilmstripProject/Canva
 $(JUCE_OBJDIR)/New_CanvasSimulation_66240314.o: ../../Source/FilmstripProject/Canvas/New_CanvasSimulation.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling New_CanvasSimulation.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Footer_a37e256e.o: ../../Source/FilmstripProject/Footer/Footer.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling Footer.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o: ../../Source/FilmstripProject/SubControls/New_SubControls.cpp

@@ -21,3 +21,20 @@
 // Maybe some buttons or labels sizes and min max
 
 #pragma once
+
+#include <JuceHeader.h>
+
+#include "../Source/EnumClass.h"
+
+class New_CanvasEdit
+    : public juce::Component
+{
+protected:
+    WorkingMode mode{ WorkingMode::EDIT_MODE };
+
+public:
+    New_CanvasEdit();
+    ~New_CanvasEdit();
+
+    WorkingMode getMode() const;
+};

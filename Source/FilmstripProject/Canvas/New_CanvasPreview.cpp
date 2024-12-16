@@ -9,3 +9,16 @@
 */
 
 #include "New_CanvasPreview.h"
+
+New_CanvasPreview::New_CanvasPreview()
+{
+}
+
+New_CanvasPreview::~New_CanvasPreview()
+{
+}
+
+WorkingMode New_CanvasPreview::getMode() const
+{
+    return mode;
+}

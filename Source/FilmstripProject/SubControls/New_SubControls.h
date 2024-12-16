@@ -25,6 +25,7 @@
 //   - active: Track, Track
 //   - active: Thumb, Thumb
 //   - active: Generated Scale
+//
 //   by doing resetting reload the setBounds of each ClassControl using big long rect
 //   example: if (nothing active)
 //              Lightrect = longRect.removeFromTop()
@@ -36,3 +37,27 @@
 // And the SubControls member can control the Canvas Edit such Size or Color
 
 #pragma once
+
+#include <JuceHeader.h>
+
+#include "../Source/Globals.h"
+#include "../Source/CustomLookAndFeel.h"
+
+
+class New_SubControls
+    : public juce::Component
+{
+protected:
+    std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
+
+    juce::Rectangle<int> bounds{};
+
+public:
+    New_SubControls();
+    ~New_SubControls();
+
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+    void drawBackground(juce::Graphics& g);
+};

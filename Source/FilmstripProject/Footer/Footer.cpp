@@ -1,39 +1,39 @@
 /*
   ==============================================================================
 
-    New_SubControls.cpp
-    Created: 10 Dec 2024 5:46:26pm
+    Footer.cpp
+    Created: 15 Dec 2024 8:52:43pm
     Author:  UFTHaq
 
   ==============================================================================
 */
 
-#include "New_SubControls.h"
+#include "Footer.h"
 
-New_SubControls::New_SubControls()
+Footer::Footer()
     : customLookAndFeel(Globals::getCustomLookAndFeel())
 {
 }
 
-New_SubControls::~New_SubControls()
+Footer::~Footer()
 {
 }
 
-void New_SubControls::paint(juce::Graphics& g)
+void Footer::paint(juce::Graphics& g)
 {
     drawBackground(g);
 }
 
-void New_SubControls::resized()
+void Footer::resized()
 {
     bounds = getLocalBounds();
 }
 
-void New_SubControls::drawBackground(juce::Graphics& g)
+void Footer::drawBackground(juce::Graphics& g)
 {
     g.setColour(customLookAndFeel->getCurrentTheme().ButtonsID_01_ON);
     g.fillRoundedRectangle(bounds.toFloat(), 1);
 
     g.setColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    g.drawRoundedRectangle(bounds.toFloat().reduced(0.3F), 1, 0.3F);
+    //g.drawRoundedRectangle(bounds.toFloat().reduced(0.3F), 1, 0.3F);
 }

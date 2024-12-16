@@ -14,6 +14,9 @@
 #include "SliderFilmstrip.h"
 #include "AssetButtons.h"
 
+#include "FilmstripProject/New_FilmstripProject.h"
+
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
@@ -41,6 +44,8 @@ public:
     void mouseDoubleClick(const juce::MouseEvent& event) override;
 
     void updatePageContent(juce::Graphics& g);
+
+    void NewUpdateVisibilityPAGE_2(bool visible);
 
     void updatePage2WorkVisibility(bool visible);
     void anglesOrThumbPosVisibility(bool visible);
@@ -174,6 +179,8 @@ private:
     juce::Colour canvasColor = Globals::getCustomLookAndFeel()->getCurrentTheme().SlideworksBaseColour;
 
     std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
+    std::vector<std::unique_ptr<New_FilmstripProject>> newFilmstripProjects{};
+
     juce::Viewport filmstripButtonsViewport{};
     juce::Component filmstripButtonsContainer{};
 
