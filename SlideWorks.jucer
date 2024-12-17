@@ -137,6 +137,10 @@
                 file="Source/FilmstripProject/SubControls/New_ControlLighting.h"/>
         </GROUP>
       </GROUP>
+      <GROUP id="{E7788282-64A1-3B23-92B8-CB79D55BA43E}" name="PageInfo">
+        <FILE id="XYmjPQ" name="PageInfo.cpp" compile="1" resource="0" file="Source/PageInfo/PageInfo.cpp"/>
+        <FILE id="LtYROs" name="PageInfo.h" compile="0" resource="0" file="Source/PageInfo/PageInfo.h"/>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <MODULES>

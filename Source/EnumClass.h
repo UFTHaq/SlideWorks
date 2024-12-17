@@ -10,6 +10,13 @@
 
 #pragma once
 
+enum class PageState
+{
+    PAGE1_GREETINGS,
+    PAGE2_WORKSPACE,
+    PAGE3_INFO
+};
+
 enum class WorkingMode
 {
     EDIT_MODE,

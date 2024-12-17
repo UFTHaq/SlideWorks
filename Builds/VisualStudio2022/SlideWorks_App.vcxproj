@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.cpp"/>
+    <ClCompile Include="..\..\Source\PageInfo\PageInfo.cpp"/>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1930,6 +1931,7 @@
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.h"/>
+    <ClInclude Include="..\..\Source\PageInfo\PageInfo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_ArrayAllocationBase.h"/>

@@ -7,7 +7,7 @@ MainComponent::MainComponent()
 
     setupLayoutUI();
     setupButtons(ptr_Global_CustomLookAndFeel);
-    setupCustomGroupComponents();
+    setupPageInfo();
 
     newFilmstripProjects.reserve(10);
 }
@@ -61,14 +61,6 @@ void MainComponent::updatePageContent(juce::Graphics& g)
         //g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().SlideworksBaseColour);
         //g.fillRoundedRectangle(area_Layer3_MainWorkspace.toFloat(), 1);
     }
-
-    if (currentSlideWorksPage == PageState::PAGE3_INFO)
-    {
-        g.setColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().Page_1);
-        g.fillRoundedRectangle(base_Workspace.toFloat(), 1);
-        
-        groupDialog_2_Info.paint(g);
-    }
 }
 
 void MainComponent::NewUpdateVisibilityPAGE_2(bool visible)
@@ -100,22 +92,8 @@ void MainComponent::NewUpdateVisibilityPAGE_2(bool visible)
 
 void MainComponent::updatePage3InfoVisibility(bool visible)
 {
-    closeDialog_2_Info.setEnabled(visible);
-    closeDialog_2_Info.setVisible(visible);
-
-    author_param.setVisible(visible);
-    author_arg.setVisible(visible);
-
-    version_param.setVisible(visible);
-    version_arg.setVisible(visible);
-
-    release_param.setVisible(visible);
-    release_arg.setVisible(visible);
-
-    license_param.setVisible(visible);
-    license_arg.setVisible(visible);
-
-    juceVersion_arg.setVisible(visible);
+    pageInfo.setEnabled(visible);
+    pageInfo.setVisible(visible);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -159,8 +137,6 @@ void MainComponent::setupLayoutUI()
 
     auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace;
 
-    //if (SlideWorksMode == ModeState::EDIT)
-
     if (newFilmstripProjects.size() > 0)
     {
         // PLAN:
@@ -186,52 +162,35 @@ void MainComponent::setupLayoutUI()
         }
     }
 
-    ////////------------ INFO CARD GROUP ------------////////
-    auto base_groupDialog_2_Info{ base_Workspace.withSizeKeepingCentre(275, 240) };
-    auto groupDialog_2_Info_Area = base_groupDialog_2_Info.reduced(10);
-    groupDialog_2_Info_Area.removeFromBottom(40);
-    groupDialog_2_Info.setBounds(groupDialog_2_Info_Area);
 
-    auto infoArea = groupDialog_2_Info_Area;
-    infoArea.removeFromTop(8);
-    infoArea = infoArea.reduced(20);
-    infoArea = infoArea.withSizeKeepingCentre(150, infoArea.getHeight());
-
-    auto contentHeight = infoArea.getHeight() / 5;
-    auto author = infoArea.removeFromTop(contentHeight);
-    auto version = infoArea.removeFromTop(contentHeight);
-    auto release = infoArea.removeFromTop(contentHeight);
-    auto license = infoArea.removeFromTop(contentHeight);
-    auto juceVer = infoArea.removeFromTop(contentHeight);
-
-    auto paramWidht = static_cast<int>(infoArea.getWidth() * 0.4F);
-    author_param.setBounds(author.removeFromLeft(paramWidht));
-    author_arg.setBounds(author);
-    version_param.setBounds(version.removeFromLeft(paramWidht));
-    version_arg.setBounds(version);
-    release_param.setBounds(release.removeFromLeft(paramWidht));
-    release_arg.setBounds(release);
-    license_param.setBounds(license.removeFromLeft(paramWidht));
-    license_arg.setBounds(license);
-    juceVersion_arg.setBounds(juceVer);
-
-    // CLOSE BUTTON
-    {
-        auto w = 100;
-        auto h = 30;
-        juce::Rectangle dialog2_Close{
-            base_groupDialog_2_Info.getX() + (base_groupDialog_2_Info.getWidth() - w) / 2,
-            base_groupDialog_2_Info.getBottom() - h - 10,
-            w,
-            h
-        };
-        closeDialog_2_Info.setBounds(dialog2_Close);
-    }    
+    //////////------------ INFO CARD GROUP ------------////////
+    pageInfo.setBounds(base_Workspace);
 }
 
 void MainComponent::setupButtons(CustomLookAndFeel* customLookAndFeel)
 {
     setupProjectButtons(customLookAndFeel);
+}
+
+void MainComponent::setupPageInfo()
+{
+    pageInfo.setBounds(base_Workspace);
+    pageInfo.getCloseButton().onClick = [this]() 
+        {
+            currentSlideWorksPage = previousSlideWorksPage;
+
+            if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
+                NewUpdateVisibilityPAGE_2(true);
+
+            updatePage3InfoVisibility(false);
+            repaint();
+        };
+    addAndMakeVisible(pageInfo);
+
+    pageInfo.setEnabled(false);
+    pageInfo.setVisible(false);
+
+    //updatePage3InfoVisibility(false);
 }
 
 void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
@@ -552,114 +511,6 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
             }
         };
     addAndMakeVisible(SW_InfoButton);
-}
-
-void MainComponent::setupCustomGroupComponents()
-{
-    auto indentation = 5.0F;
-    auto gap = 6.0F;
-    auto cornerSize = 5.0F;
-    auto lineThick = 1.0F;
-    auto fontSize = 16.0F;
-    auto font = ptr_Global_CustomLookAndFeel->getFontRobotoCondensedRegular().withHeight(fontSize);
-    auto fontColor = ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomDarkGrey;
-    auto outlineColor = ptr_Global_CustomLookAndFeel->getCurrentTheme().OutlineControl;
-
-    groupDialog_2_Info.setName("DIALOG 2 INFO");
-    groupDialog_2_Info.setText("SLIDEWORKS");
-    groupDialog_2_Info.setTextLabelPosition(juce::Justification::centred);
-    groupDialog_2_Info.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(18.0F));
-    groupDialog_2_Info.setFontColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    groupDialog_2_Info.setOutlineColour(ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    groupDialog_2_Info.setCornerSize(10.0F);
-    groupDialog_2_Info.setIndentation(3.0F);
-    groupDialog_2_Info.setTextLineGap(8.0F);
-    groupDialog_2_Info.setLineThickness(1.5F);
-    addAndMakeVisible(groupDialog_2_Info);
-
-    author_param.setText("Author", juce::dontSendNotification);
-    author_param.setJustificationType(juce::Justification::centredLeft);
-    author_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    author_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    author_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    author_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(author_param);
-    author_arg.setText(":  UFTHaq", juce::dontSendNotification);
-    author_arg.setJustificationType(juce::Justification::centredLeft);
-    author_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    author_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    author_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    author_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(author_arg);
-
-    version_param.setText("Version", juce::dontSendNotification);
-    version_param.setJustificationType(juce::Justification::centredLeft);
-    version_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    version_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    version_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    version_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(version_param);
-    version_arg.setText(":  1.0", juce::dontSendNotification);
-    version_arg.setJustificationType(juce::Justification::centredLeft);
-    version_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    version_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    version_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    version_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(version_arg);
-
-    release_param.setText("Release", juce::dontSendNotification);
-    release_param.setJustificationType(juce::Justification::centredLeft);
-    release_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    release_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    release_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    release_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(release_param);
-    release_arg.setText(":  15/12/2024", juce::dontSendNotification);
-    release_arg.setJustificationType(juce::Justification::centredLeft);
-    release_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    release_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    release_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    release_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(release_arg);
-
-    license_param.setText("License", juce::dontSendNotification);
-    license_param.setJustificationType(juce::Justification::centredLeft);
-    license_param.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    license_param.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    license_param.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    license_param.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(license_param);
-    license_arg.setText(":  APGLv3", juce::dontSendNotification);
-    license_arg.setJustificationType(juce::Justification::centredLeft);
-    license_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    license_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    license_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    license_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(license_arg);
-
-    juceVersion_arg.setText("Created with JUCE 8.0.3", juce::dontSendNotification);
-    juceVersion_arg.setJustificationType(juce::Justification::centredBottom);
-    juceVersion_arg.setFont(ptr_Global_CustomLookAndFeel->getFontRobotoCondensedBold().withHeight(17.0F));
-    juceVersion_arg.setColour(juce::Label::backgroundColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomTransparent);
-    juceVersion_arg.setColour(juce::Label::textColourId, ptr_Global_CustomLookAndFeel->getCurrentTheme().CustomGroupComponent);
-    juceVersion_arg.setLookAndFeel(ptr_Global_CustomLookAndFeel);
-    addAndMakeVisible(juceVersion_arg);
-
-    closeDialog_2_Info.setButtonText("CLOSE");
-    closeDialog_2_Info.setComponentID("Buttons_ID_02_Close_Group");
-    closeDialog_2_Info.onClick = [this]()
-        {
-            currentSlideWorksPage = previousSlideWorksPage;
-
-            if (currentSlideWorksPage == PageState::PAGE2_WORKSPACE)
-                NewUpdateVisibilityPAGE_2(true);
-
-            updatePage3InfoVisibility(false);
-            repaint();
-        };
-    addAndMakeVisible(closeDialog_2_Info);
-
-    updatePage3InfoVisibility(false);
 }
 
 void MainComponent::setupSimulationKnob(CustomLookAndFeel* customLookAndFeel)

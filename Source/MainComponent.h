@@ -10,6 +10,7 @@
 #include "EnumClass.h"
 
 #include "FilmstripProject/New_FilmstripProject.h"
+#include "PageInfo/PageInfo.h"
 
 
 //==============================================================================
@@ -35,9 +36,9 @@ public:
 
     void setupLayoutUI();
     void setupButtons(CustomLookAndFeel* customLookAndFeel);
+    void setupPageInfo();
 
     void setupProjectButtons(CustomLookAndFeel* customLookAndFeel);
-    void setupCustomGroupComponents();
     void setupSimulationKnob(CustomLookAndFeel* customLookAndFeel);
 
     CustomLookAndFeel* ptr_Global_CustomLookAndFeel = Globals::getCustomLookAndFeel().get();
@@ -45,24 +46,9 @@ private:
     //==============================================================================
     // Your private member variables go here...
 
-    enum class PageState
-    {
-        PAGE1_GREETINGS,
-        PAGE2_WORKSPACE,
-        PAGE3_INFO
-    };
-
     PageState currentSlideWorksPage{ PageState::PAGE1_GREETINGS };
     PageState previousSlideWorksPage{};
 
-    enum class ModeState
-    {
-        SIMULATION,
-        PREVIEW,
-        EDIT
-    };
-
-    //ModeState SlideWorksMode{ ModeState::SIMULATION };
 
     WorkingMode workingMode{ WorkingMode::SIMULATION_MODE };
 
@@ -104,20 +90,11 @@ private:
 
     std::vector<std::unique_ptr<New_FilmstripProject>> newFilmstripProjects{};
 
+    ////////////////----------- PAGE 3 -----------////////////////
+    PageInfo pageInfo{};
+
     /////////////////////////////////////////////////////////////////
 
-    ////////////////----------- PAGE 3 -----------////////////////
-    CustomGroupComponent groupDialog_2_Info{};
-    juce::Label author_param{};
-    juce::Label author_arg{};
-    juce::Label version_param{};
-    juce::Label version_arg{};
-    juce::Label release_param{};
-    juce::Label release_arg{};
-    juce::Label license_param{};
-    juce::Label license_arg{};
-    juce::Label juceVersion_arg{};
-    juce::TextButton closeDialog_2_Info{};
     
     // SIMULATION 
     // TODO: 
