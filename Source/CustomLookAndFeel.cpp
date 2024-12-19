@@ -55,6 +55,7 @@ CustomLookAndFeel::CustomLookAndFeel()
 
 	LoadFonts();
 	loadImages();
+	setupColorMapStorage();
 }
 
 CustomLookAndFeel::~CustomLookAndFeel()
@@ -430,6 +431,8 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	juce::Colour textColor{};
 	juce::String text{ buttonText };
 
+	//textColor = colorMapStorage.find("Buttons_ID_01_SW")
+	//textColor = colorMapStorage.at("Buttons_ID_01_SW").at(juce::Label::textColourId);
 
 	if (buttonID == "Buttons_ID_01_SW")
 	{
@@ -611,9 +614,22 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 {
 	auto ID = slider.getComponentID();
 
-	juce::Colour trackColour = slider.findColour(juce::Slider::trackColourId);
-	juce::Colour thumbColour = slider.findColour(juce::Slider::thumbColourId);
+	juce::Colour trackColour = {};
+	juce::Colour thumbColour = {};
+
+	//juce::Colour trackColour = slider.findColour(juce::Slider::trackColourId);
+	//juce::Colour thumbColour = slider.findColour(juce::Slider::thumbColourId);
 	juce::Colour outline = getCurrentTheme().CustomDarkest;
+
+	// Move all the component.setColour() to customLookAndFeel.cpp
+	// maybe too heavy computation?
+	// I have change theme function maybe in here
+	// So invoke the re setColour of each component there if change theme.
+	// findColour also need to refactor as that.
+	// updateThemeColorComponent(); update the colorMapStorage
+
+	trackColour = colorMapStorage.at("Slider_ID_01_WithThumb").at(juce::Slider::trackColourId);
+	thumbColour = colorMapStorage.at("Slider_ID_01_WithThumb").at(juce::Slider::thumbColourId);
 
 	// Draw track
 	float trackHeight = float(height * 1.F);
@@ -903,6 +919,11 @@ void CustomLookAndFeel::loadImages()
 	knobScale = juce::ImageCache::getFromMemory(BinaryData::small_scale_black_png, BinaryData::small_scale_black_pngSize);
 }
 
+void CustomLookAndFeel::updateThemeColorComponent()
+{
+
+}
+
 ////////////////////////// ========= GET COLOURS ========= //////////////////////////
 const juce::Colour CustomLookAndFeel::getColorTitleBar()
 {
@@ -988,9 +1009,13 @@ void CustomLookAndFeel::setTheme(ThemeType themeType)
 	{
 	case ThemeType::OfficeLight:
 		themeColoursNow = OfficeLightTheme;
+		updateThemeColorComponent();
+
 		break;
 	case ThemeType::DarkNight:
 		themeColoursNow = DarkNightTheme;
+		updateThemeColorComponent();
+
 		break;
 
 	default:
@@ -1012,6 +1037,40 @@ const ThemeColours& CustomLookAndFeel::getCurrentTheme()
 	return themeColoursNow;
 }
 
+void CustomLookAndFeel::setupColorMapStorage()
+{
+	juce::String ID{};
+
+	ID = "Slider_ID_01_WithThumb";
+	std::unordered_map<int, juce::Colour> setColours = {
+		{juce::Slider::trackColourId, getCurrentTheme().SlideworksBaseColour},
+		{juce::Slider::thumbColourId, getCurrentTheme().SliderThumbColour}
+	};
+	colorMapStorage.insert({ ID, setColours });
+}
+
+void CustomLookAndFeel::reloadColorMapStorage()
+{
+	juce::String ID{};
+
+	ID = "Slider_ID_01_WithThumb";
+	if (colorMapStorage.find(ID) != colorMapStorage.end())
+	{
+		colorMapStorage.at(ID).at(juce::Slider::trackColourId) = getCurrentTheme().SlideworksBaseColour;
+		colorMapStorage.at(ID).at(juce::Slider::thumbColourId) = getCurrentTheme().SliderThumbColour;
+	}
+}
+
+// TO LOAD THE LABELS COLORS
+//void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
+//{
+//	auto labelColours = colorMapStorage.at(label.getComponentID());
+//	g.setColour(labelColours.at(juce::Label::backgroundColourId));
+//	g.fillAll();
+//
+//	g.setColour(labelColours.at(juce::Label::textColourId));
+//	g.drawText(label.getText(), label.getLocalBounds(), label.getJustificationType());
+//}
 
 /////////////////////////////////////////////////////////////////////////////////
 void CustomLookAndFeel::setSimulationKnobImage(juce::Image image, int totalFrames, bool isVertical, double startAngle, double endAngle)

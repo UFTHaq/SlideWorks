@@ -51,10 +51,16 @@ public:
     void resized() override;
 
     void setupGroupComponent();
+    void setColourGroup();
     void setupThumbControls();
+
+    void setColourMinPos();
+    void setColourMaxPos();
 
     double getMinThumbPos() const;
     double getMaxThumbPos() const;
 
     CustomGroupComponent& getGroup();
+
+    void resetCurrentTheme();
 };

@@ -104,6 +104,14 @@ void New_KnobAngles::setupGroupComponent()
     group.setCornerSize(cornerSize);
     group.setLineThickness(lineThick);
     addAndMakeVisible(group);
+
+    setColourGroup();
+}
+
+void New_KnobAngles::setColourGroup()
+{
+    group.setFontColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    group.setOutlineColour(customLookAndFeel->getCurrentTheme().OutlineControl);
 }
 
 void New_KnobAngles::setupAngleControls()
@@ -119,7 +127,6 @@ void New_KnobAngles::setupAngleControls()
         minText_Label.setFont(font);
         minText_Label.setText("Min", juce::dontSendNotification);
         minText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
-        minText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
         minText_Label.setJustificationType(juce::Justification::centredBottom);
         minText_Label.setEditable(false, false);
         addAndMakeVisible(minText_Label);
@@ -131,11 +138,6 @@ void New_KnobAngles::setupAngleControls()
         minAngle.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
         //minAngle.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);
         minAngle.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);
-        minAngle.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
-        minAngle.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        minAngle.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        minAngle.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
-        minAngle.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
         minAngle.setTextBoxIsEditable(false);
         minAngle.onValueChange = [this, minAngleBetween]()
             {
@@ -151,14 +153,6 @@ void New_KnobAngles::setupAngleControls()
         minValue_Label.setFont(font);
         minValue_Label.setText("-135", juce::dontSendNotification);
         minValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
-        minValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        minValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
-        minValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        minValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-        minValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        minValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        minValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-        minValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
         minValue_Label.setReadOnly(true);
         minValue_Label.setInterceptsMouseClicks(false, false);
         minValue_Label.onReturnKey = [this]()
@@ -192,13 +186,13 @@ void New_KnobAngles::setupAngleControls()
             };
         addAndMakeVisible(minValue_Label);
 
+        setColourMinAngle();
     }
 
     {
         maxText_Label.setFont(font);
         maxText_Label.setText("Max", juce::dontSendNotification);
         maxText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
-        maxText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
         maxText_Label.setJustificationType(juce::Justification::centredBottom);
         maxText_Label.setEditable(false, false);
         addAndMakeVisible(maxText_Label);
@@ -210,11 +204,6 @@ void New_KnobAngles::setupAngleControls()
         maxAngle.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
         //maxAngle.setRotaryParameters(juce::degreesToRadians((float)-threshold), juce::degreesToRadians((float)threshold), true);
         maxAngle.setRotaryParameters(juce::degreesToRadians(0.0F), juce::degreesToRadians(350.0F), true);
-        maxAngle.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
-        maxAngle.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        maxAngle.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        maxAngle.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
-        maxAngle.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
         maxAngle.setTextBoxIsEditable(false);
         maxAngle.onValueChange = [this, minAngleBetween]() 
             {
@@ -230,14 +219,6 @@ void New_KnobAngles::setupAngleControls()
         maxValue_Label.setFont(font);
         maxValue_Label.setText("135", juce::dontSendNotification);
         maxValue_Label.setComponentID("Label_ID_03_MIN_MAX_VALUE");
-        maxValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        maxValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
-        maxValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
-        maxValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-        maxValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        maxValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        maxValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
-        maxValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
         maxValue_Label.setReadOnly(true);
         maxValue_Label.setInterceptsMouseClicks(false, false);
         maxValue_Label.onReturnKey = [this]()
@@ -270,7 +251,49 @@ void New_KnobAngles::setupAngleControls()
                 maxAngle.setValue(newValue, juce::dontSendNotification);
             };
         addAndMakeVisible(maxValue_Label);
+
+        setColourMaxAngle();
     }
+}
+
+void New_KnobAngles::setColourMinAngle()
+{
+    minText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+
+    minAngle.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+    minAngle.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    minAngle.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    minAngle.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+    minAngle.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+
+    minValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    minValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
+    minValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    minValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+    minValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    minValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    minValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+    minValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+}
+
+void New_KnobAngles::setColourMaxAngle()
+{
+    maxText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+
+    maxAngle.setColour(juce::Slider::trackColourId, customLookAndFeel->getColorCustomLightGrey());
+    maxAngle.setColour(juce::Slider::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    maxAngle.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    maxAngle.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomDarkGrey().darker());
+    maxAngle.setColour(juce::TextEditor::backgroundColourId, customLookAndFeel->getColorCustomGrey());
+
+    maxValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    maxValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontWhite);
+    maxValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomGrey);
+    maxValue_Label.setColour(juce::Label::outlineWhenEditingColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+    maxValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    maxValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    maxValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().TransparentBlack);
+    maxValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
 }
 
 double New_KnobAngles::getMinAngle() const
@@ -281,4 +304,11 @@ double New_KnobAngles::getMinAngle() const
 double New_KnobAngles::getMaxAngle() const
 {
     return maxAngle.getValue();
+}
+
+void New_KnobAngles::resetCurrentTheme()
+{
+    setColourGroup();
+    setColourMinAngle();
+    setColourMaxAngle();
 }

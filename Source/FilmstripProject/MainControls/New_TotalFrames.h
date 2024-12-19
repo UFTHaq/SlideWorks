@@ -43,8 +43,12 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-    void setupGroupComponent();
-    void setupTotalFramesControl();
-
     int getTotalFrames() const;
+
+    void setupGroupComponent();
+    void setColourGroup();
+    void setupTotalFramesControl();
+    void setColourTotalFrames();
+
+    void resetCurrentTheme();
 };

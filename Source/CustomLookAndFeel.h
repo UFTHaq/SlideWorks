@@ -26,8 +26,6 @@ public:
 	void drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour& backgroundColor, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown) override;
 	void drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown) override;
 
-	//void drawGroupComponentOutline(juce::Graphics& g, int width, int height, const juce::String& text, const juce::Justification& position, juce::GroupComponent& group) override;
-
 	void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider) override;
 	void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider) override;
 
@@ -41,6 +39,8 @@ public:
 	void LoadFonts();
 
 	void loadImages();
+
+	void updateThemeColorComponent();
 
 	// Return main color palette used in the projects;
 	const juce::Colour getColorTitleBar();
@@ -75,6 +75,9 @@ public:
 	void setTheme(ThemeType themeType);
 	const ThemeType& getCurrentThemeType();
 	const ThemeColours& getCurrentTheme();
+
+	void setupColorMapStorage();
+	void reloadColorMapStorage();
 
 private:
 
@@ -159,6 +162,10 @@ private:
 
 	ThemeColours themeColoursNow{ OfficeLightTheme };
 	ThemeType themeTypeNow{ ThemeType::OfficeLight };
+
+	// This is for store the color
+	std::unordered_map<juce::String, std::unordered_map<int, juce::Colour>> colorMapStorage{};
+	//                  ComponentID,                 colourID,     Colour
 
 	//juce::Colour colorTitleBar          { juce::Colour::fromString("#ff181818") };
 	juce::Colour colorTitleBar          { juce::Colour::fromString("#ff0063B1") };

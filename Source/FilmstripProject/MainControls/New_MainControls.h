@@ -70,4 +70,6 @@ public:
     New_FilmstripOrientation& getOrientationControl();
     New_KnobAngles& getAnglesControls();
     New_ThumbPositions& getThumbControls();
+
+    void resetCurrentTheme();
 };

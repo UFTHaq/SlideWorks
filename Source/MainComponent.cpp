@@ -489,6 +489,10 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                     Globals::repaintTitleBar = true;
 
+                    for (auto& proj : newFilmstripProjects)
+                        proj->resetCurrentTheme();
+
+                    customLookAndFeel->reloadColorMapStorage();
                 }
             );
         };

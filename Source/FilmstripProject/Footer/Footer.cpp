@@ -13,7 +13,7 @@
 Footer::Footer()
     : customLookAndFeel(Globals::getCustomLookAndFeel())
 {
-    font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F);
+    font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F);
 }
 
 Footer::~Footer()

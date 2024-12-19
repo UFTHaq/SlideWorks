@@ -149,3 +149,13 @@ Footer& New_FilmstripProject::getFooter()
 {
     return footer;
 }
+
+void New_FilmstripProject::resetCurrentTheme()
+{
+    //tabButton.resetCurrentTheme(); 
+    //nameAndMode.resetCurrentTheme(); 
+    mainControls.resetCurrentTheme();
+    //canvas.resetCurrentTheme(); 
+    //subControls.resetCurrentTheme(); 
+    //footer.resetCurrentTheme(); 
+}

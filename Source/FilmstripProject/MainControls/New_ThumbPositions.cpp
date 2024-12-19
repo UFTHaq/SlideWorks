@@ -88,6 +88,14 @@ void New_ThumbPositions::setupGroupComponent()
     group.setCornerSize(cornerSize);
     group.setLineThickness(lineThick);
     addAndMakeVisible(group);
+
+    setColourGroup();
+}
+
+void New_ThumbPositions::setColourGroup()
+{
+    group.setFontColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    group.setOutlineColour(customLookAndFeel->getCurrentTheme().OutlineControl);
 }
 
 void New_ThumbPositions::setupThumbControls()
@@ -104,7 +112,6 @@ void New_ThumbPositions::setupThumbControls()
         minText_Label.setText("Min", juce::dontSendNotification);
         minText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
         minText_Label.setFont(font);
-        minText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
         minText_Label.setJustificationType(juce::Justification::centredLeft);
         minText_Label.setEditable(false, false);
         addAndMakeVisible(minText_Label);
@@ -114,10 +121,6 @@ void New_ThumbPositions::setupThumbControls()
         minThumbPos.setValue(defaultValue);
         minThumbPos.setSliderStyle(juce::Slider::LinearHorizontal);
         minThumbPos.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-        minThumbPos.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        minThumbPos.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
-        minThumbPos.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
-        minThumbPos.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
         minThumbPos.setMouseClickGrabsKeyboardFocus(false);
         minThumbPos.setTextBoxIsEditable(false);
         minThumbPos.onValueChange = [this, minPosBetween]() 
@@ -134,15 +137,6 @@ void New_ThumbPositions::setupThumbControls()
         minValue_Label.setText(juce::String(minThumbPos.getValue()), juce::dontSendNotification);
         minValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
         minValue_Label.setJustificationType(juce::Justification::centred);
-        minValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        minValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-        minValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        minValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-        minValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        minValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        minValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-        minValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        minValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
         minValue_Label.setEditable(false, true);
         minValue_Label.onTextChange = [this, minPosBetween]()
             {
@@ -168,6 +162,8 @@ void New_ThumbPositions::setupThumbControls()
                 minValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
             };
         addAndMakeVisible(minValue_Label);
+        
+        setColourMinPos();
     }
 
     {
@@ -175,7 +171,6 @@ void New_ThumbPositions::setupThumbControls()
         maxText_Label.setText("Max", juce::dontSendNotification);
         maxText_Label.setComponentID("Label_ID_03_MIN_MAX_TEXT");
         maxText_Label.setFont(font);
-        maxText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
         maxText_Label.setJustificationType(juce::Justification::centredLeft);
         maxText_Label.setEditable(false, false);
         addAndMakeVisible(maxText_Label);
@@ -185,10 +180,6 @@ void New_ThumbPositions::setupThumbControls()
         maxThumbPos.setValue(1 - defaultValue);
         maxThumbPos.setSliderStyle(juce::Slider::LinearHorizontal);
         maxThumbPos.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-        maxThumbPos.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        maxThumbPos.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
-        maxThumbPos.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
-        maxThumbPos.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
         maxThumbPos.setMouseClickGrabsKeyboardFocus(false);
         maxThumbPos.setTextBoxIsEditable(false);
         maxThumbPos.onValueChange = [this, minPosBetween]() 
@@ -205,15 +196,6 @@ void New_ThumbPositions::setupThumbControls()
         maxValue_Label.setText(juce::String(maxThumbPos.getValue()), juce::dontSendNotification);
         maxValue_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
         maxValue_Label.setJustificationType(juce::Justification::centred);
-        maxValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        maxValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-        maxValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-        maxValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-        maxValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        maxValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-        maxValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-        maxValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-        maxValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
         maxValue_Label.setEditable(false, true);
         maxValue_Label.onTextChange = [this, minPosBetween]()
             {
@@ -239,7 +221,49 @@ void New_ThumbPositions::setupThumbControls()
                 maxValue_Label.setText(juce::String(newValue), juce::dontSendNotification);
             };
         addAndMakeVisible(maxValue_Label);
+        
+        setColourMaxPos();
     }
+}
+
+void New_ThumbPositions::setColourMinPos()
+{
+    minText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+
+    minThumbPos.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    minThumbPos.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
+    minThumbPos.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+    minThumbPos.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
+
+    minValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    minValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    minValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    minValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    minValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    minValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    minValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    minValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    minValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+}
+
+void New_ThumbPositions::setColourMaxPos()
+{
+    maxText_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().FontBlack);
+
+    maxThumbPos.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    maxThumbPos.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
+    maxThumbPos.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+    maxThumbPos.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
+
+    maxValue_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    maxValue_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    maxValue_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    maxValue_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    maxValue_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    maxValue_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    maxValue_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    maxValue_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    maxValue_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
 }
 
 double New_ThumbPositions::getMinThumbPos() const
@@ -256,4 +280,11 @@ double New_ThumbPositions::rounded_2Digit(double value)
 {
     double factor = std::pow(10, 2);
     return std::round(value * factor) / factor;
+}
+
+void New_ThumbPositions::resetCurrentTheme()
+{
+    setColourGroup();
+    setColourMinPos();
+    setColourMaxPos();
 }

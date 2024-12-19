@@ -55,10 +55,16 @@ public:
     void mouseDoubleClick(const juce::MouseEvent& event) override;
 
     void setupGroupComponent();
+    void setColourGroup();
     void setupAngleControls();
+
+    void setColourMinAngle();
+    void setColourMaxAngle();
 
     double getMinAngle() const;
     double getMaxAngle() const;
 
     CustomGroupComponent& getGroup();
+
+    void resetCurrentTheme();
 };

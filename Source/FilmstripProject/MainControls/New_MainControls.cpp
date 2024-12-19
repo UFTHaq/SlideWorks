@@ -154,3 +154,16 @@ New_ThumbPositions& New_MainControls::getThumbControls()
 {
     return thumbControls;
 }
+
+void New_MainControls::resetCurrentTheme()
+{
+    totalFramesControl.resetCurrentTheme();
+
+    if (filmstripType == FilmstripType::KNOB)
+        anglesControls.resetCurrentTheme();
+    else
+        thumbControls.resetCurrentTheme();
+
+    //assetsManager.resetCurrentTheme();
+    //orientationControl.resetCurrentTheme();
+}

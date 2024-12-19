@@ -45,6 +45,12 @@ void New_TotalFrames::resized()
     totalFrames_Label.setBounds(labelArea.reduced(2));
 }
 
+
+int New_TotalFrames::getTotalFrames() const
+{
+    return int(totalFrames.getValue());
+}
+
 void New_TotalFrames::setupGroupComponent()
 {
     auto font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F);
@@ -66,6 +72,14 @@ void New_TotalFrames::setupGroupComponent()
     group.setCornerSize(cornerSize);
     group.setLineThickness(lineThick);
     addAndMakeVisible(group);
+
+    setColourGroup();
+}
+
+void New_TotalFrames::setColourGroup()
+{
+    group.setFontColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    group.setOutlineColour(customLookAndFeel->getCurrentTheme().OutlineControl);
 }
 
 void New_TotalFrames::setupTotalFramesControl()
@@ -79,10 +93,6 @@ void New_TotalFrames::setupTotalFramesControl()
     totalFrames.setValue(69);
     totalFrames.setSliderStyle(juce::Slider::LinearHorizontal);
     totalFrames.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    totalFrames.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-    totalFrames.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
-    totalFrames.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
-    totalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
     totalFrames.setMouseClickGrabsKeyboardFocus(false);
     totalFrames.setTextBoxIsEditable(false);
     totalFrames.onValueChange = [this]() 
@@ -96,15 +106,6 @@ void New_TotalFrames::setupTotalFramesControl()
     totalFrames_Label.setText(juce::String(totalFrames.getValue()), juce::dontSendNotification);
     totalFrames_Label.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(17.F));
     totalFrames_Label.setJustificationType(juce::Justification::centred);
-    totalFrames_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-    totalFrames_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    totalFrames_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
-    totalFrames_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
-    totalFrames_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-    totalFrames_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
-    totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
-    totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
-    totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     totalFrames_Label.setEditable(false, true);
     totalFrames_Label.onTextChange = [this, minFrames, maxFrames]()
         {
@@ -127,9 +128,29 @@ void New_TotalFrames::setupTotalFramesControl()
 
         };
     addAndMakeVisible(totalFrames_Label);
+    setColourTotalFrames();
 }
 
-int New_TotalFrames::getTotalFrames() const
+void New_TotalFrames::setColourTotalFrames()
 {
-    return int(totalFrames.getValue());
+    totalFrames.setColour(juce::Slider::trackColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    totalFrames.setColour(juce::Slider::thumbColourId, customLookAndFeel->getCurrentTheme().SliderThumbColour);
+    //totalFrames.setColour(juce::Slider::textBoxBackgroundColourId, customLookAndFeel->getColorCustomDarkGrey());
+    //totalFrames.setColour(juce::Slider::textBoxTextColourId, customLookAndFeel->getColorCustomLightGrey().brighter());
+
+    totalFrames_Label.setColour(juce::Label::backgroundColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    totalFrames_Label.setColour(juce::Label::textColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    totalFrames_Label.setColour(juce::Label::backgroundWhenEditingColourId, customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+    totalFrames_Label.setColour(juce::Label::textWhenEditingColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+    totalFrames_Label.setColour(juce::Label::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    totalFrames_Label.setColour(juce::TextEditor::outlineColourId, customLookAndFeel->getCurrentTheme().CustomDarkest);
+    totalFrames_Label.setColour(juce::TextEditor::highlightColourId, customLookAndFeel->getCurrentTheme().TitleBar);
+    totalFrames_Label.setColour(juce::TextEditor::highlightedTextColourId, customLookAndFeel->getCurrentTheme().CustomWhite);
+    totalFrames_Label.setColour(juce::CaretComponent::caretColourId, customLookAndFeel->getCurrentTheme().CustomDarkGrey);
+}
+
+void New_TotalFrames::resetCurrentTheme()
+{
+    setColourGroup();
+    setColourTotalFrames();
 }

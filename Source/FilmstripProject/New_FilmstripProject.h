@@ -70,4 +70,6 @@ public:
     New_Canvas& getCanvas();
     New_SubControls& getSubControls();
     Footer& getFooter();
+
+    void resetCurrentTheme();
 };
