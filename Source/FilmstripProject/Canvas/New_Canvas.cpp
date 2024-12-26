@@ -10,9 +10,11 @@
 
 #include "New_Canvas.h"
 
-New_Canvas::New_Canvas()
-	: customLookAndFeel(Globals::getCustomLookAndFeel())
+New_Canvas::New_Canvas(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets)
+	: filmstripType(filmstripType), assets(assets), canvasEdit(filmstripType, assets), customLookAndFeel(Globals::getCustomLookAndFeel())
 {
+	setMode(mode);
+	addAndMakeVisible(canvasEdit);
 }
 
 New_Canvas::~New_Canvas()
@@ -27,6 +29,10 @@ void New_Canvas::paint(juce::Graphics& g)
 void New_Canvas::resized()
 {
 	bounds = getLocalBounds();
+
+	canvasEdit.setBounds(bounds);
+
+	DBG("CanvasEdit setBounds " << bounds.toString());
 }
 
 void New_Canvas::drawBackground(juce::Graphics& g)
@@ -40,6 +46,8 @@ void New_Canvas::drawBackground(juce::Graphics& g)
 
 void New_Canvas::setMode(WorkingMode mode)
 {
+	this->mode = mode;
+
 	switch (mode)
 	{
 	case WorkingMode::EDIT_MODE:
@@ -83,4 +91,24 @@ void New_Canvas::setMode(WorkingMode mode)
 	default:
 		break;
 	}
+}
+
+WorkingMode New_Canvas::getMode() const
+{
+	return mode;
+}
+
+New_CanvasEdit& New_Canvas::getCanvasEdit()
+{
+	return canvasEdit;
+}
+
+New_CanvasPreview& New_Canvas::getCanvasPreview()
+{
+	return canvasPreview;
+}
+
+New_CanvasSimulation& New_Canvas::getCanvasSimulation()
+{
+	return canvasSimulation;
 }

@@ -10,8 +10,8 @@
 
 #include "New_AssetsManager.h"
 
-New_AssetsManager::New_AssetsManager(const FilmstripType& type, std::vector<std::unique_ptr<New_Asset>>& assets)
-    : filmstripType(type), assets(assets), customLookAndFeel(Globals::getCustomLookAndFeel())
+New_AssetsManager::New_AssetsManager(const FilmstripType& type, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas)
+    : filmstripType(type), assets(assets), canvas(canvas), customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     setupAddNewAssetButton();
     setupAssetsViewport();
@@ -151,17 +151,31 @@ void New_AssetsManager::resizeViewport()
                         // ENABLE AND SET TOGGLE TRUE
                         button->getVisibleButton().setEnabled(true);
                         button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
+                        asset->makeVisible(true);
+
+                        // REPAINT CANVAS
+                        canvas.repaint();
                     }
                 );
             };
 
-        button->getVisibleButton().onClick = [this, button]()
+        button->getVisibleButton().onClick = [this, button, &asset]()
             {
                 // Visible (Eye) Button
                 if (button->getVisibleButton().getToggleState())
+                {
                     button->getVisibleButton().setToggleState(false, juce::dontSendNotification);
+                    asset->makeVisible(false);
+                }
+
                 else
+                {
                     button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
+                    asset->makeVisible(true);
+                }
+
+                // REPAINT CANVAS
+                canvas.repaint();
             };
 
         button->getDeleteButton().onClick = [safeThis = juce::Component::SafePointer<New_AssetsManager>(this), button]()
@@ -174,8 +188,10 @@ void New_AssetsManager::resizeViewport()
                     assetsManager->getAssetButtons().erase(assetsManager->getAssetButtons().begin() + deleteIndex);
                     
                     assetsManager->resizeViewport();
-                }
 
+                    // REPAINT CANVAS
+                    assetsManager->canvas.repaint();
+                }
             };
 
         assetsContainer.addAndMakeVisible(button);
@@ -255,8 +271,8 @@ void New_AssetsManager::addAssetsSystem()
                 }
                 else if (result == 2)
                 {
-                    addAssetButton("Track");
                     assets.emplace_back(std::make_unique<New_Asset>(AssetType::TRACK));
+                    addAssetButton("Track");
                 }
                 else if (result == 3)
                 {

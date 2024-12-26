@@ -27,6 +27,7 @@
 #include "New_AssetButtons.h"
 
 #include "../Source/FilmstripProject/New_Asset.h"
+#include "../Source/FilmstripProject/Canvas/New_Canvas.h"
 
 class New_AssetsManager
     : public juce::Component
@@ -43,9 +44,10 @@ protected:
 
     std::vector<std::unique_ptr<New_Asset>>& assets;
     std::vector<std::unique_ptr<New_AssetButtons>> assetsButtons{};
+    New_Canvas& canvas;
 
 public:
-    New_AssetsManager(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets);
+    New_AssetsManager(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas);
     void setupAssetsViewport();
     void setupAddNewAssetButton();
     void addAssetsSystem();

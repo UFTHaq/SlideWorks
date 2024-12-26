@@ -11,11 +11,10 @@
 #include "New_FilmstripProject.h"
 
 New_FilmstripProject::New_FilmstripProject(const FilmstripType& filmstripType, juce::Rectangle<int> baseWorkspace)
-    : filmstripType(filmstripType), baseWorkspace(baseWorkspace), mainControls(filmstripType, assets)
+    : filmstripType(filmstripType), boundary(baseWorkspace), canvas(filmstripType, assets), mainControls(filmstripType, assets, canvas)
 {
     setupLayout(baseWorkspace);
     setupTabButtonAndEditorCallback();
-    setupModeChanged(baseWorkspace);
 }
 
 New_FilmstripProject::~New_FilmstripProject()
@@ -25,6 +24,8 @@ New_FilmstripProject::~New_FilmstripProject()
 void New_FilmstripProject::setupLayout(juce::Rectangle<int> baseWorkspace)
 {
     auto area = baseWorkspace;
+
+    setupModeChanged(area);
 
     auto footerArea = area.removeFromBottom(FOOTER_HEIGHT);
     footer.setBounds(footerArea);
@@ -82,7 +83,7 @@ void New_FilmstripProject::setupModeChanged(const juce::Rectangle<int> baseWorks
 
 juce::Rectangle<int> New_FilmstripProject::getBaseWorkspace() const
 {
-    return baseWorkspace;
+    return boundary;
 }
 
 void New_FilmstripProject::setupTabButtonAndEditorCallback()

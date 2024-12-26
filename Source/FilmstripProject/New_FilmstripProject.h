@@ -32,7 +32,7 @@ protected:
     const int MODE_BUTTON_H{ 25 };
     const int SUB_CONTROL_W{ 190 };
 
-    juce::Rectangle<int> baseWorkspace{};
+    juce::Rectangle<int> boundary{};
 
     juce::String projectName{};
     FilmstripType filmstripType{};
@@ -42,7 +42,7 @@ protected:
     New_NameAndMode nameAndMode{};
     New_MainControls mainControls;  // Default declaration
 
-    New_Canvas canvas{};
+    New_Canvas canvas;  // Default declaration
     New_SubControls subControls{};
     Footer footer{};
 
@@ -50,6 +50,8 @@ protected:
 public:
     New_FilmstripProject(const FilmstripType& filmstripType, juce::Rectangle<int> baseWorkspace);
     ~New_FilmstripProject();
+
+    void resizing();
 
     void setupLayout(juce::Rectangle<int> baseWorkspace);
     void setupModeChanged(const juce::Rectangle<int> baseWorkspace);

@@ -42,10 +42,11 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
+    void setupDate();
+
     void drawBackground(juce::Graphics& g);
     void drawRecomendedSize(juce::Graphics& g);
     void drawProjectSize(juce::Graphics& g);
     void drawNotification(juce::Graphics& g);
     void drawDate(juce::Graphics& g);
-
 };

@@ -14,6 +14,8 @@ Footer::Footer()
     : customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F);
+    
+    setupDate();
 }
 
 Footer::~Footer()
@@ -50,6 +52,13 @@ void Footer::resized()
     dateArea.removeFromRight(10);
     date = dateArea;
 }
+
+void Footer::setupDate()
+{
+    juce::Time currentTime = juce::Time::getCurrentTime();
+    dateStr = currentTime.formatted("%A, %d/%m/%Y");
+}
+
 
 void Footer::drawBackground(juce::Graphics& g)
 {

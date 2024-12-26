@@ -30,6 +30,8 @@
 #include "New_KnobAngles.h"
 #include "New_ThumbPositions.h"
 
+#include "../Source/FilmstripProject/Canvas/New_Canvas.h"
+
 class New_MainControls
     : public juce::Component
 {
@@ -40,6 +42,7 @@ protected:
     juce::Rectangle<int> bounds{};
 
     juce::Rectangle<int> bannerRect{};
+
     juce::Rectangle<int> bannerTextBounds{};
     juce::Label banner{};
     juce::Font fontBanner{ juce::FontOptions{} };
@@ -54,7 +57,7 @@ protected:
     //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(New_MainControls)
 
 public:
-    New_MainControls(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets);
+    New_MainControls(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas);
     ~New_MainControls();
 
     void paint(juce::Graphics& g) override;
