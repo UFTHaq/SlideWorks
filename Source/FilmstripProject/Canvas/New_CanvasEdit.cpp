@@ -44,7 +44,6 @@ void New_CanvasEdit::paint(juce::Graphics& g)
 
         if (asset->getVisible())
         {
-            //g.drawImage(asset->getAssetImage(), bounds.toFloat(), juce::RectanglePlacement::centred);
             g.drawImage(asset->getAssetImage(), asset->getAssetVirtualBounds().toFloat(), juce::RectanglePlacement::centred);
         }
     }

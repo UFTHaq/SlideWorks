@@ -33,6 +33,12 @@ void New_Canvas::resized()
 	canvasEdit.setBounds(bounds);
 
 	DBG("CanvasEdit setBounds " << bounds.toString());
+
+
+
+	canvasEdit.resized();
+	canvasPreview.resized();
+	canvasSimulation.resized();
 }
 
 void New_Canvas::drawBackground(juce::Graphics& g)

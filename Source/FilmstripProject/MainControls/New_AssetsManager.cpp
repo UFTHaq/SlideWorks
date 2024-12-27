@@ -113,19 +113,19 @@ void New_AssetsManager::resizeViewport()
 
         button->setIndex(i);
         button->setBounds(buttonBounds);
-        button->getMainButton().onClick = [this, button]() 
+        button->clickThis = [this](New_AssetButtons* btn)
             {
-                if (button->getMainButton().getToggleState())
+                if (btn->isThisSelected())
                 {
-                    button->getMainButton().setToggleState(false, juce::dontSendNotification);
+                    btn->selectThis(false);
                 }
                 else
                 {
-                    for (auto& mainButton : assetsButtons)
+                    for (auto& theButton : assetsButtons)
                     {
-                        mainButton->getMainButton().setToggleState(false, juce::dontSendNotification);
+                        theButton->selectThis(false);
                     }
-                    button->getMainButton().setToggleState(true, juce::dontSendNotification);
+                    btn->selectThis(true);
                 }
             };
 
@@ -147,6 +147,7 @@ void New_AssetsManager::resizeViewport()
                         juce::String name = path.getFileName();
                         asset->setAssetName(name);
                         button->setNameDisplay(name);
+                        button->repaint();
 
                         // ENABLE AND SET TOGGLE TRUE
                         button->getVisibleButton().setEnabled(true);
@@ -195,6 +196,11 @@ void New_AssetsManager::resizeViewport()
             };
 
         assetsContainer.addAndMakeVisible(button);
+
+        button->onDragCallback = [this](New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
+            {
+                handleDrag(draggedButton, dragPoint);
+            };
     }
 
     assetsContainer.setSize(bounds.getWidth(), totalHeight);
@@ -248,6 +254,7 @@ void New_AssetsManager::addAssetsSystem()
                 }
 
                 resizeViewport();
+                canvas.resized();
             }
         );
     }
@@ -286,6 +293,7 @@ void New_AssetsManager::addAssetsSystem()
                 }
 
                 resizeViewport();
+                canvas.resized();
             }
         );
     }
@@ -297,7 +305,49 @@ void New_AssetsManager::setupAssetsViewport()
     assetsViewport.setViewedComponent(&assetsContainer, false);
     assetsViewport.setScrollBarsShown(true, false);
     addAndMakeVisible(assetsViewport);
+
+    for (auto& button : assetsButtons)
+    {
+        button->onDragCallback = [this](New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
+            {
+                handleDrag(draggedButton, dragPoint);
+            };
+    }
 }
+
+void New_AssetsManager::handleDrag(New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
+{
+    size_t draggedIndex = std::distance(assetsButtons.begin(), std::find_if(assetsButtons.begin(), assetsButtons.end(),
+        [draggedButton](const auto& btn)
+        {
+            return btn.get() == draggedButton;
+        }));
+
+    int buttonHeight = assetsButtons.back()->getHeight();
+
+    size_t targetIndex = std::clamp(static_cast<size_t>(dragPoint.y / (buttonHeight + 1)),
+                                    size_t(0),
+                                    assetsButtons.size() - 1);
+
+    if (draggedIndex != targetIndex)
+    {
+        // Rearrange the assetsButtons vector
+        auto draggedElement = std::move(assetsButtons.at(draggedIndex));
+        assetsButtons.erase(assetsButtons.begin() + draggedIndex);
+        assetsButtons.insert(assetsButtons.begin() + targetIndex, std::move(draggedElement));
+
+        // Rearrange the assets vector
+        auto asset = std::move(assets.at(draggedIndex));
+        assets.erase(assets.begin() + draggedIndex);
+        assets.insert(assets.begin() + targetIndex, std::move(asset));
+
+        resizeViewport();
+
+        // need to calll repaint the canvas
+        canvas.repaint();
+    }
+}
+
 
 juce::TextButton& New_AssetsManager::getAddNewAssetButton()
 {

@@ -48,10 +48,11 @@ protected:
 
 public:
     New_AssetsManager(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas);
-    void setupAssetsViewport();
+    ~New_AssetsManager();
     void setupAddNewAssetButton();
     void addAssetsSystem();
-    ~New_AssetsManager();
+    void setupAssetsViewport();
+    void handleDrag(New_AssetButtons* draggedButton, juce::Point<int> dropPoint);
 
     void paint(juce::Graphics& g) override;
     void resized() override;
