@@ -9,3 +9,19 @@
 */
 
 #include "New_ControlAssetThumb.h"
+
+ControlAssetThumb::ControlAssetThumb()
+{
+}
+
+ControlAssetThumb::~ControlAssetThumb()
+{
+}
+
+void ControlAssetThumb::paint(juce::Graphics& g)
+{
+}
+
+void ControlAssetThumb::resized()
+{
+}

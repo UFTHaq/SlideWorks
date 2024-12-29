@@ -31,6 +31,7 @@
 #include "New_ThumbPositions.h"
 
 #include "../Source/FilmstripProject/Canvas/New_Canvas.h"
+#include "../Source/FilmstripProject/SubControls/New_SubControls.h"
 
 class New_MainControls
     : public juce::Component
@@ -38,6 +39,8 @@ class New_MainControls
 protected:
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
     std::vector<std::unique_ptr<New_Asset>>& assets;  // Passing from New_FilmstripProject -> New_MainControls -> New_AssetsManager
+    std::vector<std::unique_ptr<New_AssetButtons>>& assetButtons;  // Hold the reference
+
     FilmstripType filmstripType{};
     juce::Rectangle<int> bounds{};
 
@@ -57,7 +60,13 @@ protected:
     //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(New_MainControls)
 
 public:
-    New_MainControls(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas);
+    New_MainControls(
+        const FilmstripType& filmstripType
+        , std::vector<std::unique_ptr<New_Asset>>& assets
+        , std::vector<std::unique_ptr<New_AssetButtons>>& assetButtons
+        , New_Canvas& canvas
+        , New_SubControls& subControls
+    );
     ~New_MainControls();
 
     void paint(juce::Graphics& g) override;

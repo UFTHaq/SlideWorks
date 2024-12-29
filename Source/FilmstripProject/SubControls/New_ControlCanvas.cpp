@@ -9,3 +9,21 @@
 */
 
 #include "New_ControlCanvas.h"
+
+ControlCanvas::ControlCanvas()
+{
+}
+
+ControlCanvas::~ControlCanvas()
+{
+}
+
+void ControlCanvas::paint(juce::Graphics& g)
+{
+    g.setColour(juce::Colours::red);
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 3);
+}
+
+void ControlCanvas::resized()
+{
+}

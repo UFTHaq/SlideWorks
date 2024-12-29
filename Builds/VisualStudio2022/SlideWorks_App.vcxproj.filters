@@ -424,6 +424,9 @@
     <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
@@ -2375,6 +2378,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h">
       <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>

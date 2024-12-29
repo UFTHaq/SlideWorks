@@ -21,6 +21,13 @@
 #include <JuceHeader.h>
 
 #include "../Source/EnumClass.h"
+#include "../Source/FilmstripProject/SubControls/New_ControlAsset.h"
+
+#include "../Source/FilmstripProject/SubControls/New_ControlAssetKnob.h"
+#include "../Source/FilmstripProject/SubControls/New_ControlAssetKnobScale.h"
+#include "../Source/FilmstripProject/SubControls/New_ControlAssetThumb.h"
+#include "../Source/FilmstripProject/SubControls/New_ControlAssetTrack.h"
+#include "../Source/FilmstripProject/SubControls/New_ControlAssetTrackScale.h"
 
 class New_Asset
 {
@@ -39,6 +46,10 @@ protected:
     juce::Rectangle<int> virtualCanvas{};
     juce::Rectangle<int> assetBoundsRealC{};
     juce::Rectangle<int> assetBoundsVirtC{};
+
+    std::unique_ptr<ControlAsset> controlAsset{};
+    // Could be use std::variant
+    //std::variant<ControlAssetKnob, ControlAssetKnobScale, ControlAssetThumb, ControlAssetTrack, ControlAssetTrackScale> controlAsset;
 
 public:
     New_Asset(const AssetType& type);
@@ -70,6 +81,8 @@ public:
     juce::Rectangle<int> getAssetVirtualBounds() const;
     juce::Point<int> getAssetVirtualTopLeftPos() const;
     juce::Point<int> getAssetVirtualAssetCentrePos() const;
+
+    std::unique_ptr<ControlAsset>& getControlAsset();
 
     void setAngleOffset(const double newAngleOffset);
     double getAngleOffset() const;

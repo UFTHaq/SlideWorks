@@ -10,39 +10,23 @@
 
 #include "New_AssetsManager.h"
 
-New_AssetsManager::New_AssetsManager(const FilmstripType& type, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas)
-    : filmstripType(type), assets(assets), canvas(canvas), customLookAndFeel(Globals::getCustomLookAndFeel())
+New_AssetsManager::New_AssetsManager
+(
+    const FilmstripType& type
+    , std::vector<std::unique_ptr<New_Asset>>& assets
+    , std::vector<std::unique_ptr<New_AssetButtons>>& assetsButtons
+    , New_Canvas& canvas, New_SubControls& subControls
+)
+    : filmstripType(type)
+    , assets(assets)
+    , assetsButtons(assetsButtons)
+    , canvas(canvas)
+    , subControls(subControls)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     setupAddNewAssetButton();
     setupAssetsViewport();
-
-    switch (filmstripType)
-    {
-    case FilmstripType::KNOB:
-
-        assets.emplace_back(std::make_unique<New_Asset>(AssetType::KNOB));
-        addAssetButton("Knob");
-
-        assets.emplace_back(std::make_unique<New_Asset>(AssetType::KNOB_SCALE));
-        addAssetButton("Scale");
-
-        break;
-
-    case FilmstripType::SLIDER:
-
-        assets.emplace_back(std::make_unique<New_Asset>(AssetType::THUMB));
-        addAssetButton("Thumb");
-
-        assets.emplace_back(std::make_unique<New_Asset>(AssetType::TRACK));
-        addAssetButton("Track");
-        
-        assets.emplace_back(std::make_unique<New_Asset>(AssetType::TRACK_SCALE));
-        addAssetButton("Scale");
-
-        break;
-    default:
-        break;
-    }
+    setupDefaultAssets();
 }
 
 New_AssetsManager::~New_AssetsManager()
@@ -67,145 +51,9 @@ void New_AssetsManager::resized()
     addNewAssetButton.setBounds(addButtonArea);
 
     // Area Assets Viewport
-    auto viewportArea = bounds;
-    viewportArea.removeFromTop(3);
-    viewportRect = viewportArea;
-    assetsViewport.setBounds(viewportArea.reduced(1));
+    resizeViewport(bounds);
 
-    resizeViewport();
-}
-
-void New_AssetsManager::resizeViewport()
-{
-    auto bounds = assetsViewport.getLocalBounds();
-
-    int buttonHeight{ 24 };
-    int spaceH{ 1 };
-    int spaceW{ 1 };
-    int totalHeight{};
-    int thickness{};
-    int buttonWidth{};
-    int y{};
-
-    for (size_t i = 0; i < assetsButtons.size(); i++)
-    {
-        y = (int)i * (buttonHeight + spaceH);
-    }
-    totalHeight = y + buttonHeight + (spaceH * 2);
-
-    if (totalHeight < assetsViewport.getHeight())
-    {
-        thickness = 0;
-        buttonWidth = bounds.getWidth() - (spaceW * 2);
-    }
-    else
-    {
-        thickness = 8;
-        buttonWidth = bounds.getWidth() - spaceW - thickness;
-    }
-
-    for (size_t i = 0; i < assetsButtons.size(); i++)
-    {
-        y = (int)i * (buttonHeight + spaceH);
-
-        auto buttonBounds = juce::Rectangle{ spaceW, 1 + y, buttonWidth, buttonHeight };
-        auto button = assetsButtons.at(i).get();
-
-        button->setIndex(i);
-        button->setBounds(buttonBounds);
-        button->clickThis = [this](New_AssetButtons* btn)
-            {
-                if (btn->isThisSelected())
-                {
-                    btn->selectThis(false);
-                }
-                else
-                {
-                    for (auto& theButton : assetsButtons)
-                    {
-                        theButton->selectThis(false);
-                    }
-                    btn->selectThis(true);
-                }
-            };
-
-        auto& asset = assets.at(i);
-        button->getLoadImageButton().onClick = [this, button, &asset]()
-            {
-                // FileChooser
-                fileChooserFunction([this, button, &asset](juce::String chooserPath)
-                    {
-                        if (chooserPath.isEmpty())
-                        {
-                            DBG("No valid file selected");
-                            return;
-                        }
-
-                        juce::File path = chooserPath;
-                        asset->setAssetFilePathAndLoadImage(path);
-
-                        juce::String name = path.getFileName();
-                        asset->setAssetName(name);
-                        button->setNameDisplay(name);
-                        button->repaint();
-
-                        // ENABLE AND SET TOGGLE TRUE
-                        button->getVisibleButton().setEnabled(true);
-                        button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
-                        asset->makeVisible(true);
-
-                        // REPAINT CANVAS
-                        canvas.repaint();
-                    }
-                );
-            };
-
-        button->getVisibleButton().onClick = [this, button, &asset]()
-            {
-                // Visible (Eye) Button
-                if (button->getVisibleButton().getToggleState())
-                {
-                    button->getVisibleButton().setToggleState(false, juce::dontSendNotification);
-                    asset->makeVisible(false);
-                }
-
-                else
-                {
-                    button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
-                    asset->makeVisible(true);
-                }
-
-                // REPAINT CANVAS
-                canvas.repaint();
-            };
-
-        button->getDeleteButton().onClick = [safeThis = juce::Component::SafePointer<New_AssetsManager>(this), button]()
-            {
-                size_t deleteIndex = button->getIndex();
-
-                if (auto* assetsManager = safeThis.getComponent())
-                {
-                    assetsManager->getAssets().erase(assetsManager->getAssets().begin() + deleteIndex);
-                    assetsManager->getAssetButtons().erase(assetsManager->getAssetButtons().begin() + deleteIndex);
-                    
-                    assetsManager->resizeViewport();
-
-                    // REPAINT CANVAS
-                    assetsManager->canvas.repaint();
-                }
-            };
-
-        assetsContainer.addAndMakeVisible(button);
-
-        button->onDragCallback = [this](New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
-            {
-                handleDrag(draggedButton, dragPoint);
-            };
-    }
-
-    assetsContainer.setSize(bounds.getWidth(), totalHeight);
-
-    assetsViewport.setScrollBarThickness(thickness);
+    resizeContainer();
 }
 
 void New_AssetsManager::setupAddNewAssetButton()
@@ -216,6 +64,45 @@ void New_AssetsManager::setupAddNewAssetButton()
             addAssetsSystem();
         };
     addAndMakeVisible(addNewAssetButton);
+}
+
+void New_AssetsManager::setupAssetsViewport()
+{
+    assetsViewport.setComponentID("Viewport_O1_Main");
+    assetsViewport.setViewedComponent(&assetsContainer, false);
+    assetsViewport.setScrollBarsShown(true, false);
+    addAndMakeVisible(assetsViewport);
+}
+
+void New_AssetsManager::setupDefaultAssets()
+{
+    switch (filmstripType)
+    {
+    case FilmstripType::KNOB:
+
+        assets.emplace_back(std::make_unique<New_Asset>(AssetType::KNOB));
+        addAssetButton("Knob");
+
+        assets.emplace_back(std::make_unique<New_Asset>(AssetType::KNOB_SCALE));
+        addAssetButton("Scale");
+
+        break;
+
+    case FilmstripType::SLIDER:
+
+        assets.emplace_back(std::make_unique<New_Asset>(AssetType::THUMB));
+        addAssetButton("Thumb");
+
+        assets.emplace_back(std::make_unique<New_Asset>(AssetType::TRACK));
+        addAssetButton("Track");
+
+        assets.emplace_back(std::make_unique<New_Asset>(AssetType::TRACK_SCALE));
+        addAssetButton("Scale");
+
+        break;
+    default:
+        break;
+    }
 }
 
 void New_AssetsManager::addAssetsSystem()
@@ -253,7 +140,7 @@ void New_AssetsManager::addAssetsSystem()
                     addAssetButton("Scale");
                 }
 
-                resizeViewport();
+                resizeContainer();
                 canvas.resized();
             }
         );
@@ -292,27 +179,174 @@ void New_AssetsManager::addAssetsSystem()
                     addAssetButton("Scale");
                 }
 
-                resizeViewport();
+                resizeContainer();
                 canvas.resized();
             }
         );
     }
 }
 
-void New_AssetsManager::setupAssetsViewport()
+void New_AssetsManager::resizeViewport(juce::Rectangle<int>& bounds)
 {
-    assetsViewport.setComponentID("Viewport_O1_Main");
-    assetsViewport.setViewedComponent(&assetsContainer, false);
-    assetsViewport.setScrollBarsShown(true, false);
-    addAndMakeVisible(assetsViewport);
+    auto viewportArea = bounds;
+    viewportArea.removeFromTop(3);
+    viewportRect = viewportArea;
+    assetsViewport.setBounds(viewportArea.reduced(1));
+}
 
-    for (auto& button : assetsButtons)
+void New_AssetsManager::resizeContainer()
+{
+    auto bounds = assetsViewport.getLocalBounds();
+
+    int buttonHeight{ 24 };
+    int spaceH{ 1 };
+    int spaceW{ 1 };
+    int totalHeight{};
+    int thickness{};
+    int buttonWidth{};
+    int y{};
+
+    for (size_t i = 0; i < assetsButtons.size(); i++)
     {
+        y = (int)i * (buttonHeight + spaceH);
+    }
+    totalHeight = y + buttonHeight + (spaceH * 2);
+
+    if (totalHeight < assetsViewport.getHeight())
+    {
+        thickness = 0;
+        buttonWidth = bounds.getWidth() - (spaceW * 2);
+    }
+    else
+    {
+        thickness = 8;
+        buttonWidth = bounds.getWidth() - spaceW - thickness;
+    }
+
+    for (size_t i = 0; i < assetsButtons.size(); i++)
+    {
+        y = (int)i * (buttonHeight + spaceH);
+
+        auto buttonBounds = juce::Rectangle{ spaceW, 1 + y, buttonWidth, buttonHeight };
+
+        auto button = assetsButtons.at(i).get();
+        auto& asset = assets.at(i);
+
+        asset->getControlAsset()->setBounds(subControls.getLocalBounds().reduced(5).removeFromTop(200));
+
+        button->setIndex(i);
+        button->setBounds(buttonBounds);
+        button->clickThis = [this, &asset](New_AssetButtons* btn)
+            {
+                if (btn->isThisSelected())
+                {
+                    btn->selectThis(false);
+
+                    subControls.removeFromSubControl(asset->getControlAsset());
+                }
+                else
+                {
+                    for (size_t j = 0; j < assetsButtons.size(); j++)
+                    {
+                        assetsButtons.at(j)->selectThis(false);
+                    }
+
+                    btn->selectThis(true);
+
+                    resizeContainer();
+
+                    subControls.displayToSubControl(asset->getControlAsset());  // addAndMakeVisible
+                }
+                subControls.repaint();
+
+            };
+
+        button->getLoadImageButton().onClick = [this, button, &asset]()
+            {
+                // FileChooser
+                fileChooserFunction([this, button, &asset](juce::String chooserPath)
+                    {
+                        if (chooserPath.isEmpty())
+                        {
+                            DBG("No valid file selected");
+                            return;
+                        }
+
+                        juce::File path = chooserPath;
+                        asset->setAssetFilePathAndLoadImage(path);
+
+                        juce::String name = path.getFileName();
+                        asset->setAssetName(name);
+                        button->setNameDisplay(name);
+                        button->repaint();
+
+                        // ENABLE AND SET TOGGLE TRUE
+                        button->getVisibleButton().setEnabled(true);
+                        button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
+                        asset->makeVisible(true);
+
+                        // REPAINT CANVAS
+                        canvas.repaint();
+
+                        //resizeContainer();
+                    }
+                );
+            };
+
+        button->getVisibleButton().onClick = [this, button, &asset]()
+            {
+                // Visible (Eye) Button
+                if (button->getVisibleButton().getToggleState())
+                {
+                    button->getVisibleButton().setToggleState(false, juce::dontSendNotification);
+                    asset->makeVisible(false);
+                }
+
+                else
+                {
+                    button->getVisibleButton().setToggleState(true, juce::dontSendNotification);
+                    asset->makeVisible(true);
+                }
+
+                // REPAINT CANVAS
+                canvas.repaint();
+            };
+
+        button->getDeleteButton().onClick = [safeThis = juce::Component::SafePointer<New_AssetsManager>(this), button]()
+            {
+                // No need to remove from assetsContainer, just erase the component.
+
+                size_t deleteIndex = button->getIndex();
+
+                if (auto* assetsManager = safeThis.getComponent())
+                {
+                    assetsManager->getAssets().erase(assetsManager->getAssets().begin() + deleteIndex);
+                    assetsManager->getAssetButtons().erase(assetsManager->getAssetButtons().begin() + deleteIndex);
+
+                    if (assetsManager->getAssets().size() == 0) 
+                        assetsManager->getSubControls().displayDefaultSubControl();
+                    
+                    assetsManager->resizeContainer();
+                    assetsManager->getSubControls().resizeContainer();
+
+                    // REPAINT CANVAS
+                    assetsManager->canvas.repaint();
+                }
+
+            };
+
+        assetsContainer.addAndMakeVisible(button);
+
         button->onDragCallback = [this](New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
             {
                 handleDrag(draggedButton, dragPoint);
             };
+
     }
+
+    assetsContainer.setSize(bounds.getWidth(), totalHeight);
+
+    assetsViewport.setScrollBarThickness(thickness);
 }
 
 void New_AssetsManager::handleDrag(New_AssetButtons* draggedButton, juce::Point<int> dragPoint)
@@ -341,7 +375,8 @@ void New_AssetsManager::handleDrag(New_AssetButtons* draggedButton, juce::Point<
         assets.erase(assets.begin() + draggedIndex);
         assets.insert(assets.begin() + targetIndex, std::move(asset));
 
-        resizeViewport();
+        resizeContainer();
+        subControls.resized();
 
         // need to calll repaint the canvas
         canvas.repaint();
@@ -363,6 +398,12 @@ std::vector<std::unique_ptr<New_Asset>>& New_AssetsManager::getAssets()
 {
     return assets;
 }
+
+New_SubControls& New_AssetsManager::getSubControls()
+{
+    return subControls;
+}
+
 
 void New_AssetsManager::addAssetButton(const juce::String& type)
 {

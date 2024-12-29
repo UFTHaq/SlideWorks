@@ -103,6 +103,10 @@
           <FILE id="ujoznQ" name="Footer.h" compile="0" resource="0" file="Source/FilmstripProject/Footer/Footer.h"/>
         </GROUP>
         <GROUP id="{1AE5DC87-F759-3B22-F62F-A0C085872133}" name="SubControls">
+          <FILE id="JQoUva" name="New_ControlAsset.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAsset.cpp"/>
+          <FILE id="QrJ94Y" name="New_ControlAsset.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAsset.h"/>
           <FILE id="DiegtN" name="New_SubControls.cpp" compile="1" resource="0"
                 file="Source/FilmstripProject/SubControls/New_SubControls.cpp"/>
           <FILE id="qS0DcM" name="New_SubControls.h" compile="0" resource="0"

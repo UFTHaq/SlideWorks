@@ -17,8 +17,8 @@
 // viewport for CustomGroupComponent Implementations
 // Can control to reload what implementation would be in viewport 
 //   based on the active asset, such penpot editing:
-//   - No active in Knob, Lighting and Canvas
-//   - No active in Slider, Lighting and Canvas with 
+//   - No active/select in Knob, will display -> Lighting and Canvas
+//   - No active/select in Slider, will display -> Lighting and Canvas with 
 //       Orientation of Slider such: Vertical or Horizontal Slider 
 //   - active: Knob, Knob
 //   - active: Scale, Scale
@@ -43,6 +43,16 @@
 #include "../Source/Globals.h"
 #include "../Source/CustomLookAndFeel.h"
 
+#include "New_ControlLighting.h"
+#include "New_ControlCanvas.h"
+
+#include "New_ControlAsset.h"
+
+#include "New_ControlAssetKnob.h"
+#include "New_ControlAssetKnobScale.h"
+#include "New_ControlAssetThumb.h"
+#include "New_ControlAssetTrack.h"
+#include "New_ControlAssetTrackScale.h"
 
 class New_SubControls
     : public juce::Component
@@ -52,6 +62,12 @@ protected:
 
     juce::Rectangle<int> bounds{};
 
+    juce::Viewport subControlViewport{};
+    juce::Component subControlContainer{};
+
+    ControlLighting controlLighting{};
+    ControlCanvas controlCanvas{};
+
 public:
     New_SubControls();
     ~New_SubControls();
@@ -60,4 +76,11 @@ public:
     void resized() override;
 
     void drawBackground(juce::Graphics& g);
+
+    void resizeViewport();
+    void resizeContainer();
+
+    void displayDefaultSubControl();
+    void displayToSubControl(std::unique_ptr<ControlAsset>& controlAsset);
+    void removeFromSubControl(std::unique_ptr<ControlAsset>& controlAsset);
 };

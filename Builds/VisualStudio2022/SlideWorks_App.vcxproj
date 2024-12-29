@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.cpp"/>
@@ -1923,6 +1924,7 @@
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.h"/>

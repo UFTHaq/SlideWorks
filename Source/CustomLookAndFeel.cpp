@@ -873,7 +873,8 @@ void CustomLookAndFeel::drawScrollbar
 		}
 		else if (ID == "Viewport_O2_SubControl")
 		{
-
+			backgroundColor = getCurrentTheme().TransparentBlack;
+			barColor = getCurrentTheme().CustomDarkGrey.brighter();
 		}
 	}
 

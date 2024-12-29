@@ -9,3 +9,19 @@
 */
 
 #include "New_ControlAssetTrackScale.h"
+
+ControlAssetTrackScale::ControlAssetTrackScale()
+{
+}
+
+ControlAssetTrackScale::~ControlAssetTrackScale()
+{
+}
+
+void ControlAssetTrackScale::paint(juce::Graphics& g)
+{
+}
+
+void ControlAssetTrackScale::resized()
+{
+}

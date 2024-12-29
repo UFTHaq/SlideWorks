@@ -37,12 +37,13 @@ protected:
     juce::String projectName{};
     FilmstripType filmstripType{};
     std::vector<std::unique_ptr<New_Asset>> assets{};
+    std::vector<std::unique_ptr<New_AssetButtons>> assetsButtons{};
     
     New_TabButton tabButton{};
     New_NameAndMode nameAndMode{};
     New_MainControls mainControls;  // Default declaration
 
-    New_Canvas canvas;  // Default declaration
+    New_Canvas canvas;              // Default declaration
     New_SubControls subControls{};
     Footer footer{};
 

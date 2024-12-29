@@ -10,8 +10,17 @@
 
 #include "New_MainControls.h"
 
-New_MainControls::New_MainControls(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets, New_Canvas& canvas)
-    : filmstripType(filmstripType), assets(assets), assetsManager(filmstripType, assets, canvas), customLookAndFeel(Globals::getCustomLookAndFeel())
+New_MainControls::New_MainControls(
+    const FilmstripType& filmstripType
+    ,std::vector<std::unique_ptr<New_Asset>>& assets
+    ,std::vector<std::unique_ptr<New_AssetButtons>>& assetButtons
+    ,New_Canvas& canvas, New_SubControls& subControls
+)
+    : filmstripType(filmstripType)
+    , assets(assets)
+    , assetButtons(assetButtons)
+    , assetsManager(filmstripType, assets, assetButtons, canvas, subControls)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     setLookAndFeel(customLookAndFeel.get());
     
@@ -36,7 +45,6 @@ New_MainControls::New_MainControls(const FilmstripType& filmstripType, std::vect
     addAndMakeVisible(orientationControl);
     addAndMakeVisible(totalFramesControl);
     addAndMakeVisible(assetsManager);
-
 }
 
 New_MainControls::~New_MainControls()

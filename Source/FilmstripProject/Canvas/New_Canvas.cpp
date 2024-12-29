@@ -10,11 +10,22 @@
 
 #include "New_Canvas.h"
 
-New_Canvas::New_Canvas(const FilmstripType& filmstripType, std::vector<std::unique_ptr<New_Asset>>& assets)
-	: filmstripType(filmstripType), assets(assets), canvasEdit(filmstripType, assets), customLookAndFeel(Globals::getCustomLookAndFeel())
+New_Canvas::New_Canvas
+(
+	const FilmstripType& filmstripType
+	, std::vector<std::unique_ptr<New_Asset>>& assets
+	, std::vector<std::unique_ptr<New_AssetButtons>>& assetsButtons
+	, New_SubControls& subControls
+)
+	: filmstripType(filmstripType)
+	, assets(assets)
+	, assetsButtons(assetsButtons)
+	, subControls(subControls)
+	, canvasEdit(filmstripType, assets), customLookAndFeel(Globals::getCustomLookAndFeel())
 {
 	setMode(mode);
 	addAndMakeVisible(canvasEdit);
+	canvasEdit.setInterceptsMouseClicks(false, true);
 }
 
 New_Canvas::~New_Canvas()
@@ -35,10 +46,19 @@ void New_Canvas::resized()
 	DBG("CanvasEdit setBounds " << bounds.toString());
 
 
-
 	canvasEdit.resized();
 	canvasPreview.resized();
 	canvasSimulation.resized();
+}
+
+void New_Canvas::mouseDown(const juce::MouseEvent& event)
+{
+	for (auto& btn : assetsButtons)
+	{
+		btn->selectThis(false);
+	}
+
+	subControls.displayDefaultSubControl();
 }
 
 void New_Canvas::drawBackground(juce::Graphics& g)
@@ -103,6 +123,7 @@ WorkingMode New_Canvas::getMode() const
 {
 	return mode;
 }
+
 
 New_CanvasEdit& New_Canvas::getCanvasEdit()
 {

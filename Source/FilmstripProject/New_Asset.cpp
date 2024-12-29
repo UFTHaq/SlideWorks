@@ -17,18 +17,23 @@ New_Asset::New_Asset(const AssetType& type)
     {
     case AssetType::KNOB:
         assetTypeStr = "Knob";
+        controlAsset = std::make_unique<ControlAssetKnob>();
         break;
     case AssetType::KNOB_SCALE:
         assetTypeStr = "Scale";
+        controlAsset = std::make_unique<ControlAssetKnobScale>();
         break;
     case AssetType::THUMB:
         assetTypeStr = "Thumb";
+        controlAsset = std::make_unique<ControlAssetThumb>();
         break;
     case AssetType::TRACK:
         assetTypeStr = "Track";
+        controlAsset = std::make_unique<ControlAssetTrack>();
         break;
     case AssetType::TRACK_SCALE:
         assetTypeStr = "Scale";
+        controlAsset = std::make_unique<ControlAssetTrackScale>();
         break;
 
     default:
@@ -218,6 +223,11 @@ juce::Point<int> New_Asset::getAssetVirtualTopLeftPos() const
 juce::Point<int> New_Asset::getAssetVirtualAssetCentrePos() const
 {
     return assetBoundsVirtC.getCentre();
+}
+
+std::unique_ptr<ControlAsset>& New_Asset::getControlAsset()
+{
+    return controlAsset;
 }
 
 

@@ -32,3 +32,8 @@ public:
 
     WorkingMode getMode() const;
 };
+
+
+// This will have same area as sub control edit.
+// Knob:
+// - setting knob control rotary vertical drag, rotary horizontal drag, rotary horizontal vertical drag. 

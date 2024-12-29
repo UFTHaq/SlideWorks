@@ -93,6 +93,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/New_CanvasPreview_ab79eba5.o \
   $(JUCE_OBJDIR)/New_CanvasSimulation_66240314.o \
   $(JUCE_OBJDIR)/Footer_a37e256e.o \
+  $(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o \
   $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnob_7d40016c.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnobScale_8b1ce288.o \
@@ -230,6 +231,11 @@ $(JUCE_OBJDIR)/New_CanvasSimulation_66240314.o: ../../Source/FilmstripProject/Ca
 $(JUCE_OBJDIR)/Footer_a37e256e.o: ../../Source/FilmstripProject/Footer/Footer.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling Footer.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o: ../../Source/FilmstripProject/SubControls/New_ControlAsset.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling New_ControlAsset.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o: ../../Source/FilmstripProject/SubControls/New_SubControls.cpp

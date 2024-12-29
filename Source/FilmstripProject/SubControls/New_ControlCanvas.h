@@ -26,3 +26,31 @@
 // Button Invert Bump
 
 #pragma once
+
+#include <JuceHeader.h>
+
+#include "../Source/Globals.h"
+#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomGroupComponent.h"
+
+class ControlCanvas
+    : public juce::Component
+{
+protected:
+    std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
+
+    CustomGroupComponent group{};
+
+    // Radio or toggle to lock ratio
+    // Size width px slider
+    // Size height px slider
+    // Color chooser
+
+
+public:
+    ControlCanvas();
+    ~ControlCanvas();
+
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+};
