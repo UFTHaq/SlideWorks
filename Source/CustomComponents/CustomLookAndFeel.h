@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "ThemeColours.h"
+#include "../Source/ThemeColours.h"
 
 class CustomLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -190,7 +190,10 @@ private:
 	// Icons
 	juce::Image iconOnVisible{};
 	juce::Image iconDelete{};
-
+	juce::Image iconHoriVerti{};
+	juce::Image iconLock{};
+	juce::Image iconCopy{};
+	juce::Image iconChain{};
 
 	juce::Image knobScale{};
 

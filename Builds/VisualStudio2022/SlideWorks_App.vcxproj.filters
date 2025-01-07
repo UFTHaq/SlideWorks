@@ -5,6 +5,9 @@
     <Filter Include="SlideWorks\Resources">
       <UniqueIdentifier>{6D18D1DA-CBE3-4719-FE67-08AA0BE1DDE5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SlideWorks\Source\CustomComponents">
+      <UniqueIdentifier>{08AB65BC-B604-E9F3-E1F2-1B5407797320}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SlideWorks\Source\FilmstripProject\MainControls">
       <UniqueIdentifier>{12B7C870-B102-E729-DD04-B4518E572425}</UniqueIdentifier>
     </Filter>
@@ -367,14 +370,20 @@
     <ClCompile Include="..\..\Source\MainComponent.cpp">
       <Filter>SlideWorks\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\CustomGroupComponent.cpp">
-      <Filter>SlideWorks\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Globals.cpp">
       <Filter>SlideWorks\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomLookAndFeel.cpp">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomGroupComponent.cpp">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomComponents\ColourSelectorWindow.cpp">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomSlider.cpp">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
@@ -424,10 +433,10 @@
     <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp">
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp">
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.cpp">
@@ -449,6 +458,12 @@
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\XYPad.cpp">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlSliderStyle.cpp">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PageInfo\PageInfo.cpp">
@@ -2313,12 +2328,6 @@
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\CustomGroupComponent.h">
-      <Filter>SlideWorks\Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\OpenGLComponent.h">
       <Filter>SlideWorks\Source</Filter>
     </ClInclude>
@@ -2330,6 +2339,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\EnumClass.h">
       <Filter>SlideWorks\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\Easing.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomLookAndFeel.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomGroupComponent.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\ColourSelectorWindow.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomSlider.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h">
       <Filter>SlideWorks\Source\FilmstripProject</Filter>
@@ -2379,10 +2403,10 @@
     <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h">
       <Filter>SlideWorks\Source\FilmstripProject\Footer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h">
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h">
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.h">
@@ -2404,6 +2428,12 @@
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\XYPad.h">
+      <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlSliderStyle.h">
       <Filter>SlideWorks\Source\FilmstripProject\SubControls</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PageInfo\PageInfo.h">
@@ -4976,7 +5006,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Icons\icon_Chain.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Icons\icon_Copy.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
     <None Include="..\..\Resources\Icons\icon_Delete.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Icons\icon_HoriVerti.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Icons\icon_Lock.png">
       <Filter>SlideWorks\Resources</Filter>
     </None>
     <None Include="..\..\Resources\Icons\icon_On_Visible.png">

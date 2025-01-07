@@ -8,8 +8,20 @@
 
 namespace BinaryData
 {
+    extern const char*   icon_Chain_png;
+    const int            icon_Chain_pngSize = 2751;
+
+    extern const char*   icon_Copy_png;
+    const int            icon_Copy_pngSize = 1439;
+
     extern const char*   icon_Delete_png;
     const int            icon_Delete_pngSize = 1395;
+
+    extern const char*   icon_HoriVerti_png;
+    const int            icon_HoriVerti_pngSize = 865;
+
+    extern const char*   icon_Lock_png;
+    const int            icon_Lock_pngSize = 2719;
 
     extern const char*   icon_On_Visible_png;
     const int            icon_On_Visible_pngSize = 4787;
@@ -30,7 +42,7 @@ namespace BinaryData
     const int            small_scale_black_pngSize = 7374;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 7;
+    const int namedResourceListSize = 11;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

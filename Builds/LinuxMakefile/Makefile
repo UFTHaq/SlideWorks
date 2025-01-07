@@ -74,9 +74,11 @@ endif
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
   $(JUCE_OBJDIR)/MainComponent_a6ffb4a5.o \
-  $(JUCE_OBJDIR)/CustomLookAndFeel_ab3d772e.o \
-  $(JUCE_OBJDIR)/CustomGroupComponent_f8a42018.o \
   $(JUCE_OBJDIR)/Globals_d339a991.o \
+  $(JUCE_OBJDIR)/CustomLookAndFeel_2998348e.o \
+  $(JUCE_OBJDIR)/CustomGroupComponent_fa1fe6b8.o \
+  $(JUCE_OBJDIR)/ColourSelectorWindow_2db52b44.o \
+  $(JUCE_OBJDIR)/CustomSlider_288445db.o \
   $(JUCE_OBJDIR)/New_FilmstripProject_fa8dd2f.o \
   $(JUCE_OBJDIR)/New_TabButton_b1873367.o \
   $(JUCE_OBJDIR)/New_NameAndMode_26fc788f.o \
@@ -93,8 +95,8 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/New_CanvasPreview_ab79eba5.o \
   $(JUCE_OBJDIR)/New_CanvasSimulation_66240314.o \
   $(JUCE_OBJDIR)/Footer_a37e256e.o \
-  $(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o \
   $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o \
+  $(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnob_7d40016c.o \
   $(JUCE_OBJDIR)/New_ControlAssetKnobScale_8b1ce288.o \
   $(JUCE_OBJDIR)/New_ControlAssetThumb_44d0366a.o \
@@ -102,6 +104,8 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/New_ControlAssetTrackScale_e7df7075.o \
   $(JUCE_OBJDIR)/New_ControlCanvas_434b357c.o \
   $(JUCE_OBJDIR)/New_ControlLighting_d2006970.o \
+  $(JUCE_OBJDIR)/XYPad_97b17a58.o \
+  $(JUCE_OBJDIR)/New_ControlSliderStyle_54427f6.o \
   $(JUCE_OBJDIR)/PageInfo_3e6d67d0.o \
   $(JUCE_OBJDIR)/BinaryData_ce4232d4.o \
   $(JUCE_OBJDIR)/include_juce_core_f26d17db.o \
@@ -138,19 +142,29 @@ $(JUCE_OBJDIR)/MainComponent_a6ffb4a5.o: ../../Source/MainComponent.cpp
 	@echo "Compiling MainComponent.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CustomLookAndFeel_ab3d772e.o: ../../Source/CustomLookAndFeel.cpp
+$(JUCE_OBJDIR)/Globals_d339a991.o: ../../Source/Globals.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling Globals.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CustomLookAndFeel_2998348e.o: ../../Source/CustomComponents/CustomLookAndFeel.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling CustomLookAndFeel.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/CustomGroupComponent_f8a42018.o: ../../Source/CustomGroupComponent.cpp
+$(JUCE_OBJDIR)/CustomGroupComponent_fa1fe6b8.o: ../../Source/CustomComponents/CustomGroupComponent.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling CustomGroupComponent.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/Globals_d339a991.o: ../../Source/Globals.cpp
+$(JUCE_OBJDIR)/ColourSelectorWindow_2db52b44.o: ../../Source/CustomComponents/ColourSelectorWindow.cpp
 	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling Globals.cpp"
+	@echo "Compiling ColourSelectorWindow.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CustomSlider_288445db.o: ../../Source/CustomComponents/CustomSlider.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CustomSlider.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_FilmstripProject_fa8dd2f.o: ../../Source/FilmstripProject/New_FilmstripProject.cpp
@@ -233,14 +247,14 @@ $(JUCE_OBJDIR)/Footer_a37e256e.o: ../../Source/FilmstripProject/Footer/Footer.cp
 	@echo "Compiling Footer.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o: ../../Source/FilmstripProject/SubControls/New_ControlAsset.cpp
-	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling New_ControlAsset.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/New_SubControls_35da4d7d.o: ../../Source/FilmstripProject/SubControls/New_SubControls.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling New_SubControls.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/New_ControlAsset_34ea3256.o: ../../Source/FilmstripProject/SubControls/New_ControlAsset.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling New_ControlAsset.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/New_ControlAssetKnob_7d40016c.o: ../../Source/FilmstripProject/SubControls/New_ControlAssetKnob.cpp
@@ -276,6 +290,16 @@ $(JUCE_OBJDIR)/New_ControlCanvas_434b357c.o: ../../Source/FilmstripProject/SubCo
 $(JUCE_OBJDIR)/New_ControlLighting_d2006970.o: ../../Source/FilmstripProject/SubControls/New_ControlLighting.cpp
 	-$(V_AT)mkdir -p $(@D)
 	@echo "Compiling New_ControlLighting.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/XYPad_97b17a58.o: ../../Source/FilmstripProject/SubControls/XYPad.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling XYPad.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/New_ControlSliderStyle_54427f6.o: ../../Source/FilmstripProject/SubControls/New_ControlSliderStyle.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling New_ControlSliderStyle.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/PageInfo_3e6d67d0.o: ../../Source/PageInfo/PageInfo.cpp

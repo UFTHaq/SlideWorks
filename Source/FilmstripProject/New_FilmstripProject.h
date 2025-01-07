@@ -44,7 +44,7 @@ protected:
     New_MainControls mainControls;  // Default declaration
 
     New_Canvas canvas;              // Default declaration
-    New_SubControls subControls{};
+    New_SubControls subControls;
     Footer footer{};
 
     //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(New_FilmstripProject)

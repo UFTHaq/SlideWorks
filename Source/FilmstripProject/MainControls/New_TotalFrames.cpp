@@ -114,14 +114,16 @@ void New_TotalFrames::setupTotalFramesControl()
             auto minValue = minFrames;
             auto maxValue = maxFrames;
 
-            if (newValue >= minValue && newValue <= maxValue)
-                newValue = newValue;
-            else if (newValue <= minValue)
-                newValue = minValue;
-            else if (newValue >= maxValue)
-                newValue = maxValue;
-            else
-                newValue = minValue;
+            newValue = juce::jlimit(minValue, maxValue, newValue);
+
+            //if (newValue >= minValue && newValue <= maxValue)
+            //    newValue = newValue;
+            //else if (newValue <= minValue)
+            //    newValue = minValue;
+            //else if (newValue >= maxValue)
+            //    newValue = maxValue;
+            //else
+            //    newValue = minValue;
 
             totalFrames.setValue(newValue, juce::sendNotification);
             totalFrames_Label.setText(juce::String(newValue), juce::dontSendNotification);

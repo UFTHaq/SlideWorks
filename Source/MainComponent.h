@@ -1,8 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "CustomLookAndFeel.h"
-#include "CustomGroupComponent.h"
+#include "CustomComponents/CustomLookAndFeel.h"
+#include "CustomComponents/CustomGroupComponent.h"
 #include "OpenGLComponent.h"
 
 #include "ThemeColours.h"

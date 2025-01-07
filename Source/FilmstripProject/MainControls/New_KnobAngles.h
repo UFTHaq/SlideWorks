@@ -24,8 +24,8 @@
 #include <JuceHeader.h>
 
 #include "../Source/Globals.h"
-#include "../Source/CustomLookAndFeel.h"
-#include "../Source/CustomGroupComponent.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomGroupComponent.h"
 
 class New_KnobAngles
     : public juce::Component

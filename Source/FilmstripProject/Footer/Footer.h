@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 
 #include "../Source/Globals.h"
-#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 
 class Footer
     : public juce::Component

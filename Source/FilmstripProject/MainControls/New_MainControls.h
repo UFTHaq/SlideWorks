@@ -22,6 +22,7 @@
 
 #include "../Source/EnumClass.h"
 #include "../Source/Globals.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/FilmstripProject/New_Asset.h"
 
 #include "New_AssetsManager.h"

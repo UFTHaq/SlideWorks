@@ -1,5 +1,5 @@
 #include "CustomLookAndFeel.h"
-#include "Globals.h"
+#include "../Source/Globals.h"
 
 
 class LookAndFeel_V4_DocumentWindowButton final : public juce::Button,
@@ -398,13 +398,108 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			fillColor = getCurrentTheme().BannerFilmstripType;
 		}
 	}
+	else if (buttonID == "Buttons_ID_15_SLIDER_TOGGLE_STYLE")
+	{
+		cornerSize = 3;
+
+		outlineColor = getCurrentTheme().OutlineControl;
+		outlineThick = 1.F;
+
+		fillColor = getCurrentTheme().SlideworksBaseColour;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.5F;
+			fillColor = fillColor.brighter();
+		}
+	}
+	else if (buttonID == "Buttons_ID_16_INVERT_BUMP")
+	{
+		cornerSize = 3;
+
+		outlineColor = getCurrentTheme().OutlineControl;
+		outlineThick = 1.F;
+		
+		if (button.getToggleState() == 1)
+		{
+			fillColor = getCurrentTheme().NamingLabel;
+		}
+		else
+		{
+			fillColor = getCurrentTheme().CustomLightGrey;
+			outlineColor = outlineColor.darker();
+		}
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.5F;
+			fillColor = fillColor.brighter(0.2F);
+		}
+	}
+	else if (buttonID == "Buttons_ID_17_COLOR_SELECTOR")
+	{
+		cornerSize = 2;
+
+		fillColor = button.findColour(juce::TextButton::buttonColourId);
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.8F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.2F;
+		}
+	}
+	else if (buttonID == "Buttons_ID_18_LOCK_BUTTON")
+	{
+		cornerSize = 2;
+
+		fillColor = getCurrentTheme().CustomLightGrey.brighter();
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.8F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.2F;
+		}
+	}
+	else if (buttonID == "Buttons_ID_19_COPY_COLOR")
+	{
+		cornerSize = 2;
+
+		fillColor = getCurrentTheme().CustomLightGrey.brighter();
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.8F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.2F;
+		}
+	}
+	else if (buttonID == "Buttons_ID_20_LOCK_RATIO_BUTTON")
+	{
+		cornerSize = 2;
+
+		fillColor = getCurrentTheme().CustomLightGrey.brighter();
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.8F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.2F;
+		}
+	}
+
 	
 
 	g.setColour(fillColor);
 	g.fillRoundedRectangle(bounds, cornerSize);
 
 	g.setColour(outlineColor);
-	g.drawRoundedRectangle(bounds.reduced(outlineThick * 1.0F), cornerSize, outlineThick);
+	g.drawRoundedRectangle(bounds.reduced(outlineThick * 0.8F), cornerSize * 0.8F, outlineThick);
 
 	// DRAW IMAGE ON BUTTON
 	auto imageBounds = button.getLocalBounds().reduced(4).toFloat();
@@ -416,8 +511,118 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 	else if (buttonID == "Buttons_ID_13_DELETE_ASSET")
 	{
 		g.setColour(juce::Colours::grey.withAlpha(0.8F));
-		g.drawImage(iconDelete, imageBounds, juce::RectanglePlacement::centred ,true);
+		g.drawImage(iconDelete, imageBounds, juce::RectanglePlacement::centred, true);
 	}
+	else if (buttonID == "Buttons_ID_15_SLIDER_TOGGLE_STYLE")
+	{
+		imageBounds.removeFromRight(3);
+		auto dest = imageBounds.removeFromRight(imageBounds.getHeight()).reduced(2).toNearestInt();
+		auto source = juce::Rectangle<int>{ 0, 0, 100, 100 };
+
+		if (button.getToggleState())
+			source.setX(0);
+		else
+			source.setX(100);
+
+		g.setColour(juce::Colours::black.withAlpha(0.8F));
+		g.drawImage(
+			iconHoriVerti,
+			dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(),
+			source.getX(), source.getY(), source.getWidth(), source.getHeight(),
+			true
+		);
+	}
+	else if (buttonID == "Buttons_ID_18_LOCK_BUTTON")
+	{
+		auto dest = juce::Rectangle<int>{};
+		auto source = juce::Rectangle<int>{ 0, 0, 100, 100 };
+		bool withAlpha{};
+
+		if (shouldDrawButtonAsDown)
+		{
+			dest = imageBounds.reduced(-4.5F).toNearestInt();
+			withAlpha = true;
+		}
+		else
+		{
+			dest = imageBounds.reduced(-4).toNearestInt();
+			withAlpha = false;
+		}
+
+		if (button.getToggleState())
+		{
+			source.setX(100);
+			withAlpha = true;
+		}
+		else
+		{
+			source.setX(0);
+		}
+
+		g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.8F));
+		g.drawImage(
+			iconLock,
+			dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(),
+			source.getX(), source.getY(), source.getWidth(), source.getHeight(),
+			withAlpha
+		);
+	}
+	else if (buttonID == "Buttons_ID_19_COPY_COLOR")
+	{
+		auto dest = juce::Rectangle<float>{};
+		bool withAlpha{};
+		dest = imageBounds.reduced(-2);
+
+		if (shouldDrawButtonAsDown)
+		{
+			g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.8F));
+			dest = imageBounds.reduced(-3);
+			withAlpha = true;
+		}
+		else
+		{
+			withAlpha = false;
+		} 
+
+		g.drawImage(iconCopy, imageBounds.reduced(-2), juce::RectanglePlacement::centred, withAlpha);
+	}
+	else if (buttonID == "Buttons_ID_20_LOCK_RATIO_BUTTON")
+	{
+		auto dest = juce::Rectangle<int>{};
+		auto source = juce::Rectangle<int>{ 0, 0, 100, 100 };
+		bool withAlpha{};
+
+		if (shouldDrawButtonAsDown)
+		{
+			dest = imageBounds.toNearestInt().reduced(-3);
+			withAlpha = true;
+		}
+		else
+		{
+			dest = imageBounds.toNearestInt().reduced(-2);
+			withAlpha = false;
+		}
+
+		if (button.getToggleState())
+		{
+			source.setX(100);
+			withAlpha = true;
+		}
+		else
+		{
+			source.setX(0);
+		}
+
+		g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.8F));
+		g.drawImage(
+			iconChain,
+			dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(),
+			source.getX(), source.getY(), source.getWidth(), source.getHeight(),
+			withAlpha
+		);
+	}
+
+
 }
 
 void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool isMouseOver, bool isButtonDown)
@@ -431,8 +636,6 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 	juce::Colour textColor{};
 	juce::String text{ buttonText };
 
-	//textColor = colorMapStorage.find("Buttons_ID_01_SW")
-	//textColor = colorMapStorage.at("Buttons_ID_01_SW").at(juce::Label::textColourId);
 
 	if (buttonID == "Buttons_ID_01_SW")
 	{
@@ -589,8 +792,31 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			textColor = getCurrentTheme().FontBlack;
 		}
 	}
-	
+	else if (buttonID == "Buttons_ID_15_SLIDER_TOGGLE_STYLE")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		textColor = getCurrentTheme().FontBlack;
 
+		justification = juce::Justification::centredLeft;
+
+		bounds.removeFromLeft(12);
+	}
+	else if (buttonID == "Buttons_ID_16_INVERT_BUMP")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(getFontSizeRegular());
+		
+		justification = juce::Justification::centred;
+
+		if (button.getToggleState() == 1)
+		{
+			textColor = getCurrentTheme().FontWhite;
+		}
+		else
+		{
+			textColor = getCurrentTheme().FontBlack;
+		}
+	}
+	
 	g.setFont(font);
 	g.setColour(textColor);
 	g.drawFittedText(text, bounds, justification, 1);
@@ -605,9 +831,9 @@ void CustomLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
 			bounds.removeFromLeft(45);
 			bounds.removeFromRight(50);
 			g.drawFittedText(text, bounds, justification, 1, 0.75F);
-			//g.drawText(text, bounds, justification, 1);
 		}
 	}
+
 }
 
 void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle sytle, juce::Slider& slider)
@@ -631,37 +857,81 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	trackColour = colorMapStorage.at("Slider_ID_01_WithThumb").at(juce::Slider::trackColourId);
 	thumbColour = colorMapStorage.at("Slider_ID_01_WithThumb").at(juce::Slider::thumbColourId);
 
-	// Draw track
-	float trackHeight = float(height * 1.F);
-	float thumbSizeW  = float(trackHeight * 0.7F);
-	float pad = float(trackHeight * 0.10F);
-
-	auto track = juce::Rectangle<float>{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
-	g.setColour(trackColour);
-	g.fillRoundedRectangle(track, 1);
-	g.setColour(outline);
-	g.drawRoundedRectangle(track.reduced(0.5F), 1, 0.3F);
-
-	// Draw thumb
-	float thumbWidth  = thumbSizeW;
-	float thumbHeight = float(trackHeight * 0.8F);;
-	float thumbX      = float(sliderPos - (thumbWidth / 2));
-	auto thumb = juce::Rectangle<float>{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
-	g.setColour(thumbColour);
-	g.fillRoundedRectangle(thumb, getRoundedCornerSize());
-
-	// Draw motif in thumb
 	if (ID == "Slider_ID_01_WithThumb")
 	{
-		auto bounds = thumb;
-		juce::Path shape;
-		auto crossThickness = 0.225F;
-		shape.addLineSegment({ 0.5F, 0.0F, 0.5F, 1.0F }, crossThickness);
+		// Draw track
+		float trackHeight = float(height * 1.F);
+		float thumbSizeW = float(trackHeight * 0.7F);
+		float pad = float(trackHeight * 0.10F);
 
-		auto reducedRect = bounds.reduced(bounds.getHeight() * 0.235F);
-		g.setColour(getCurrentTheme().CustomLightGrey.brighter(0.8F));
-		g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+		auto track = juce::Rectangle<float>{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
+		g.setColour(trackColour);
+		g.fillRoundedRectangle(track, 1);
+		g.setColour(outline);
+		g.drawRoundedRectangle(track.reduced(0.5F), 1, 0.3F);
+
+		// Draw thumb
+		float thumbWidth = thumbSizeW;
+		float thumbHeight = float(trackHeight * 0.8F);
+		float thumbX = float(sliderPos - (thumbWidth / 2));
+		auto thumb = juce::Rectangle<float>{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
+		g.setColour(thumbColour);
+		g.fillRoundedRectangle(thumb, getRoundedCornerSize());
+
+		// Draw motif in thumb
+		if (ID == "Slider_ID_01_WithThumb")
+		{
+			auto bounds = thumb;
+			juce::Path shape;
+			auto crossThickness = 0.225F;
+			shape.addLineSegment({ 0.5F, 0.0F, 0.5F, 1.0F }, crossThickness);
+
+			auto reducedRect = bounds.reduced(bounds.getHeight() * 0.235F);
+			g.setColour(getCurrentTheme().CustomLightGrey.brighter(0.8F));
+			g.fillPath(shape, shape.getTransformToScaleToFit(reducedRect.toFloat(), true));
+		}
 	}
+	else if (ID == "Slider_ID_02_ZPad")
+	{
+		g.setColour(getCurrentTheme().SlideworksBaseColour);
+		g.fillRoundedRectangle(slider.getLocalBounds().toFloat(), 3.0F);
+
+		float thick = 0.8F;
+		g.setColour(getCurrentTheme().OutlineControl);
+		g.drawRoundedRectangle(slider.getLocalBounds().toFloat().reduced(thick), 3.0F, thick);
+
+		auto bar = juce::Rectangle<float>{ (float)slider.getLocalBounds().getX(), sliderPos - 0.5F, (float)slider.getLocalBounds().getWidth(), (float)slider.getLocalBounds().getBottom() - sliderPos };
+
+		bar = bar.reduced(3.0F);
+
+		g.setColour(getCurrentTheme().OutlineControl.darker());
+		g.fillRoundedRectangle(bar, 2.0F);
+	}
+	else if (ID == "Slider_ID_03_INTENSITY_BUMP_LIGHTING")
+	{
+		g.setColour(getCurrentTheme().SlideworksBaseColour.brighter());
+		g.fillRoundedRectangle(slider.getLocalBounds().toFloat(), 2.0F);
+
+		float thick = 0.8F;
+		g.setColour(getCurrentTheme().CustomDarkGrey.brighter());
+		g.drawRoundedRectangle(slider.getLocalBounds().toFloat().reduced(thick), 1.5F, thick);
+
+		auto width = (sliderPos > slider.getWidth() / 2) ? sliderPos + 1.F : sliderPos;
+		auto bar = juce::Rectangle<float>{ (float)slider.getLocalBounds().getX(), (float)slider.getLocalBounds().getY(), width, (float)slider.getHeight() };
+
+		bar = bar.reduced(2.0F);
+
+		g.setColour(getCurrentTheme().OutlineControl);
+		g.fillRoundedRectangle(bar, 1.5F);
+
+		auto value = slider.getValue();
+		auto text = juce::String(value) + "%";
+
+		g.setFont(getFontRobotoCondensedRegular().withHeight(16.0F));
+		g.setColour(getCurrentTheme().FontBlack);
+		g.drawText(text, slider.getLocalBounds().toFloat(), juce::Justification::centred);
+	}
+
 }
 
 void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float rotaryStartAngle, float rotaryEndAngle, juce::Slider& slider)
@@ -766,6 +1036,7 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	// Drawing only works for local bounds, such fillAll, or using getLocalBounds();
 	auto outlineColour = juce::Colours::transparentWhite;
 	auto fillColour = label.findColour(juce::Slider::backgroundColourId);
+	auto textColour = label.findColour(juce::Label::textColourId);
 	auto bounds = label.getLocalBounds();
 	auto ID = label.getComponentID();
 	auto font = label.getFont();
@@ -785,13 +1056,28 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	{
 		font = getFontRobotoCondensedRegular().withHeight(16.0F);
 	}
+	else if (ID == "Label_ID_04_XYZ_PAD")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(16.0F);
+		textColour = getCurrentTheme().FontBlack;
+	}
+	else if (ID == "Label_ID_05_LEFT_HAND_SIDE_LIGHTING")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(16.0F);
+		textColour = getCurrentTheme().FontBlack;
+	}
+	else if (ID == "Label_ID_06_COLOR_VALUE")
+	{
+		font = getFontRobotoCondensedRegular().withHeight(16.0F);
+		//textColour = label.findColour(juce::Label::textColourId);
+	}
 
 	g.setColour(label.findColour(juce::Label::backgroundColourId));
 	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
 
 	// Set the text color and draw the text
 	g.setFont(font);
-	g.setColour(label.findColour(juce::Label::textColourId));
+	g.setColour(textColour);
 	g.drawText(label.getText(), bounds, label.getJustificationType(), true);
 
 	g.setColour(outlineColour);
@@ -916,6 +1202,10 @@ void CustomLookAndFeel::loadImages()
 {
 	iconOnVisible = juce::ImageCache::getFromMemory(BinaryData::icon_On_Visible_png, BinaryData::icon_On_Visible_pngSize);
 	iconDelete    = juce::ImageCache::getFromMemory(BinaryData::icon_Delete_png, BinaryData::icon_Delete_pngSize);
+	iconHoriVerti = juce::ImageCache::getFromMemory(BinaryData::icon_HoriVerti_png, BinaryData::icon_HoriVerti_pngSize);
+	iconLock      = juce::ImageCache::getFromMemory(BinaryData::icon_Lock_png, BinaryData::icon_Lock_pngSize);
+	iconCopy      = juce::ImageCache::getFromMemory(BinaryData::icon_Copy_png, BinaryData::icon_Copy_pngSize);
+	iconChain     = juce::ImageCache::getFromMemory(BinaryData::icon_Chain_png, BinaryData::icon_Chain_pngSize);
 
 	knobScale = juce::ImageCache::getFromMemory(BinaryData::small_scale_black_png, BinaryData::small_scale_black_pngSize);
 }

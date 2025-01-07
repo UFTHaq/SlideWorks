@@ -15,6 +15,9 @@ New_FilmstripProject::New_FilmstripProject(const FilmstripType& filmstripType, j
     , boundary(baseWorkspace)
     , mainControls(filmstripType, assets, assetsButtons, canvas, subControls)
     , canvas(filmstripType, assets, assetsButtons, subControls)
+    //, canvas(filmstripType, assets, assetsButtons)
+    //, subControls(filmstripType, canvas)
+    , subControls(filmstripType)
 {
     setupLayout(baseWorkspace);
     setupTabButtonAndEditorCallback();

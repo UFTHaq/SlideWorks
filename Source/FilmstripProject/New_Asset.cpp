@@ -178,14 +178,16 @@ void New_Asset::setVirtualCanvas(const juce::Rectangle<int> virtualCanvas)
     {
         // set Default size
         //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,200,200 };
-        auto imageArea = int(virtualArea.getWidth() * 0.9F);
+        //auto imageArea = int(virtualArea.getWidth() * 0.9F);
+        auto imageArea = int(virtualArea.getWidth());
 
         this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
     }
     else if (assetType == AssetType::KNOB_SCALE)
     {
         //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,220,220 };
-        auto imageArea = int(virtualArea.getWidth() * 0.95F);
+        //auto imageArea = int(virtualArea.getWidth() * 0.95F);
+        auto imageArea = int(virtualArea.getWidth());
 
         this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
     }

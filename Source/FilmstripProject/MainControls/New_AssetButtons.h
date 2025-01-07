@@ -17,7 +17,7 @@
 
 #include <JuceHeader.h>
 
-#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/Globals.h"
 
 class New_AssetButtons

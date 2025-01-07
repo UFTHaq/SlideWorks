@@ -5,7 +5,12 @@
               cppLanguageStandard="20">
   <MAINGROUP id="AE0vwg" name="SlideWorks">
     <GROUP id="{9B76F44F-3BA7-17FC-5C7D-40530BB67C0E}" name="Resources">
+      <FILE id="YvkgnB" name="icon_Chain.png" compile="0" resource="1" file="Resources/Icons/icon_Chain.png"/>
+      <FILE id="UROWLQ" name="icon_Copy.png" compile="0" resource="1" file="Resources/Icons/icon_Copy.png"/>
       <FILE id="DDgw4O" name="icon_Delete.png" compile="0" resource="1" file="Resources/Icons/icon_Delete.png"/>
+      <FILE id="YIxDRV" name="icon_HoriVerti.png" compile="0" resource="1"
+            file="Resources/Icons/icon_HoriVerti.png"/>
+      <FILE id="MOO0xf" name="icon_Lock.png" compile="0" resource="1" file="Resources/Icons/icon_Lock.png"/>
       <FILE id="uJJdCP" name="icon_On_Visible.png" compile="0" resource="1"
             file="Resources/Icons/icon_On_Visible.png"/>
       <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
@@ -24,20 +29,30 @@
       <FILE id="fBYcnJ" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="jvpGiL" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
-      <FILE id="SbD3b9" name="CustomLookAndFeel.h" compile="0" resource="0"
-            file="Source/CustomLookAndFeel.h"/>
-      <FILE id="Oe9LDj" name="CustomLookAndFeel.cpp" compile="1" resource="0"
-            file="Source/CustomLookAndFeel.cpp"/>
-      <FILE id="jYyAT3" name="CustomGroupComponent.h" compile="0" resource="0"
-            file="Source/CustomGroupComponent.h"/>
-      <FILE id="v9loTb" name="CustomGroupComponent.cpp" compile="1" resource="0"
-            file="Source/CustomGroupComponent.cpp"/>
       <FILE id="vajGgq" name="OpenGLComponent.h" compile="0" resource="0"
             file="Source/OpenGLComponent.h"/>
       <FILE id="HZGwtf" name="ThemeColours.h" compile="0" resource="0" file="Source/ThemeColours.h"/>
       <FILE id="RVc28g" name="Globals.h" compile="0" resource="0" file="Source/Globals.h"/>
       <FILE id="w206rb" name="Globals.cpp" compile="1" resource="0" file="Source/Globals.cpp"/>
       <FILE id="XruRRW" name="EnumClass.h" compile="0" resource="0" file="Source/EnumClass.h"/>
+      <GROUP id="{582A25D9-8B69-5EDC-165F-0C59F755A40D}" name="CustomComponents">
+        <FILE id="c1vah5" name="Easing.h" compile="0" resource="0" file="Source/CustomComponents/Easing.h"/>
+        <FILE id="KeWE2K" name="CustomLookAndFeel.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/CustomLookAndFeel.cpp"/>
+        <FILE id="snuV9Q" name="CustomLookAndFeel.h" compile="0" resource="0"
+              file="Source/CustomComponents/CustomLookAndFeel.h"/>
+        <FILE id="ZH7K6S" name="CustomGroupComponent.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/CustomGroupComponent.cpp"/>
+        <FILE id="Eyavea" name="CustomGroupComponent.h" compile="0" resource="0"
+              file="Source/CustomComponents/CustomGroupComponent.h"/>
+        <FILE id="C6sCv4" name="ColourSelectorWindow.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/ColourSelectorWindow.cpp"/>
+        <FILE id="fScmUW" name="ColourSelectorWindow.h" compile="0" resource="0"
+              file="Source/CustomComponents/ColourSelectorWindow.h"/>
+        <FILE id="iSw3aH" name="CustomSlider.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/CustomSlider.cpp"/>
+        <FILE id="O2IySE" name="CustomSlider.h" compile="0" resource="0" file="Source/CustomComponents/CustomSlider.h"/>
+      </GROUP>
       <GROUP id="{7543759C-FBD0-6DF6-285B-89B778CDA2C4}" name="FilmstripProject">
         <FILE id="wTaArk" name="New_FilmstripProject.cpp" compile="1" resource="0"
               file="Source/FilmstripProject/New_FilmstripProject.cpp"/>
@@ -103,14 +118,14 @@
           <FILE id="ujoznQ" name="Footer.h" compile="0" resource="0" file="Source/FilmstripProject/Footer/Footer.h"/>
         </GROUP>
         <GROUP id="{1AE5DC87-F759-3B22-F62F-A0C085872133}" name="SubControls">
-          <FILE id="JQoUva" name="New_ControlAsset.cpp" compile="1" resource="0"
-                file="Source/FilmstripProject/SubControls/New_ControlAsset.cpp"/>
-          <FILE id="QrJ94Y" name="New_ControlAsset.h" compile="0" resource="0"
-                file="Source/FilmstripProject/SubControls/New_ControlAsset.h"/>
           <FILE id="DiegtN" name="New_SubControls.cpp" compile="1" resource="0"
                 file="Source/FilmstripProject/SubControls/New_SubControls.cpp"/>
           <FILE id="qS0DcM" name="New_SubControls.h" compile="0" resource="0"
                 file="Source/FilmstripProject/SubControls/New_SubControls.h"/>
+          <FILE id="JQoUva" name="New_ControlAsset.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAsset.cpp"/>
+          <FILE id="QrJ94Y" name="New_ControlAsset.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlAsset.h"/>
           <FILE id="pKNvk1" name="New_ControlAssetKnob.cpp" compile="1" resource="0"
                 file="Source/FilmstripProject/SubControls/New_ControlAssetKnob.cpp"/>
           <FILE id="y4x09s" name="New_ControlAssetKnob.h" compile="0" resource="0"
@@ -139,6 +154,12 @@
                 file="Source/FilmstripProject/SubControls/New_ControlLighting.cpp"/>
           <FILE id="bDqz3y" name="New_ControlLighting.h" compile="0" resource="0"
                 file="Source/FilmstripProject/SubControls/New_ControlLighting.h"/>
+          <FILE id="PIndct" name="XYPad.cpp" compile="1" resource="0" file="Source/FilmstripProject/SubControls/XYPad.cpp"/>
+          <FILE id="Rhgusa" name="XYPad.h" compile="0" resource="0" file="Source/FilmstripProject/SubControls/XYPad.h"/>
+          <FILE id="Q57MZN" name="New_ControlSliderStyle.cpp" compile="1" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlSliderStyle.cpp"/>
+          <FILE id="H82f4b" name="New_ControlSliderStyle.h" compile="0" resource="0"
+                file="Source/FilmstripProject/SubControls/New_ControlSliderStyle.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{E7788282-64A1-3B23-92B8-CB79D55BA43E}" name="PageInfo">

@@ -17,7 +17,7 @@
 
 #include "../Source/Globals.h"
 #include "../Source/EnumClass.h"
-#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/FilmstripProject/New_Asset.h"
 #include "../Source/FilmstripProject/MainControls/New_AssetButtons.h"
 #include "../Source/FilmstripProject/SubControls/New_SubControls.h"
@@ -25,6 +25,9 @@
 #include "New_CanvasEdit.h"
 #include "New_CanvasPreview.h"
 #include "New_CanvasSimulation.h"
+
+// FORWARD DECLARATION OF OTHER CLASS CAUSE OF CIRCULAR DEPENDENCIES CAUSE OF NEEEDED EACH OTHER REFERENCE
+//class New_SubControls;
 
 class New_Canvas
     : public juce::Component
@@ -41,7 +44,7 @@ protected:
 
     juce::Rectangle<int> bounds{};
 
-    New_CanvasEdit canvasEdit;         // Default Declaration
+    New_CanvasEdit canvasEdit;         // Default Declaration 
     New_CanvasPreview canvasPreview{};
     New_CanvasSimulation canvasSimulation{};
 

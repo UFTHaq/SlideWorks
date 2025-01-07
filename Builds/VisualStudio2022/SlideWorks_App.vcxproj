@@ -143,9 +143,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
-    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
-    <ClCompile Include="..\..\Source\CustomGroupComponent.cpp"/>
     <ClCompile Include="..\..\Source\Globals.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomLookAndFeel.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomGroupComponent.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\ColourSelectorWindow.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomSlider.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_FilmstripProject.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_TabButton.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\New_NameAndMode.cpp"/>
@@ -162,8 +164,8 @@
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Footer\Footer.cpp"/>
-    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetThumb.cpp"/>
@@ -171,6 +173,8 @@
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\XYPad.cpp"/>
+    <ClCompile Include="..\..\Source\FilmstripProject\SubControls\New_ControlSliderStyle.cpp"/>
     <ClCompile Include="..\..\Source\PageInfo\PageInfo.cpp"/>
     <ClCompile Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1902,12 +1906,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
-    <ClInclude Include="..\..\Source\CustomLookAndFeel.h"/>
-    <ClInclude Include="..\..\Source\CustomGroupComponent.h"/>
     <ClInclude Include="..\..\Source\OpenGLComponent.h"/>
     <ClInclude Include="..\..\Source\ThemeColours.h"/>
     <ClInclude Include="..\..\Source\Globals.h"/>
     <ClInclude Include="..\..\Source\EnumClass.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\Easing.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomLookAndFeel.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomGroupComponent.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\ColourSelectorWindow.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomSlider.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_FilmstripProject.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_TabButton.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\New_NameAndMode.h"/>
@@ -1924,8 +1931,8 @@
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasPreview.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Canvas\New_CanvasSimulation.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Footer\Footer.h"/>
-    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_SubControls.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAsset.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnob.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetKnobScale.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetThumb.h"/>
@@ -1933,6 +1940,8 @@
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlAssetTrackScale.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlCanvas.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlLighting.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\XYPad.h"/>
+    <ClInclude Include="..\..\Source\FilmstripProject\SubControls\New_ControlSliderStyle.h"/>
     <ClInclude Include="..\..\Source\PageInfo\PageInfo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_AbstractFifo.h"/>
     <ClInclude Include="..\..\..\..\..\Aplikasi\CODING\C &amp; C++\JUCE\juce-8.0.3-windows\JUCE\modules\juce_core\containers\juce_Array.h"/>
@@ -2791,7 +2800,11 @@
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Icons\icon_Chain.png"/>
+    <None Include="..\..\Resources\Icons\icon_Copy.png"/>
     <None Include="..\..\Resources\Icons\icon_Delete.png"/>
+    <None Include="..\..\Resources\Icons\icon_HoriVerti.png"/>
+    <None Include="..\..\Resources\Icons\icon_Lock.png"/>
     <None Include="..\..\Resources\Icons\icon_On_Visible.png"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Regular.ttf"/>

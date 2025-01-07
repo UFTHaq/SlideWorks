@@ -21,7 +21,8 @@ New_Canvas::New_Canvas
 	, assets(assets)
 	, assetsButtons(assetsButtons)
 	, subControls(subControls)
-	, canvasEdit(filmstripType, assets), customLookAndFeel(Globals::getCustomLookAndFeel())
+	, canvasEdit(filmstripType, assets)
+	, customLookAndFeel(Globals::getCustomLookAndFeel())
 {
 	setMode(mode);
 	addAndMakeVisible(canvasEdit);
@@ -42,9 +43,6 @@ void New_Canvas::resized()
 	bounds = getLocalBounds();
 
 	canvasEdit.setBounds(bounds);
-
-	DBG("CanvasEdit setBounds " << bounds.toString());
-
 
 	canvasEdit.resized();
 	canvasPreview.resized();

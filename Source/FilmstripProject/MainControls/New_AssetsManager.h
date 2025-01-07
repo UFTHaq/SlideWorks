@@ -21,7 +21,7 @@
 #include <JuceHeader.h>
 
 #include "../Source/EnumClass.h"
-#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/Globals.h"
 
 #include "New_AssetButtons.h"

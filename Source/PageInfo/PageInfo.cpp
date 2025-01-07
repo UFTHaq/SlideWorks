@@ -90,8 +90,8 @@ void PageInfo::setupGroup()
     auto gap = 8.0F;
     auto cornerSize = 10.0F;
     auto lineThick = 1.5F;
-    auto fontSize = 16.0F;
-    auto font = customLookAndFeel->getFontRobotoCondensedBold().withHeight(18.0F);
+    auto fontSize = 18.0F;
+    auto font = customLookAndFeel->getFontRobotoCondensedBold().withHeight(fontSize);
     auto fontColor = customLookAndFeel->getCurrentTheme().CustomGroupComponent;
     auto outlineColor = customLookAndFeel->getCurrentTheme().CustomGroupComponent;
 

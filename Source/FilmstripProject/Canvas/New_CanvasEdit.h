@@ -67,6 +67,10 @@ public:
     WorkingMode getMode() const;
     void setCanvasBounds(const int width, const int height);
 
+    void setRealCanvasWidth(int w);
+    void setRealCanvasHeight(int h);
+    juce::Point<int> getRealCanvasWH();
+
     // Make drag system based on mouseDown?
 };
 

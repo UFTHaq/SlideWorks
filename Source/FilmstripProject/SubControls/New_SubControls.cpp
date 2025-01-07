@@ -10,18 +10,16 @@
 
 #include "New_SubControls.h"
 
-New_SubControls::New_SubControls()
-    : customLookAndFeel(Globals::getCustomLookAndFeel())
+//New_SubControls::New_SubControls(const FilmstripType& filmstripType, New_Canvas& canvas)
+New_SubControls::New_SubControls(const FilmstripType& filmstripType)
+    : filmstripType(filmstripType)
+    , controlLighting(filmstripType)
+    //, canvas(&canvas)
+    //, controlCanvas(canvas)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
-    addAndMakeVisible(subControlContainer);
-
-    subControlViewport.setComponentID("Viewport_O2_SubControl");
-    subControlViewport.setViewedComponent(&subControlContainer, false);
-    subControlViewport.setScrollBarsShown(true, false);
-    addAndMakeVisible(subControlViewport);
-
-    subControlContainer.addAndMakeVisible(controlLighting);
-    subControlContainer.addAndMakeVisible(controlCanvas);
+    setupViewportAndContainer();
+    setupSubControlsBase(filmstripType);
 }
 
 New_SubControls::~New_SubControls()
@@ -40,8 +38,13 @@ void New_SubControls::resized()
     auto copyBounds = bounds;
 
     // example
-    controlLighting.setBounds(copyBounds.removeFromTop(300));
-    copyBounds = copyBounds.withHeight(200);
+    copyBounds = copyBounds.withHeight(controlSliderStyleHeight);
+    controlSliderStyle.setBounds(copyBounds);
+
+    copyBounds = copyBounds.withHeight(controlLightingHeight);
+    controlLighting.setBounds(copyBounds);
+
+    copyBounds = copyBounds.withHeight(controlCanvasHeight);
     controlCanvas.setBounds(copyBounds);
 
     resizeViewport();
@@ -55,6 +58,46 @@ void New_SubControls::drawBackground(juce::Graphics& g)
 
     g.setColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
     g.drawRoundedRectangle(bounds.toFloat().reduced(0.3F), 1, 0.3F);
+}
+
+void New_SubControls::setupViewportAndContainer()
+{
+    addAndMakeVisible(subControlContainer);
+
+    subControlViewport.setComponentID("Viewport_O2_SubControl");
+    subControlViewport.setViewedComponent(&subControlContainer, false);
+    subControlViewport.setScrollBarsShown(true, false);
+    addAndMakeVisible(subControlViewport);
+}
+
+void New_SubControls::setupSubControlsBase(const FilmstripType& filmstripType)
+{
+    int padding = 13;
+    int componentH = 28;
+    int titleH = 20;
+
+    switch (filmstripType)
+    {
+    case (FilmstripType::KNOB):
+        controlLightingHeight = (componentH * 9) + titleH + padding;
+
+        subControlContainer.addAndMakeVisible(controlLighting);
+        subControlContainer.addAndMakeVisible(controlCanvas);
+
+        break;
+    case (FilmstripType::SLIDER):
+        controlLightingHeight = (componentH * 10) + titleH + padding;
+
+        subControlContainer.addAndMakeVisible(controlSliderStyle);
+        subControlContainer.addAndMakeVisible(controlLighting);
+        subControlContainer.addAndMakeVisible(controlCanvas);
+        break;
+    default:
+        break;
+    }
+
+    controlCanvasHeight = (componentH * 4) + titleH + padding;
+    controlSliderStyleHeight = int(componentH * 1.125F) + titleH + padding;
 }
 
 void New_SubControls::resizeViewport()
@@ -114,8 +157,17 @@ void New_SubControls::displayDefaultSubControl()
 {
     subControlContainer.removeAllChildren();      // reset
 
-    subControlContainer.addAndMakeVisible(controlLighting);
-    subControlContainer.addAndMakeVisible(controlCanvas);
+    if (filmstripType == FilmstripType::KNOB)
+    {
+        subControlContainer.addAndMakeVisible(controlLighting);
+        subControlContainer.addAndMakeVisible(controlCanvas);
+    }
+    else
+    {
+        subControlContainer.addAndMakeVisible(controlSliderStyle);
+        subControlContainer.addAndMakeVisible(controlLighting);
+        subControlContainer.addAndMakeVisible(controlCanvas);
+    }
 
     resizeContainer();
 }

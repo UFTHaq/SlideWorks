@@ -11,7 +11,7 @@
 #pragma once
 
 #include <memory>
-#include "CustomLookAndFeel.h"
+#include "CustomComponents/CustomLookAndFeel.h"
 
 class Globals
 {

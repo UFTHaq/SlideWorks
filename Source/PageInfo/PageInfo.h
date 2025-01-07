@@ -12,8 +12,8 @@
 
 #include <JuceHeader.h>
 
-#include "../Source/CustomGroupComponent.h"
-#include "../Source/CustomLookAndFeel.h"
+#include "../Source/CustomComponents/CustomGroupComponent.h"
+#include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/EnumClass.h"
 #include "../Source/Globals.h"
 
