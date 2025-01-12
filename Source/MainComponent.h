@@ -9,7 +9,7 @@
 #include "Globals.h"
 #include "EnumClass.h"
 
-#include "FilmstripProject/New_FilmstripProject.h"
+#include "FilmstripProject/FilmstripProject.h"
 #include "PageInfo/PageInfo.h"
 
 
@@ -88,7 +88,7 @@ private:
 
     juce::Colour canvasColor = Globals::getCustomLookAndFeel()->getCurrentTheme().SlideworksBaseColour;
 
-    std::vector<std::unique_ptr<New_FilmstripProject>> newFilmstripProjects{};
+    std::vector<std::unique_ptr<FilmstripProject>> filmstripProjects{};
 
     ////////////////----------- PAGE 3 -----------////////////////
     PageInfo pageInfo{};

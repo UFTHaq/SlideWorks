@@ -10,8 +10,9 @@
 
 #include "Footer.h"
 
-Footer::Footer()
-    : customLookAndFeel(Globals::getCustomLookAndFeel())
+Footer::Footer(const FilmstripType& type)
+    : filmstripType(type)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F);
     

@@ -9,7 +9,7 @@ MainComponent::MainComponent()
     setupButtons(ptr_Global_CustomLookAndFeel);
     setupPageInfo();
 
-    newFilmstripProjects.reserve(10);
+    filmstripProjects.reserve(10);
 }
 
 MainComponent::~MainComponent()
@@ -65,9 +65,9 @@ void MainComponent::updatePageContent(juce::Graphics& g)
 
 void MainComponent::NewUpdateVisibilityPAGE_2(bool visible)
 {
-    if (newFilmstripProjects.size() > 0)
+    if (filmstripProjects.size() > 0)
     {
-        for (auto& project : newFilmstripProjects)
+        for (auto& project : filmstripProjects)
         {
             project->getTabButton().setEnabled(visible);
             project->getTabButton().setVisible(visible);
@@ -137,7 +137,7 @@ void MainComponent::setupLayoutUI()
 
     auto copy_area_Layer3_MainWorkspace = area_Layer3_MainWorkspace;
 
-    if (newFilmstripProjects.size() > 0)
+    if (filmstripProjects.size() > 0)
     {
         // PLAN:
         // ONLY TAB BUTTON WILL DEFINES HERE, BECAUSE THIS BUTTONS IS MOVABLE, 
@@ -148,7 +148,7 @@ void MainComponent::setupLayoutUI()
 
         juce::Rectangle<int> tabButtonArea{ copy_area_FilmstripProjects.getX(),copy_area_FilmstripProjects.getY(), FPButtonWidth, copy_area_FilmstripProjects.getHeight() + 1 };
 
-        for (auto& project : newFilmstripProjects)
+        for (auto& project : filmstripProjects)
         {
             if (project != nullptr)
             {
@@ -201,7 +201,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
     SW_NewProjectButton.onClick = [&, customLookAndFeel, this]()
         {
             bool buttonMenuEnable{ false };
-            if (newFilmstripProjects.size() < 5)
+            if (filmstripProjects.size() < 5)
             {
                 buttonMenuEnable = true;
             }
@@ -218,12 +218,12 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                 {
                     if (result == 1)
                     {
-                        auto project = std::make_unique<New_FilmstripProject>(FilmstripType::KNOB, base_Workspace);
+                        auto project = std::make_unique<FilmstripProject>(FilmstripType::KNOB, base_Workspace);
 
                         auto* ptr = project.get();
                         project->getTabButton().getMainButton().onClick = [this, ptr]()
                             {
-                                for (auto& proj : newFilmstripProjects)
+                                for (auto& proj : filmstripProjects)
                                 {
                                     bool isSelected = (proj.get() == ptr);
 
@@ -252,28 +252,28 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                 {
                                     size_t deletedIndex{};
                                     bool wasActive{};
-                                    for (size_t i = 0; i < mainComp->newFilmstripProjects.size(); i++)
+                                    for (size_t i = 0; i < mainComp->filmstripProjects.size(); i++)
                                     {
-                                        if (mainComp->newFilmstripProjects.at(i).get() == ptr)
+                                        if (mainComp->filmstripProjects.at(i).get() == ptr)
                                         {
                                             deletedIndex = i;
-                                            wasActive = mainComp->newFilmstripProjects.at(i)->getTabButton().getMainButton().getToggleState();
+                                            wasActive = mainComp->filmstripProjects.at(i)->getTabButton().getMainButton().getToggleState();
                                         }
 
                                     }
-                                    mainComp->newFilmstripProjects.erase(mainComp->newFilmstripProjects.begin() + deletedIndex);
+                                    mainComp->filmstripProjects.erase(mainComp->filmstripProjects.begin() + deletedIndex);
 
-                                    if (mainComp->newFilmstripProjects.size() > 0)
+                                    if (mainComp->filmstripProjects.size() > 0)
                                     {
                                         if (wasActive)
                                         {
-                                            if (deletedIndex == mainComp->newFilmstripProjects.size())
-                                                mainComp->newFilmstripProjects.at(deletedIndex - 1)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
-                                            else 
-                                                mainComp->newFilmstripProjects.at(deletedIndex)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
-                                            
+                                            if (deletedIndex == mainComp->filmstripProjects.size())
+                                                mainComp->filmstripProjects.at(deletedIndex - 1)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
+                                            else
+                                                mainComp->filmstripProjects.at(deletedIndex)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
+
                                             // Reload the project based on tabButton toggle state
-                                            for (auto& proj : mainComp->newFilmstripProjects)
+                                            for (auto& proj : mainComp->filmstripProjects)
                                             {
                                                 bool visible = (proj->getTabButton().getMainButton().getToggleState());
 
@@ -314,18 +314,18 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         addChildComponent(project->getSubControls());
                         addChildComponent(project->getFooter());
 
-                        newFilmstripProjects.push_back(std::move(project));
+                        filmstripProjects.push_back(std::move(project));
                         
                     }
                     else if (result == 2)
                     {
 
-                        auto project = std::make_unique<New_FilmstripProject>(FilmstripType::SLIDER, base_Workspace);
+                        auto project = std::make_unique<FilmstripProject>(FilmstripType::SLIDER, base_Workspace);
 
                         auto* ptr = project.get();
                         project->getTabButton().getMainButton().onClick = [this, ptr]()
                             {
-                                for (auto& proj : newFilmstripProjects)
+                                for (auto& proj : filmstripProjects)
                                 {
                                     bool isSelected = (proj.get() == ptr);
 
@@ -354,28 +354,28 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                                 {
                                     size_t deletedIndex{};
                                     bool wasActive{};
-                                    for (size_t i = 0; i < mainComp->newFilmstripProjects.size(); i++)
+                                    for (size_t i = 0; i < mainComp->filmstripProjects.size(); i++)
                                     {
-                                        if (mainComp->newFilmstripProjects.at(i).get() == ptr)
+                                        if (mainComp->filmstripProjects.at(i).get() == ptr)
                                         {
                                             deletedIndex = i;
-                                            wasActive = mainComp->newFilmstripProjects.at(i)->getTabButton().getMainButton().getToggleState();
+                                            wasActive = mainComp->filmstripProjects.at(i)->getTabButton().getMainButton().getToggleState();
                                         }
 
                                     }
-                                    mainComp->newFilmstripProjects.erase(mainComp->newFilmstripProjects.begin() + deletedIndex);
+                                    mainComp->filmstripProjects.erase(mainComp->filmstripProjects.begin() + deletedIndex);
 
-                                    if (mainComp->newFilmstripProjects.size() > 0)
+                                    if (mainComp->filmstripProjects.size() > 0)
                                     {
                                         if (wasActive)
                                         {
-                                            if (deletedIndex == mainComp->newFilmstripProjects.size())
-                                                mainComp->newFilmstripProjects.at(deletedIndex - 1)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
+                                            if (deletedIndex == mainComp->filmstripProjects.size())
+                                                mainComp->filmstripProjects.at(deletedIndex - 1)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
                                             else
-                                                mainComp->newFilmstripProjects.at(deletedIndex)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
+                                                mainComp->filmstripProjects.at(deletedIndex)->getTabButton().getMainButton().setToggleState(true, juce::dontSendNotification);
 
                                             // Reload the project based on tabButton toggle state
-                                            for (auto& proj : mainComp->newFilmstripProjects)
+                                            for (auto& proj : mainComp->filmstripProjects)
                                             {
                                                 bool visible = (proj->getTabButton().getMainButton().getToggleState());
 
@@ -417,13 +417,13 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         addChildComponent(project->getSubControls());
                         addChildComponent(project->getFooter());
 
-                        newFilmstripProjects.push_back(std::move(project));
+                        filmstripProjects.push_back(std::move(project));
 
                     }
 
 
                     // SET NEW PROJECT TO VISIBLE
-                    if (newFilmstripProjects.size() > 0)
+                    if (filmstripProjects.size() > 0)
                     {
                         currentSlideWorksPage = PageState::PAGE2_WORKSPACE;
 
@@ -431,9 +431,9 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
                         updatePage3InfoVisibility(false);
 
 
-                        for (auto& proj : newFilmstripProjects)
+                        for (auto& proj : filmstripProjects)
                         {
-                            bool isSelected = (proj.get() == newFilmstripProjects.back().get());
+                            bool isSelected = (proj.get() == filmstripProjects.back().get());
 
                             proj->getTabButton().getMainButton().setToggleState(isSelected, juce::dontSendNotification);
 
@@ -489,7 +489,7 @@ void MainComponent::setupProjectButtons(CustomLookAndFeel* customLookAndFeel)
 
                     Globals::repaintTitleBar = true;
 
-                    for (auto& proj : newFilmstripProjects)
+                    for (auto& proj : filmstripProjects)
                         proj->resetCurrentTheme();
 
                     customLookAndFeel->reloadColorMapStorage();

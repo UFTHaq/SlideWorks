@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 
 #include "../Source/Globals.h"
+#include "../Source/EnumClass.h"
 #include "../Source/CustomComponents/CustomLookAndFeel.h"
 
 class Footer
@@ -20,6 +21,8 @@ class Footer
 {
 protected:
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
+    FilmstripType filmstripType{};
+
     juce::Rectangle<int> bounds{};
     juce::String text{};
 
@@ -36,7 +39,7 @@ protected:
     juce::Font font{ juce::FontOptions{} };
 
 public:
-    Footer();
+    Footer(const FilmstripType& type);
     ~Footer();
 
     void paint(juce::Graphics& g) override;

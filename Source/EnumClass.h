@@ -24,7 +24,7 @@ enum class WorkingMode
     SIMULATION_MODE
 };
 
-enum class FilmstripOrientation
+enum class FilmstripOrientationEnum
 {
     VERTICAL_FILMSTRIP,
     HORIZONTAL_FILMSTRIP
