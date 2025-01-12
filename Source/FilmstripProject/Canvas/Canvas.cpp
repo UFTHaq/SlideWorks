@@ -25,6 +25,7 @@ Canvas::Canvas
 	, customLookAndFeel(Globals::getCustomLookAndFeel())
 {
 	setMode(mode);
+	canvasColor = customLookAndFeel->getCurrentTheme().SlideworksBaseColour;
 	addAndMakeVisible(canvasEdit);
 	canvasEdit.setInterceptsMouseClicks(false, true);
 }
@@ -51,26 +52,37 @@ void Canvas::resized()
 
 void Canvas::mouseDown(const juce::MouseEvent& event)
 {
-	for (auto& btn : assetsButtons)
+	if (event.getNumberOfClicks() == 1)
 	{
-		btn->selectThis(false);
-	}
+		for (auto& btn : assetsButtons)
+		{
+			btn->selectThis(false);
+		}
 
-	subControls.displayDefaultSubControl();
+		subControls.displayDefaultSubControl();
+	}
 }
 
 void Canvas::drawBackground(juce::Graphics& g)
 {
-	g.setColour(customLookAndFeel->getCurrentTheme().SlideworksBaseColour);
+	g.setColour(canvasColor);
 	g.fillRoundedRectangle(bounds.toFloat(), 1);
 
 	g.setColour(customLookAndFeel->getCurrentTheme().CustomDarkGrey);
 	g.drawRoundedRectangle(bounds.toFloat().reduced(0.3F), 1, 0.3F);
 }
 
-void Canvas::setMode(WorkingMode mode)
+void Canvas::setCanvasColor(const juce::Colour newColor)
 {
-	this->mode = mode;
+	canvasColor = newColor;
+	repaint();
+
+	canvasEdit.setVirtualCanvasOutlineColor(newColor);
+}
+
+void Canvas::setMode(WorkingMode newMode)
+{
+	this->mode = newMode;
 
 	switch (mode)
 	{

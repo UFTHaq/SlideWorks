@@ -76,13 +76,13 @@ void SubControls::setupViewportAndContainer()
     addAndMakeVisible(subControlViewport);
 }
 
-void SubControls::setupSubControlsBase(const FilmstripType& filmstripType)
+void SubControls::setupSubControlsBase(const FilmstripType& type)
 {
     int padding = 13;
     int componentH = 28;
     int titleH = 20;
 
-    switch (filmstripType)
+    switch (type)
     {
     case (FilmstripType::KNOB):
         controlLightingHeight = (componentH * 9) + titleH + padding;
@@ -147,9 +147,10 @@ void SubControls::resizeContainer()
     {
         auto* child = subControlContainer.getChildComponent(i);
         int height = child->getHeight();
-        int y = totalHeight + space;
-        auto bounds = juce::Rectangle<int>{ space, y, controlWidth, height };
-        child->setBounds(bounds);
+
+        y = totalHeight + space;
+        auto rect = juce::Rectangle<int>{ space, y, controlWidth, height };
+        child->setBounds(rect);
         totalHeight += height + space;
     }
     totalHeight += space;

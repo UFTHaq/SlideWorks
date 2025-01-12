@@ -38,6 +38,7 @@ protected:
 
     int lowestContraint{};
     juce::Rectangle<int> canvasConstraint{};
+    juce::Colour outlineColor{ juce::Colours::black };
 
     // - real canvas size
     // - Contraint max width and max height virtual canvas
@@ -70,6 +71,7 @@ public:
     void setRealCanvasWidth(int w);
     void setRealCanvasHeight(int h);
     juce::Point<int> getRealCanvasWH();
+    void setVirtualCanvasOutlineColor(const juce::Colour newColor);
 
     // Make drag system based on mouseDown?
 };

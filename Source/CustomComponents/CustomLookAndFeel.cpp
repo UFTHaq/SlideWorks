@@ -63,7 +63,7 @@ CustomLookAndFeel::~CustomLookAndFeel()
 
 }
 
-std::vector<std::unique_ptr<LookAndFeel_V4_DocumentWindowButton>> docsdf;
+//std::vector<std::unique_ptr<LookAndFeel_V4_DocumentWindowButton>> docsdf;
 
 ////////////////////////// ========= OVERRIDER FUNTIONS ========= //////////////////////////
 juce::Button* CustomLookAndFeel::createDocumentWindowButton(int buttonType)
@@ -916,8 +916,8 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 		g.setColour(getCurrentTheme().CustomDarkGrey.brighter());
 		g.drawRoundedRectangle(slider.getLocalBounds().toFloat().reduced(thick), 1.5F, thick);
 
-		auto width = (sliderPos > slider.getWidth() / 2) ? sliderPos + 1.F : sliderPos;
-		auto bar = juce::Rectangle<float>{ (float)slider.getLocalBounds().getX(), (float)slider.getLocalBounds().getY(), width, (float)slider.getHeight() };
+		auto barWidth = (sliderPos > slider.getWidth() / 2) ? sliderPos + 1.F : sliderPos;
+		auto bar = juce::Rectangle<float>{ (float)slider.getLocalBounds().getX(), (float)slider.getLocalBounds().getY(), barWidth, (float)slider.getHeight() };
 
 		bar = bar.reduced(2.0F);
 

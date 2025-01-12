@@ -227,8 +227,8 @@ void ControlCanvas::setupHeightSlider()
 
 void ControlCanvas::setupColorChooser()
 {
-    lightingColor = customLookAndFeel->getCurrentTheme().SlideworksBaseColour;
-    colorText = lightingColor.toDisplayString(false).toLowerCase();
+    canvasColor = customLookAndFeel->getCurrentTheme().SlideworksBaseColour;
+    colorText = canvasColor.toDisplayString(false).toLowerCase();
 
     colorLabel.setComponentID("Label_ID_05_LEFT_HAND_SIDE_LIGHTING");
     colorLabel.setText("Color", juce::dontSendNotification);
@@ -236,7 +236,7 @@ void ControlCanvas::setupColorChooser()
     addAndMakeVisible(colorLabel);
 
     colorButton.setComponentID("Buttons_ID_17_COLOR_SELECTOR");
-    colorButton.setColour(juce::TextButton::buttonColourId, lightingColor);
+    colorButton.setColour(juce::TextButton::buttonColourId, canvasColor);
     colorButton.onClick = [this]()
         {
             showColorChooser();
@@ -248,6 +248,10 @@ void ControlCanvas::setupColorChooser()
     colorValue.setJustificationType(juce::Justification::centred);
     colorValue.setColour(juce::Label::textColourId, juce::Colours::black);
     colorValue.setInterceptsMouseClicks(false, false);
+    colorValue.onTextChange = [this]()  // This is called from ColourSelectorWindow.cpp when colorValue.setText() on ColourSelectorWindow::changeListenerCallback
+        {
+            canvas.setCanvasColor(colorButton.findColour(juce::TextButton::buttonColourId));
+        };
     addAndMakeVisible(colorValue);
 
     copyValueButton.setComponentID("Buttons_ID_19_COPY_COLOR");
@@ -269,9 +273,16 @@ void ControlCanvas::showColorChooser()
     }
     else
     {
-        lightingColor = colorButton.findColour(juce::TextButton::buttonColourId);
+        canvasColor = colorButton.findColour(juce::TextButton::buttonColourId);
 
-        colourSelectorWindow = std::make_unique<ColourSelectorWindow>("Canvas", lightingColor, juce::DocumentWindow::minimiseButton | juce::DocumentWindow::closeButton, colorButton, colorValue);
+        colourSelectorWindow = std::make_unique<ColourSelectorWindow>
+            (
+                "Canvas" 
+                , canvasColor
+                , juce::DocumentWindow::minimiseButton | juce::DocumentWindow::closeButton
+                , colorButton 
+                , colorValue
+            );
 
         juce::Rectangle<int> area{ 0,0,210,300 };
 
@@ -287,8 +298,6 @@ void ControlCanvas::showColorChooser()
         colourSelectorWindow->setResizable(false, !native);
         colourSelectorWindow->setUsingNativeTitleBar(native);
         colourSelectorWindow->setVisible(true);
-
-        //colourSelectorWindow->onColorChange = [this]() {};     // Change the canvas Color
     }
 }
 

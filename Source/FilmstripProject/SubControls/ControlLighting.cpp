@@ -304,7 +304,14 @@ void ControlLighting::showColorChooser()
         lightingColor = colorButton.findColour(juce::TextButton::buttonColourId);
 
         //colourSelectorWindow = std::make_unique<ColourSelectorWindow>("Lighting Color", lightingColor, juce::DocumentWindow::allButtons, colorButton, colorValue);
-        colourSelectorWindow = std::make_unique<ColourSelectorWindow>("Lighting", lightingColor, juce::DocumentWindow::minimiseButton | juce::DocumentWindow::closeButton, colorButton, colorValue);
+        colourSelectorWindow = std::make_unique<ColourSelectorWindow>
+            (
+                "Lighting"
+                , lightingColor
+                , juce::DocumentWindow::minimiseButton | juce::DocumentWindow::closeButton
+                , colorButton
+                , colorValue
+            );
         
         juce::Rectangle<int> area{ 0,0,210,300 };
         

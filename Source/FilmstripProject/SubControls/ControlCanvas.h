@@ -64,7 +64,7 @@ protected:
     juce::Label colorLabel{};
     juce::Label colorValue{};
     juce::TextButton colorButton{};
-    juce::Colour lightingColor{};
+    juce::Colour canvasColor{};
     juce::String colorText{};
     std::unique_ptr<ColourSelectorWindow> colourSelectorWindow{};
     juce::TextButton copyValueButton{};

@@ -34,6 +34,7 @@ class Canvas
 protected:
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
     FilmstripType filmstripType{};
+    juce::Colour canvasColor{};
 
     std::vector<std::unique_ptr<Asset>>& assets;                // Hold Ref Passing from FilmstripProject -> Canvas -> CanvasEdit
     std::vector<std::unique_ptr<AssetButtons>>& assetsButtons;  // Hold Ref
@@ -63,7 +64,8 @@ public:
     void mouseDown(const juce::MouseEvent& event) override;
 
     void drawBackground(juce::Graphics& g);
-    void setMode(WorkingMode mode);
+    void setCanvasColor(const juce::Colour newColor);
+    void setMode(WorkingMode newMode);
     WorkingMode getMode() const;
 
     CanvasEdit& getCanvasEdit();

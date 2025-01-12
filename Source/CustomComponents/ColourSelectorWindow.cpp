@@ -42,14 +42,14 @@ void ColourSelectorWindow::changeListenerCallback(juce::ChangeBroadcaster* sourc
 {
     if (source == &selector)
     {
-        auto color = selector.getCurrentColour();
+        this->color = selector.getCurrentColour();
         auto colorText = color.toDisplayString(false).toLowerCase();
         auto textColor = autoTextColor(color);
 
         setBackgroundColour(color);
         colorButton.setColour(juce::TextButton::buttonColourId, color);
         
-        colorValue.setText(colorText, juce::dontSendNotification);
+        colorValue.setText(colorText, juce::sendNotification);
         colorValue.setColour(juce::Label::textColourId, textColor);
     }
 }

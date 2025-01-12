@@ -24,6 +24,8 @@ protected:
     juce::TextButton& colorButton;  // Hold reference of the colorButton
     juce::Label& colorValue;        // Hold reference of the colorValue
 
+    juce::Colour color{};
+
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
     juce::Colour autoTextColor(juce::Colour& color);
 

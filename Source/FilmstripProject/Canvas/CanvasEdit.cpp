@@ -32,8 +32,8 @@ void CanvasEdit::paint(juce::Graphics& g)
 
     auto bounds = virtualCanvas;
     
-    g.setColour(juce::Colours::black.brighter());
-    g.drawRoundedRectangle(bounds.toFloat(), 0, 0.2F);
+    g.setColour(outlineColor);
+    g.drawRoundedRectangle(bounds.toFloat().reduced(0.4F), 0, 0.25F);
 
     DBG("Canvas_Edit paint : " << bounds.toString());
 
@@ -234,4 +234,17 @@ void CanvasEdit::setRealCanvasHeight(int h)
 juce::Point<int> CanvasEdit::getRealCanvasWH()
 {
     return juce::Point<int>{ realCanvas.getWidth(), realCanvas.getHeight() };
+}
+
+void CanvasEdit::setVirtualCanvasOutlineColor(const juce::Colour newColor)
+{
+    auto color = newColor;
+
+    float luminance = (0.2126F * color.getRed()) +
+        (0.7152F * color.getGreen()) +
+        (0.0722F * color.getBlue());
+
+    auto autoColor{ (luminance > 128.0F) ? juce::Colours::black : juce::Colours::white };
+
+    this->outlineColor = autoColor;
 }
