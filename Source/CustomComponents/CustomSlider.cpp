@@ -159,9 +159,12 @@ void CustomSlider::setBarWidth()
 
 void CustomSlider::calculateTheValue()
 {
-    attribute.value = ((bar.getWidth() / barBase.getWidth()) * (attribute.range.max - attribute.range.min) + attribute.range.min);
-    attribute.valueText = juce::String(juce::roundToInt(attribute.value)) + attribute.postfix;
-    attribute.valueLabel.setText(juce::String(juce::roundToInt(attribute.value)), juce::dontSendNotification);
+    auto newValue = static_cast<int>((bar.getWidth() / barBase.getWidth()) * (attribute.range.max - attribute.range.min) + attribute.range.min);
+
+    attribute.value = newValue;
+    attribute.valueText = juce::String(newValue) + attribute.postfix;
+    attribute.valueLabel.setText(attribute.valueText, juce::dontSendNotification);
+    
 }
 
 void CustomSlider::setFont(const juce::Font& font)
@@ -243,9 +246,7 @@ void CustomSlider::setupLabel()
             newText = juce::String(newVal);
 
             attribute.value = newVal;
-
             attribute.valueLabel.setText(newText, juce::dontSendNotification);
-
             attribute.valueText = newText + attribute.postfix;
 
             attribute.valueLabel.setEnabled(false);
@@ -253,6 +254,8 @@ void CustomSlider::setupLabel()
 
             setBarWidth();
 
+            if (onValueChange)
+                onValueChange();
         };
 
     // FOR LOST FOCUS

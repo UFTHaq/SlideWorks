@@ -70,7 +70,7 @@ public:
 
     void setRealCanvasWidth(int w);
     void setRealCanvasHeight(int h);
-    juce::Point<int> getRealCanvasWH();
+    juce::Point<int> getRealCanvasWH() const;
     void setVirtualCanvasOutlineColor(const juce::Colour newColor);
 
     // Make drag system based on mouseDown?

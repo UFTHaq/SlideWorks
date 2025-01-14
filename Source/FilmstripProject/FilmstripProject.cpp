@@ -25,7 +25,7 @@ FilmstripProject::FilmstripProject
     , controlLighting(type)
     , controlCanvas(type, canvas)
     , subControls(type, controlSliderStyle, controlLighting, controlCanvas)
-    , footer(type)
+    , footer(type, mainControls, controlCanvas)
 {
 
     setupLayout(baseWorkspace);

@@ -99,4 +99,6 @@ public:
 
     double getValueWidth() const;
     double getValueHeight() const;
+
+    std::function<void()> onSizeChangeForFooter{};
 };

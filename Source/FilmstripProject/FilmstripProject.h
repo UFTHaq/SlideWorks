@@ -48,13 +48,14 @@ protected:
 
     MainControls mainControls;             // Default Declaration
     Canvas canvas;                         // Default Declaration
-    Footer footer;                         // Default Declaration
 
     ControlSliderStyle controlSliderStyle; // Default Declaration
     ControlLighting controlLighting;       // Default Declaration
     ControlCanvas controlCanvas;           // Default Declaration
 
     SubControls subControls;               // Default Declaration
+
+    Footer footer;                         // Default Declaration
 
     //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(New_FilmstripProject)
 public:

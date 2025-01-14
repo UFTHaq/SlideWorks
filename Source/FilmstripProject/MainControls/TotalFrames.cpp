@@ -99,6 +99,9 @@ void TotalFrames::setupTotalFramesControl()
         {
             auto value = int(totalFrames.getValue());
             totalFrames_Label.setText(juce::String(value), juce::dontSendNotification);
+
+            if (onSizeChange)
+                onSizeChange();
         };
     addAndMakeVisible(totalFrames);
 

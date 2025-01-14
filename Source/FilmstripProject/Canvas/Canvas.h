@@ -68,6 +68,8 @@ public:
     void setMode(WorkingMode newMode);
     WorkingMode getMode() const;
 
+    void setupCanvasEdit();
+
     CanvasEdit& getCanvasEdit();
     CanvasPreview& getCanvasPreview();
     CanvasSimulation& getCanvasSimulation();

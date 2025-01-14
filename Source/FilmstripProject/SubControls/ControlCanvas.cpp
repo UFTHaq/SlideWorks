@@ -191,6 +191,9 @@ void ControlCanvas::setupWidthSlider()
 
             }
 
+            if (onSizeChangeForFooter)
+                onSizeChangeForFooter();
+
         };
     addAndMakeVisible(width);
 }
@@ -221,6 +224,9 @@ void ControlCanvas::setupHeightSlider()
             {
 
             }
+
+            if (onSizeChangeForFooter)
+                onSizeChangeForFooter();
         };
     addAndMakeVisible(height);
 }

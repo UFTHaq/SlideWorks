@@ -50,6 +50,8 @@ MainControls::MainControls
     addAndMakeVisible(orientationControl);
     addAndMakeVisible(totalFramesControl);
     addAndMakeVisible(assetsManager);
+
+    setupControlsCallback();
 }
 
 MainControls::~MainControls()
@@ -167,6 +169,21 @@ ThumbPositions& MainControls::getThumbControls()
     return thumbControls;
 }
 
+Canvas& MainControls::getCanvas()
+{
+    return canvas;
+}
+
+SubControls& MainControls::getSubControls()
+{
+    return subControls;
+}
+
+int MainControls::getTotalFrames() const
+{
+    return totalFramesControl.getTotalFrames();
+}
+
 void MainControls::resetCurrentTheme()
 {
     totalFramesControl.resetCurrentTheme();
@@ -178,4 +195,13 @@ void MainControls::resetCurrentTheme()
 
     //assetsManager.resetCurrentTheme();
     //orientationControl.resetCurrentTheme();
+}
+
+void MainControls::setupControlsCallback()
+{
+    totalFramesControl.onSizeChange = [this]()
+        {
+            if (onSizeChangeForFooter)
+                onSizeChangeForFooter();
+        };
 }

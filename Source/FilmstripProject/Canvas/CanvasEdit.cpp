@@ -35,7 +35,7 @@ void CanvasEdit::paint(juce::Graphics& g)
     g.setColour(outlineColor);
     g.drawRoundedRectangle(bounds.toFloat().reduced(0.4F), 0, 0.25F);
 
-    DBG("Canvas_Edit paint : " << bounds.toString());
+    //DBG("Canvas_Edit paint : " << bounds.toString());
 
     // Iterate backwards
     for (auto it = assets.rbegin(); it != assets.rend(); it++)
@@ -139,7 +139,7 @@ void CanvasEdit::calculateVirtualConstraint()
         canvasConstraint = area;
     }
 
-    DBG("Canvas_Edit setup : " << canvasConstraint.toString());
+    //DBG("Canvas_Edit setup : " << canvasConstraint.toString());
 
     // TODO:
     // - constraint if project is Slider, and if vertical or horizontal
@@ -214,7 +214,7 @@ void CanvasEdit::setRealCanvasWidth(int w)
     calculateScaleFactor();
 
     calculateVirtualCanvas();
-
+    
     repaint();
 }
 
@@ -231,7 +231,7 @@ void CanvasEdit::setRealCanvasHeight(int h)
     repaint();
 }
 
-juce::Point<int> CanvasEdit::getRealCanvasWH()
+juce::Point<int> CanvasEdit::getRealCanvasWH() const
 {
     return juce::Point<int>{ realCanvas.getWidth(), realCanvas.getHeight() };
 }

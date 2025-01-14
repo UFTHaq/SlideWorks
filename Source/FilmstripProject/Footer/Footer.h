@@ -15,6 +15,8 @@
 #include "../Source/Globals.h"
 #include "../Source/EnumClass.h"
 #include "../Source/CustomComponents/CustomLookAndFeel.h"
+#include "../Source/FilmstripProject/MainControls/MainControls.h"
+#include "../Source/FilmstripProject/SubControls/ControlCanvas.h"
 
 class Footer
     : public juce::Component
@@ -22,6 +24,9 @@ class Footer
 protected:
     std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
     FilmstripType filmstripType{};
+
+    MainControls& mainControls;        // Hold Ref
+    ControlCanvas& controlCanvas;      // Hold Ref
 
     juce::Rectangle<int> bounds{};
     juce::String text{};
@@ -39,7 +44,7 @@ protected:
     juce::Font font{ juce::FontOptions{} };
 
 public:
-    Footer(const FilmstripType& type);
+    Footer(const FilmstripType& type, MainControls& mainControls, ControlCanvas& controlCanvas);
     ~Footer();
 
     void paint(juce::Graphics& g) override;
@@ -48,6 +53,11 @@ public:
     void setupDate();
 
     void drawBackground(juce::Graphics& g);
+
+    void setupSizeControlsCallback();
+    juce::String formatWithDots(juce::String textSizeTotalPixel);
+    juce::String updateSizingText();
+
     void drawRecomendedSize(juce::Graphics& g);
     void drawProjectSize(juce::Graphics& g);
     void drawNotification(juce::Graphics& g);

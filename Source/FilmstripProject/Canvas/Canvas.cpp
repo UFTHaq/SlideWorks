@@ -26,8 +26,8 @@ Canvas::Canvas
 {
 	setMode(mode);
 	canvasColor = customLookAndFeel->getCurrentTheme().SlideworksBaseColour;
-	addAndMakeVisible(canvasEdit);
-	canvasEdit.setInterceptsMouseClicks(false, true);
+
+	setupCanvasEdit();
 }
 
 Canvas::~Canvas()
@@ -134,6 +134,11 @@ WorkingMode Canvas::getMode() const
 	return mode;
 }
 
+void Canvas::setupCanvasEdit()
+{
+	canvasEdit.setInterceptsMouseClicks(false, true);
+	addAndMakeVisible(canvasEdit);
+}
 
 CanvasEdit& Canvas::getCanvasEdit()
 {

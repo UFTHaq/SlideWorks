@@ -51,4 +51,6 @@ public:
     void setColourTotalFrames();
 
     void resetCurrentTheme();
+
+    std::function<void()> onSizeChange{};
 };

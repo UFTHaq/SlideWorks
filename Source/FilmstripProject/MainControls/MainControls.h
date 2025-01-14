@@ -85,5 +85,13 @@ public:
     KnobAngles& getAnglesControls();
     ThumbPositions& getThumbControls();
 
+    Canvas& getCanvas();
+    SubControls& getSubControls();
+
+    int getTotalFrames() const;
+
     void resetCurrentTheme();
+
+    void setupControlsCallback();
+    std::function<void()> onSizeChangeForFooter{};
 };

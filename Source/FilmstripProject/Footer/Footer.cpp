@@ -10,13 +10,22 @@
 
 #include "Footer.h"
 
-Footer::Footer(const FilmstripType& type)
+Footer::Footer
+(
+    const FilmstripType& type
+    , MainControls& mainControls
+    , ControlCanvas& controlCanvas
+)
     : filmstripType(type)
+    , mainControls(mainControls)
+    , controlCanvas(controlCanvas)
     , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
     font = customLookAndFeel->getFontRobotoCondensedRegular().withHeight(14.0F);
     
     setupDate();
+
+    setupSizeControlsCallback();
 }
 
 Footer::~Footer()
@@ -80,9 +89,68 @@ void Footer::drawRecomendedSize(juce::Graphics& g)
     g.drawText(text, area.toFloat(), juce::Justification::centredLeft);
 }
 
+void Footer::setupSizeControlsCallback()
+{
+    mainControls.onSizeChangeForFooter = [this]()
+        {
+            projectSizeStr = updateSizingText();
+            repaint();
+        };
+
+    controlCanvas.onSizeChangeForFooter = [this]()
+        {
+            projectSizeStr = updateSizingText();
+            repaint();
+        };
+}
+
+juce::String Footer::formatWithDots(juce::String textSizeTotalPixel)
+{
+    std::string inputText{ textSizeTotalPixel.toStdString() };
+    std::string outputText{};
+    int countDigit{};
+
+    for (size_t i = inputText.length(); i > 0; --i)
+    {
+        outputText.insert(outputText.begin(), inputText.at(i - 1));
+        countDigit++;
+
+        if (countDigit == 3 && i != 0)
+        {
+            outputText.insert(outputText.begin(), '.');
+            countDigit = 0;
+        }
+    }
+
+    return outputText;
+}
+
+juce::String Footer::updateSizingText()
+{
+    auto totalFrames = mainControls.getTotalFrames();
+    auto canvasW = mainControls.getCanvas().getCanvasEdit().getRealCanvasWH().getX();
+    auto canvasH = mainControls.getCanvas().getCanvasEdit().getRealCanvasWH().getY();
+    auto sizeTotalPixel = totalFrames * canvasW * canvasH;
+    auto sizeInMegaPixel = (double)sizeTotalPixel / 1000000;
+
+    auto textTotalFrames = juce::String{ totalFrames };
+    auto textCanvasW = juce::String{ canvasW };
+    auto textCanvasH = juce::String{ canvasH };
+    auto textSizeTotalPixel = juce::String{ sizeTotalPixel };
+    auto textSizeInMegaPixel = juce::String{ sizeInMegaPixel, 1 };    // One digit
+
+    textSizeTotalPixel = formatWithDots(textSizeTotalPixel);
+
+    juce::String processedText = "Size : " + textCanvasW + " X " + textCanvasH + " X " + textTotalFrames +
+        " = " + textSizeTotalPixel + " PX " + "= " + textSizeInMegaPixel + " MB";
+
+    return processedText;
+}
+
 void Footer::drawProjectSize(juce::Graphics& g)
 {
     text = projectSizeStr;
+
     auto area = projectSize;
 
     g.setFont(font);
