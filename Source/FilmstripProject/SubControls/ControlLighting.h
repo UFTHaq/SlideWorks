@@ -25,7 +25,7 @@
 
 #include "../Source/CustomComponents/CustomGroupComponent.h"
 #include "../Source/CustomComponents/CustomLookAndFeel.h"
-#include "../Source/CustomComponents/ColourSelectorWindow.h"
+#include "../Source/CustomComponents/CustomColourSelectorWindow.h"
 #include "../Source/EnumClass.h"
 #include "../Source/Globals.h"
 
@@ -57,7 +57,7 @@ protected:
     juce::TextButton colorButton{};
     juce::Colour lightingColor{};
     juce::String colorText{};
-    std::unique_ptr<ColourSelectorWindow> colourSelectorWindow{};
+    std::unique_ptr<CustomColourSelectorWindow> colourSelectorWindow{};
     juce::TextButton copyValueButton{};
 
     juce::Slider intensity{};

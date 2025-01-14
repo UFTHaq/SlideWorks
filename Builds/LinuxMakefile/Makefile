@@ -77,7 +77,8 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/Globals_d339a991.o \
   $(JUCE_OBJDIR)/CustomLookAndFeel_2998348e.o \
   $(JUCE_OBJDIR)/CustomGroupComponent_fa1fe6b8.o \
-  $(JUCE_OBJDIR)/ColourSelectorWindow_2db52b44.o \
+  $(JUCE_OBJDIR)/CustomColourSelectorWindow_4813b0d5.o \
+  $(JUCE_OBJDIR)/CustomColourSelector_f3673cc5.o \
   $(JUCE_OBJDIR)/CustomSlider_288445db.o \
   $(JUCE_OBJDIR)/Asset_98d2d92f.o \
   $(JUCE_OBJDIR)/FilmstripProject_43b5fed0.o \
@@ -157,9 +158,14 @@ $(JUCE_OBJDIR)/CustomGroupComponent_fa1fe6b8.o: ../../Source/CustomComponents/Cu
 	@echo "Compiling CustomGroupComponent.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/ColourSelectorWindow_2db52b44.o: ../../Source/CustomComponents/ColourSelectorWindow.cpp
+$(JUCE_OBJDIR)/CustomColourSelectorWindow_4813b0d5.o: ../../Source/CustomComponents/CustomColourSelectorWindow.cpp
 	-$(V_AT)mkdir -p $(@D)
-	@echo "Compiling ColourSelectorWindow.cpp"
+	@echo "Compiling CustomColourSelectorWindow.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/CustomColourSelector_f3673cc5.o: ../../Source/CustomComponents/CustomColourSelector.cpp
+	-$(V_AT)mkdir -p $(@D)
+	@echo "Compiling CustomColourSelector.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/CustomSlider_288445db.o: ../../Source/CustomComponents/CustomSlider.cpp

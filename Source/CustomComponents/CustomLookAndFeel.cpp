@@ -143,6 +143,8 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 	(void)icon;
 	(void)drawTitleTextOnLeft;
 
+	juce::String ID = window.getComponentID();
+
 	//auto isActive = window.isActiveWindow();
 
 	if (Globals::repaintTitleBar == true)
@@ -155,17 +157,21 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 	if (w * h == 0) return;
 
 	// Coloring the title bar
-	//g.fillAll(getColorTitleBar());
 	g.fillAll(getCurrentTheme().TitleBar);
 
 	// Draw and coloring the title text
-	//g.setColour(getColorFontTitleBar());
 	g.setColour(getCurrentTheme().FontTitleBar);
-	//g.setFont(getFontRobotoMono().withHeight(getFontSizeTitle()));
-	g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeTitle()));
-	//g.drawText(window.getName(), juce::Rectangle{ 0, 0, w, h }.toFloat(), juce::Justification::centred, true);
-	g.drawText(window.getName().toUpperCase(), juce::Rectangle{0, 0, w, h}.toFloat(), juce::Justification::centred, true);
-	//g.drawText(window.getName().toUpperCase(), juce::Rectangle{10, 0, w-10, h}.toFloat(), juce::Justification::centredLeft, true);
+
+	if (ID == "WINDOW_LIGHTING" || ID == "WINDOW_CANVAS")
+	{
+		g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeTitle() - 3));
+		g.drawText(window.getName().toUpperCase(), juce::Rectangle{11, 0, w-11, h}.toFloat(), juce::Justification::centredLeft, true);
+	}
+	else 
+	{
+		g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeTitle()));
+		g.drawText(window.getName().toUpperCase(), juce::Rectangle{ 0, 0, w, h }.toFloat(), juce::Justification::centred, true);
+	}
 }
 
 void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour& backgroundColor, bool shouldDrawButtonAsHighlighted, bool shouldDrawButtonAsDown)
@@ -931,6 +937,65 @@ void CustomLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 		g.setColour(getCurrentTheme().FontBlack);
 		g.drawText(text, slider.getLocalBounds().toFloat(), juce::Justification::centred);
 	}
+	else if (ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_R" ||
+		     ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_G" ||
+		     ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_B" )
+	{
+		// Draw track
+		float trackHeight = float(height * 1.F);
+		float thumbSizeW = float(trackHeight * 0.7F);
+		float pad = float(trackHeight * 0.10F);
+
+		auto track = juce::Rectangle<float>{ x - (thumbSizeW / 2) - pad, float(y), width + (pad * 2) + thumbSizeW, float(height) };
+
+		juce::Colour leftColor{};
+		juce::Colour rightColor{};
+
+		if (ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_R")
+		{
+			auto color1 = juce::Colours::green.brighter(0.1F);
+			auto color2 = juce::Colours::blue.brighter(0.1F);
+			float blendFactor = 0.5F;
+
+			leftColor = color1.interpolatedWith(color2, blendFactor);
+			rightColor = juce::Colours::red.brighter(0.1F);
+		}
+		else if (ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_G")
+		{
+			auto color1 = juce::Colours::red.brighter(0.1F);
+			auto color2 = juce::Colours::blue.brighter(0.1F);
+			float blendFactor = 0.5F;
+
+			leftColor = color1.interpolatedWith(color2, blendFactor);
+			rightColor = juce::Colours::green.brighter(0.1F);
+		}
+		else if (ID == "Slider_ID_04_COLOUR_SELECTOR_SLIDERS_B")
+		{
+			auto color1 = juce::Colours::red.brighter(0.1F);
+			auto color2 = juce::Colours::green.brighter(0.1F);
+			float blendFactor = 0.5F;
+
+			leftColor = color1.interpolatedWith(color2, blendFactor);
+			rightColor = juce::Colours::blue.brighter(0.1F);
+		}
+
+		auto rounded = trackHeight * 0.25F;
+		g.setGradientFill(juce::ColourGradient::horizontal(leftColor, rightColor, track));
+		g.fillRoundedRectangle(track.reduced(1), rounded);
+		g.setColour(juce::Colours::whitesmoke);
+		g.drawRoundedRectangle(track.reduced(1), rounded, 0.4F);
+
+		// Draw thumb
+		float thumbWidth = thumbSizeW;
+		//float thumbHeight = thumbSizeW;
+		float thumbHeight = float(trackHeight * 0.8F);
+		float thumbX = float(sliderPos - (thumbWidth / 2));
+		auto thumb = juce::Rectangle<float>{ thumbX, y + ((height - thumbHeight) / 2), thumbWidth, thumbHeight };
+
+		g.setColour(juce::Colours::whitesmoke);
+		//g.drawEllipse(thumb.reduced(2), 1.5F);
+		g.drawRoundedRectangle(thumb.reduced(2.5F), rounded * 0.45F, 1.5F);
+	}
 
 }
 
@@ -1070,6 +1135,13 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	{
 		font = getFontRobotoCondensedRegular().withHeight(16.0F);
 		//textColour = label.findColour(juce::Label::textColourId);
+	}
+	else if (ID == "Label_ID_07_RGBA")
+	{
+	}
+	else if (ID == "Label_ID_07_RGBA_EDIT")
+	{
+		outlineColour = label.findColour(juce::Label::outlineColourId);
 	}
 
 	g.setColour(label.findColour(juce::Label::backgroundColourId));

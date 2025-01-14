@@ -33,7 +33,7 @@
 #include "../Source/EnumClass.h"
 #include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/CustomComponents/CustomGroupComponent.h"
-#include "../Source/CustomComponents/ColourSelectorWindow.h"
+#include "../Source/CustomComponents/CustomColourSelectorWindow.h"
 #include "../Source/CustomComponents/CustomSlider.h"
 
 #include "../Source/FilmstripProject/Canvas/Canvas.h"
@@ -66,7 +66,7 @@ protected:
     juce::TextButton colorButton{};
     juce::Colour canvasColor{};
     juce::String colorText{};
-    std::unique_ptr<ColourSelectorWindow> colourSelectorWindow{};
+    std::unique_ptr<CustomColourSelectorWindow> colourSelectorWindow{};
     juce::TextButton copyValueButton{};
 
 

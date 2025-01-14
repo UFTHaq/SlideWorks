@@ -275,7 +275,7 @@ void ControlCanvas::showColorChooser()
     {
         canvasColor = colorButton.findColour(juce::TextButton::buttonColourId);
 
-        colourSelectorWindow = std::make_unique<ColourSelectorWindow>
+        colourSelectorWindow = std::make_unique<CustomColourSelectorWindow>
             (
                 "Canvas" 
                 , canvasColor
@@ -284,7 +284,7 @@ void ControlCanvas::showColorChooser()
                 , colorValue
             );
 
-        juce::Rectangle<int> area{ 0,0,210,300 };
+        juce::Rectangle<int> area{ 0,0,210,310 };
 
         juce::RectanglePlacement placement{ (native ? juce::RectanglePlacement::xLeft : juce::RectanglePlacement::xRight)
                                             | juce::RectanglePlacement::yMid
@@ -298,6 +298,7 @@ void ControlCanvas::showColorChooser()
         colourSelectorWindow->setResizable(false, !native);
         colourSelectorWindow->setUsingNativeTitleBar(native);
         colourSelectorWindow->setVisible(true);
+        colourSelectorWindow->setComponentID("WINDOW_CANVAS");
     }
 }
 

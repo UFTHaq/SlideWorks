@@ -379,7 +379,10 @@
     <ClCompile Include="..\..\Source\CustomComponents\CustomGroupComponent.cpp">
       <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\CustomComponents\ColourSelectorWindow.cpp">
+    <ClCompile Include="..\..\Source\CustomComponents\CustomColourSelectorWindow.cpp">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomColourSelector.cpp">
       <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\CustomComponents\CustomSlider.cpp">
@@ -2349,7 +2352,10 @@
     <ClInclude Include="..\..\Source\CustomComponents\CustomGroupComponent.h">
       <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\CustomComponents\ColourSelectorWindow.h">
+    <ClInclude Include="..\..\Source\CustomComponents\CustomColourSelectorWindow.h">
+      <Filter>SlideWorks\Source\CustomComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomColourSelector.h">
       <Filter>SlideWorks\Source\CustomComponents</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\CustomComponents\CustomSlider.h">

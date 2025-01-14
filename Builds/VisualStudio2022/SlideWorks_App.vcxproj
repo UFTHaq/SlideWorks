@@ -146,7 +146,8 @@
     <ClCompile Include="..\..\Source\Globals.cpp"/>
     <ClCompile Include="..\..\Source\CustomComponents\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\CustomComponents\CustomGroupComponent.cpp"/>
-    <ClCompile Include="..\..\Source\CustomComponents\ColourSelectorWindow.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomColourSelectorWindow.cpp"/>
+    <ClCompile Include="..\..\Source\CustomComponents\CustomColourSelector.cpp"/>
     <ClCompile Include="..\..\Source\CustomComponents\CustomSlider.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\Asset.cpp"/>
     <ClCompile Include="..\..\Source\FilmstripProject\FilmstripProject.cpp"/>
@@ -1913,7 +1914,8 @@
     <ClInclude Include="..\..\Source\CustomComponents\Easing.h"/>
     <ClInclude Include="..\..\Source\CustomComponents\CustomLookAndFeel.h"/>
     <ClInclude Include="..\..\Source\CustomComponents\CustomGroupComponent.h"/>
-    <ClInclude Include="..\..\Source\CustomComponents\ColourSelectorWindow.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomColourSelectorWindow.h"/>
+    <ClInclude Include="..\..\Source\CustomComponents\CustomColourSelector.h"/>
     <ClInclude Include="..\..\Source\CustomComponents\CustomSlider.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\Asset.h"/>
     <ClInclude Include="..\..\Source\FilmstripProject\FilmstripProject.h"/>

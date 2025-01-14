@@ -8,9 +8,9 @@
   ==============================================================================
 */
 
-#include "ColourSelectorWindow.h"
+#include "CustomColourSelectorWindow.h"
 
-ColourSelectorWindow::ColourSelectorWindow
+CustomColourSelectorWindow::CustomColourSelectorWindow
 (
     const juce::String& name 
     , juce::Colour backgroundColor
@@ -21,24 +21,31 @@ ColourSelectorWindow::ColourSelectorWindow
     : juce::DocumentWindow(name, backgroundColor, buttonsNeeded)
     , colorButton(colorButton)
     , colorValue(colorValue)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
+    setTitleBarHeight(30);
+    setLookAndFeel(customLookAndFeel.get());
+
+    selector.setMainHEXFont(customLookAndFeel->getFontRobotoCondensedBold().withHeight(17.F));
+    selector.setRGBFont(customLookAndFeel->getFontRobotoCondensedBold().withHeight(16.0F));
+
     selector.setCurrentColour(backgroundColor);
-    selector.setColour(juce::ColourSelector::backgroundColourId, juce::Colours::transparentWhite);
+    selector.setColour(CustomColourSelector::backgroundColourId, juce::Colours::transparentWhite);
     selector.addChangeListener(this);
     setContentOwned(&selector, false);
 }
 
-ColourSelectorWindow::~ColourSelectorWindow()
+CustomColourSelectorWindow::~CustomColourSelectorWindow()
 {
     selector.removeChangeListener(this);
 }
 
-void ColourSelectorWindow::closeButtonPressed()
+void CustomColourSelectorWindow::closeButtonPressed()
 {
     setVisible(false);
 }
 
-void ColourSelectorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
+void CustomColourSelectorWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
 {
     if (source == &selector)
     {
@@ -47,6 +54,8 @@ void ColourSelectorWindow::changeListenerCallback(juce::ChangeBroadcaster* sourc
         auto textColor = autoTextColor(color);
 
         setBackgroundColour(color);
+        selector.setColour(CustomColourSelector::backgroundColourId, color);
+
         colorButton.setColour(juce::TextButton::buttonColourId, color);
         
         colorValue.setText(colorText, juce::sendNotification);
@@ -54,7 +63,7 @@ void ColourSelectorWindow::changeListenerCallback(juce::ChangeBroadcaster* sourc
     }
 }
 
-juce::Colour ColourSelectorWindow::autoTextColor(juce::Colour& color)
+juce::Colour CustomColourSelectorWindow::autoTextColor(juce::Colour& color)
 {
     float luminance = (0.2126F * color.getRed()) +
         (0.7152F * color.getGreen()) +

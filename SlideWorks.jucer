@@ -45,10 +45,14 @@
               file="Source/CustomComponents/CustomGroupComponent.cpp"/>
         <FILE id="Eyavea" name="CustomGroupComponent.h" compile="0" resource="0"
               file="Source/CustomComponents/CustomGroupComponent.h"/>
-        <FILE id="C6sCv4" name="ColourSelectorWindow.cpp" compile="1" resource="0"
-              file="Source/CustomComponents/ColourSelectorWindow.cpp"/>
-        <FILE id="fScmUW" name="ColourSelectorWindow.h" compile="0" resource="0"
-              file="Source/CustomComponents/ColourSelectorWindow.h"/>
+        <FILE id="ztb4Xf" name="CustomColourSelectorWindow.cpp" compile="1"
+              resource="0" file="Source/CustomComponents/CustomColourSelectorWindow.cpp"/>
+        <FILE id="TSTfdx" name="CustomColourSelectorWindow.h" compile="0" resource="0"
+              file="Source/CustomComponents/CustomColourSelectorWindow.h"/>
+        <FILE id="bfu8gK" name="CustomColourSelector.cpp" compile="1" resource="0"
+              file="Source/CustomComponents/CustomColourSelector.cpp"/>
+        <FILE id="QjVp4S" name="CustomColourSelector.h" compile="0" resource="0"
+              file="Source/CustomComponents/CustomColourSelector.h"/>
         <FILE id="iSw3aH" name="CustomSlider.cpp" compile="1" resource="0"
               file="Source/CustomComponents/CustomSlider.cpp"/>
         <FILE id="O2IySE" name="CustomSlider.h" compile="0" resource="0" file="Source/CustomComponents/CustomSlider.h"/>

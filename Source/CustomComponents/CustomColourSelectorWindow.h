@@ -12,34 +12,46 @@
 
 #include <JuceHeader.h>
 
-class ColourSelectorWindow final
+#include "CustomLookAndFeel.h"
+#include "../Source/Globals.h"
+#include "CustomColourSelector.h"
+
+class CustomColourSelectorWindow final
     : public juce::DocumentWindow
     , private juce::ChangeListener
 {
 protected:
-    juce::ColourSelector selector{ juce::ColourSelector::showColourAtTop
-                                 | juce::ColourSelector::showSliders
-                                 | juce::ColourSelector::showColourspace };
+    CustomColourSelector selector{ CustomColourSelector::showColourAtTop
+                                       | CustomColourSelector::showSliders
+                                       | CustomColourSelector::showColourspace };
+
+    //juce::ColourSelector selector{ juce::ColourSelector::showColourAtTop
+    //                             | juce::ColourSelector::showSliders
+    //                             | juce::ColourSelector::showColourspace };
 
     juce::TextButton& colorButton;  // Hold reference of the colorButton
     juce::Label& colorValue;        // Hold reference of the colorValue
+
+    std::shared_ptr<CustomLookAndFeel> customLookAndFeel{};
 
     juce::Colour color{};
 
     void changeListenerCallback(juce::ChangeBroadcaster* source) override;
     juce::Colour autoTextColor(juce::Colour& color);
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ColourSelectorWindow)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomColourSelectorWindow)
 
 public:
-    ColourSelectorWindow(
+    CustomColourSelectorWindow(
         const juce::String& name 
         , juce::Colour backgroundColor
         , int buttonsNeeded
         , juce::TextButton& colorButton
         , juce::Label& colorValue
     );
-    ~ColourSelectorWindow() override;
+    ~CustomColourSelectorWindow() override;
 
     void closeButtonPressed() override;
 };  
+
+// TODO: CUSTOM JUCE::COLOURSELECTOR

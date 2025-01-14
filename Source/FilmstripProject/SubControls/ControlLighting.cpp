@@ -304,7 +304,7 @@ void ControlLighting::showColorChooser()
         lightingColor = colorButton.findColour(juce::TextButton::buttonColourId);
 
         //colourSelectorWindow = std::make_unique<ColourSelectorWindow>("Lighting Color", lightingColor, juce::DocumentWindow::allButtons, colorButton, colorValue);
-        colourSelectorWindow = std::make_unique<ColourSelectorWindow>
+        colourSelectorWindow = std::make_unique<CustomColourSelectorWindow>
             (
                 "Lighting"
                 , lightingColor
@@ -313,7 +313,7 @@ void ControlLighting::showColorChooser()
                 , colorValue
             );
         
-        juce::Rectangle<int> area{ 0,0,210,300 };
+        juce::Rectangle<int> area{ 0,0,210,310 };
         
         juce::RectanglePlacement placement{ (native ? juce::RectanglePlacement::xLeft : juce::RectanglePlacement::xRight)
                                             | juce::RectanglePlacement::yMid 
@@ -327,6 +327,7 @@ void ControlLighting::showColorChooser()
         colourSelectorWindow->setResizable(false, !native);
         colourSelectorWindow->setUsingNativeTitleBar(native);
         colourSelectorWindow->setVisible(true);
+        colourSelectorWindow->setComponentID("WINDOW_LIGHTING");
     }
 }
 
