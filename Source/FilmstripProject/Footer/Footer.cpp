@@ -115,7 +115,7 @@ juce::String Footer::formatWithDots(juce::String textSizeTotalPixel)
         outputText.insert(outputText.begin(), inputText.at(i - 1));
         countDigit++;
 
-        if (countDigit == 3 && i != 0)
+        if (countDigit == 3 && i != 1)
         {
             outputText.insert(outputText.begin(), '.');
             countDigit = 0;

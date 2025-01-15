@@ -214,9 +214,27 @@ void CustomSlider::setRange(double min, double max, double interval)
     this->attribute.range.interval = interval;
 }
 
+double CustomSlider::getMinRange() const
+{
+    return attribute.range.min;
+}
+
+double CustomSlider::getMaxRange() const
+{
+    return attribute.range.max;
+}
+
+double CustomSlider::getInterval() const
+{
+    return attribute.range.interval;
+}
+
 void CustomSlider::setValue(double value)
 {
     this->attribute.value = value;
+
+    setBarWidth();
+    repaint();
 }
 
 double CustomSlider::getValue() const

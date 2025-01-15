@@ -160,6 +160,14 @@ void ControlCanvas::setupLockRatio()
     lockRatio.onClick = [this]()
         {
             lockRatio.setToggleState(!lockRatio.getToggleState(), juce::dontSendNotification);
+
+            if (lockRatio.getToggleState() == true)
+            {
+                ratio = Ratio { 
+                    (int)width.getValue(),
+                    (int)height.getValue()
+                };
+            }
         };
     addAndMakeVisible(lockRatio);
 }
@@ -188,7 +196,47 @@ void ControlCanvas::setupWidthSlider()
                 canvas.getCanvasEdit().setRealCanvasWidth(static_cast<int>(width.getValue()));
             else
             {
+                int newValueW = (int)width.getValue();
+                int newValueH = int((double)newValueW / ratio.w * ratio.h);
 
+                int minValueW = (int)width.getMinRange();
+                int maxValueW = (int)width.getMaxRange();
+
+                int minValueH = (int)height.getMinRange();
+                int maxValueH = (int)height.getMaxRange();
+
+                if (ratio.h > ratio.w)
+                {
+                    if (newValueW < minValueW)
+                    {
+                        newValueW = minValueW;
+                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                    }
+                    else if (newValueH > maxValueH)
+                    {
+                        newValueH = maxValueH;
+                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                    }
+                }
+                else
+                {
+                    if (newValueH < minValueH)
+                    {
+                        newValueH = minValueH;
+                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                    }
+                    else if (newValueW > maxValueW)
+                    {
+                        newValueW = maxValueW;
+                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                    }
+                }
+
+                height.setValue(newValueH);
+                width.setValue(newValueW);
+
+                canvas.getCanvasEdit().setRealCanvasHeight(newValueH);
+                canvas.getCanvasEdit().setRealCanvasWidth(newValueW);
             }
 
             if (onSizeChangeForFooter)
@@ -222,7 +270,47 @@ void ControlCanvas::setupHeightSlider()
                 canvas.getCanvasEdit().setRealCanvasHeight(static_cast<int>(height.getValue()));
             else
             {
+                int newValueH = (int)height.getValue();
+                int newValueW = int((double)newValueH * ratio.w / ratio.h);
 
+                int minValueW = (int)width.getMinRange();
+                int maxValueW = (int)width.getMaxRange();
+
+                int minValueH = (int)height.getMinRange();
+                int maxValueH = (int)height.getMaxRange();
+
+                if (ratio.h > ratio.w)
+                {
+                    if (newValueW < minValueW)
+                    {
+                        newValueW = minValueW;
+                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                    } 
+                    else if (newValueH > maxValueH)
+                    {
+                        newValueH = maxValueH;
+                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                    }
+                }
+                else
+                {
+                    if (newValueH < minValueH)
+                    {
+                        newValueH = minValueH;
+                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                    }
+                    else if (newValueW > maxValueW)
+                    {
+                        newValueW = maxValueW;
+                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                    }
+                }
+
+                height.setValue(newValueH);
+                width.setValue(newValueW);
+
+                canvas.getCanvasEdit().setRealCanvasHeight(newValueH);
+                canvas.getCanvasEdit().setRealCanvasWidth(newValueW);
             }
 
             if (onSizeChangeForFooter)

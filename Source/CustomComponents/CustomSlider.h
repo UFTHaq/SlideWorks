@@ -85,6 +85,10 @@ public:
 
     void setPostfix(const juce::String& unit);
     void setRange(double min, double max, double interval);
+    double getMinRange() const;
+    double getMaxRange() const;
+    double getInterval() const;
+
     void setValue(double value);
     double getValue() const;
 

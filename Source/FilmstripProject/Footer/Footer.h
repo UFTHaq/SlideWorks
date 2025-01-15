@@ -35,7 +35,7 @@ protected:
     juce::String recomendedSizeStr{ "Recomended size : 5 to 8 MB" };
 
     juce::Rectangle<int> projectSize{};
-    juce::String projectSizeStr{ "Size : 300 x 300 x 121 = 10.890.000 PX = 10.8 MB" };
+    juce::String projectSizeStr{};
     juce::Rectangle<int> notification{};
     juce::String notificationStr{ "Still Okay" };
     juce::Rectangle<int> date{};

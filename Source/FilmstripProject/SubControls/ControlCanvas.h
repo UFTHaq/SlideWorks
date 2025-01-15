@@ -54,6 +54,12 @@ protected:
 
     juce::Label lockLabel{};
     juce::TextButton lockRatio{};
+    struct Ratio
+    {
+        int w{};
+        int h{};
+    };
+    Ratio ratio{};
 
     juce::Label widthLabel{};
     CustomSlider width{};
@@ -77,7 +83,6 @@ protected:
     // Size height px slider
     // Color chooser
     // 4 x 28 = 112 + title = 132
-
 
 public:
     ControlCanvas(const FilmstripType& type, Canvas& canvas);
