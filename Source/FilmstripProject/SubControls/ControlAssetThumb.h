@@ -36,6 +36,13 @@ protected:
     // Size height px slider
     // Angle offset slider
 
+    // For all component of Sliders
+    // All component will be in center. 
+    // if (Horizontal = center X), so the component can be control up and down
+    // if (Vertical = center Y), so the component can be control left and right
+    // So need to track what the slider style is (horizontal / vertical) and track where the min side and the max side
+    // Initial idea, (horizontal = left min, right max), (vertical = bottom min, top max)
+
 public:
     ControlAssetThumb();
     ~ControlAssetThumb();

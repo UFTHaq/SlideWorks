@@ -32,7 +32,8 @@ protected:
     juce::String text{};
 
     juce::Rectangle<int> recomendedSize{};
-    juce::String recomendedSizeStr{ "Recomended size : 5 to 8 MB" };
+    juce::String recomendedSizeStr{ "Recomended size : 4 to 8 MB" };
+    int totalPixel{};
 
     juce::Rectangle<int> projectSize{};
     juce::String projectSizeStr{};
@@ -40,6 +41,7 @@ protected:
     juce::String notificationStr{ "Still Okay" };
     juce::Rectangle<int> date{};
     juce::String dateStr{ "15/12/2024" };
+
 
     juce::Font font{ juce::FontOptions{} };
 
@@ -57,6 +59,7 @@ public:
     void setupSizeControlsCallback();
     juce::String formatWithDots(juce::String textSizeTotalPixel);
     juce::String updateSizingText();
+    juce::String updateNotificationText(const int pixels);
 
     void drawRecomendedSize(juce::Graphics& g);
     void drawProjectSize(juce::Graphics& g);

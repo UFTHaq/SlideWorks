@@ -94,12 +94,14 @@ void Footer::setupSizeControlsCallback()
     mainControls.onSizeChangeForFooter = [this]()
         {
             projectSizeStr = updateSizingText();
+            notificationStr = updateNotificationText(totalPixel);
             repaint();
         };
 
     controlCanvas.onSizeChangeForFooter = [this]()
         {
             projectSizeStr = updateSizingText();
+            notificationStr = updateNotificationText(totalPixel);
             repaint();
         };
 }
@@ -144,7 +146,34 @@ juce::String Footer::updateSizingText()
     juce::String processedText = "Size : " + textCanvasW + " X " + textCanvasH + " X " + textTotalFrames +
         " = " + textSizeTotalPixel + " PX " + "= " + textSizeInMegaPixel + " MB";
 
+    totalPixel = sizeTotalPixel;
     return processedText;
+}
+
+juce::String Footer::updateNotificationText(const int pixels)
+{
+    juce::String newText = {};
+    if (pixels > 0 && pixels < 4000000)
+    {
+        newText = "Nice";
+    }
+    else if (pixels > 4000000 && pixels < 9000000)
+    {
+        newText = "Perfect";
+    }
+    else if (pixels > 9000000 && pixels < 14000000)
+    {
+        newText = "Still Okay";
+    }
+    else if (pixels > 16000000 && pixels < 20000000)
+    {
+        newText = "Quite Big";
+    }
+    else {
+        newText = "Too Big";
+    }
+
+    return newText;
 }
 
 void Footer::drawProjectSize(juce::Graphics& g)
