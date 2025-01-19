@@ -18,6 +18,7 @@
 #include "../Source/Globals.h"
 #include "../Source/CustomComponents/CustomLookAndFeel.h"
 #include "../Source/CustomComponents/CustomGroupComponent.h"
+#include "../Source/EnumClass.h"
 
 #include "ControlAsset.h"
 
@@ -36,10 +37,20 @@ protected:
     // Size height px slider
     // Angle offset slider
 
+    Ratio imageRatio{};
+
 public:
-    ControlAssetTrackScale();
+    ControlAssetTrackScale
+    (
+        juce::Rectangle<int>& realCanvas
+        , juce::Rectangle<int>& virtualCanvas
+        , juce::Rectangle<int>& assetBoundsRealC
+        , juce::Rectangle<int>& assetBoundsVirtC
+    );
     ~ControlAssetTrackScale();
 
     void paint(juce::Graphics& g) override;
     void resized() override;
+
+    void setOriginalAssetRatio(int imageWidth, int imageHeight) override;
 };

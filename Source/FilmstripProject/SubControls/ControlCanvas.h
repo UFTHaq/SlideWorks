@@ -54,12 +54,7 @@ protected:
 
     juce::Label lockLabel{};
     juce::TextButton lockRatio{};
-    struct Ratio
-    {
-        int w{};
-        int h{};
-    };
-    Ratio ratio{};
+    Ratio controlRatio{};
 
     juce::Label widthLabel{};
     CustomSlider width{};

@@ -143,6 +143,7 @@ void AssetsManager::addAssetsSystem()
 
                 resizeContainer();
                 canvas.resized();
+                canvas.getCanvasEdit().setupNewAsset();
             }
         );
     }
@@ -182,6 +183,7 @@ void AssetsManager::addAssetsSystem()
 
                 resizeContainer();
                 canvas.resized();
+                canvas.getCanvasEdit().setupNewAsset();
             }
         );
     }
@@ -232,9 +234,38 @@ void AssetsManager::resizeContainer()
 
         auto button = assetsButtons.at(i).get();
         auto& asset = assets.at(i);
+        auto controlAsset = asset->getControlAsset().get();
 
-        auto area = subControls.getLocalBounds();
-        asset->getControlAsset()->setBounds(area.reduced(5).removeFromTop(200));
+        auto area = subControls.getLocalBounds().reduced(5);
+        //asset->getControlAsset()->setBounds(area.removeFromTop(200));          // setBounds for ControlAssets and their inheritances.
+        int areaHeight{ 0 };
+
+        if (auto assetSubControlBounds = dynamic_cast<ControlAssetKnob*>(controlAsset))
+        {
+            areaHeight = assetSubControlBounds->getAreaHeight();
+            assetSubControlBounds->setBounds(area.removeFromTop(areaHeight));
+        }
+        else if (auto assetSubControlBounds = dynamic_cast<ControlAssetKnobScale*>(controlAsset))
+        {
+            areaHeight = assetSubControlBounds->getAreaHeight();
+            assetSubControlBounds->setBounds(area.removeFromTop(areaHeight));
+        }
+        else if (auto assetSubControlBounds = dynamic_cast<ControlAssetThumb*>(controlAsset))
+        {
+            areaHeight = assetSubControlBounds->getAreaHeight();
+            assetSubControlBounds->setBounds(area.removeFromTop(areaHeight));
+        }
+        else if (auto assetSubControlBounds = dynamic_cast<ControlAssetTrack*>(controlAsset))
+        {
+            areaHeight = assetSubControlBounds->getAreaHeight();
+            assetSubControlBounds->setBounds(area.removeFromTop(areaHeight));
+        }
+        else if (auto assetSubControlBounds = dynamic_cast<ControlAssetTrackScale*>(controlAsset))
+        {
+            areaHeight = assetSubControlBounds->getAreaHeight();
+            assetSubControlBounds->setBounds(area.removeFromTop(areaHeight));
+        }
+
 
         button->setIndex(i);
         button->setBounds(buttonBounds);
@@ -289,6 +320,18 @@ void AssetsManager::resizeContainer()
 
                         // REPAINT CANVAS
                         canvas.repaint();
+
+                        // SET IMAGE RATIO TO CONTROL ASSET
+                        int w = asset->getAssetImage().getWidth();
+                        int h = asset->getAssetImage().getHeight();
+
+                        DBG("IMAGE W : " << w);
+                        DBG("IMAGE H : " << h);
+
+                        asset->getControlAsset()->setOriginalAssetRatio(w, h);
+
+                        // MAKE IT USED THE NEWEST BOUNDS
+                        asset->getControlAsset()->calculateAssetRealAndVirtualBounds();
 
                         //resizeContainer();
                     }

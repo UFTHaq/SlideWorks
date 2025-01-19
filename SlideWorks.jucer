@@ -13,6 +13,7 @@
       <FILE id="MOO0xf" name="icon_Lock.png" compile="0" resource="1" file="Resources/Icons/icon_Lock.png"/>
       <FILE id="uJJdCP" name="icon_On_Visible.png" compile="0" resource="1"
             file="Resources/Icons/icon_On_Visible.png"/>
+      <FILE id="znfZcP" name="icon_Rotate.png" compile="0" resource="1" file="Resources/Icons/icon_Rotate.png"/>
       <FILE id="Ops2fa" name="RobotoCondensed-Medium.ttf" compile="0" resource="1"
             file="Resources/Fonts/Roboto_Condensed/static/RobotoCondensed-Medium.ttf"/>
       <FILE id="PO9Zkl" name="RobotoCondensed-Regular.ttf" compile="0" resource="1"

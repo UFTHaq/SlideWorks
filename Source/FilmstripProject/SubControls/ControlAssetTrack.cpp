@@ -10,7 +10,15 @@
 
 #include "ControlAssetTrack.h"
 
-ControlAssetTrack::ControlAssetTrack()
+ControlAssetTrack::ControlAssetTrack
+(
+    juce::Rectangle<int>& realCanvas
+    , juce::Rectangle<int>& virtualCanvas
+    , juce::Rectangle<int>& assetBoundsRealC
+    , juce::Rectangle<int>& assetBoundsVirtC
+)
+    : ControlAsset(realCanvas, virtualCanvas, assetBoundsRealC, assetBoundsVirtC)
+    , customLookAndFeel(Globals::getCustomLookAndFeel())
 {
 }
 
@@ -24,4 +32,12 @@ void ControlAssetTrack::paint(juce::Graphics& g)
 
 void ControlAssetTrack::resized()
 {
+}
+
+void ControlAssetTrack::setOriginalAssetRatio(int imageWidth, int imageHeight)
+{
+    imageRatio = Ratio {
+        .w = imageWidth,
+        .h = imageHeight
+    };
 }

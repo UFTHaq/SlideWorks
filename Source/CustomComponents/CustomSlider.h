@@ -56,6 +56,11 @@ protected:
     std::unique_ptr<juce::MouseEvent> myMouseEvent{};
     int singleClickDelay{};
 
+    bool isDecimal{};
+    int digitDecimal{};
+
+    double stepValue{};
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CustomSlider)
 public:
     CustomSlider();
@@ -91,6 +96,10 @@ public:
 
     void setValue(double value);
     double getValue() const;
+
+    void setTextFormatDecimal(bool decimal = false);
+    void setTextFormatDecimal(bool decimal = true, int digitDecimalPrecision = 1);
+    void setScrollStep(double step);
 
     void setupLabel();
     void handleSingleClick(const juce::MouseEvent& event);

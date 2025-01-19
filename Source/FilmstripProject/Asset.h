@@ -48,8 +48,8 @@ protected:
     juce::Rectangle<int> assetBoundsVirtC{};
 
     std::unique_ptr<ControlAsset> controlAsset{};
-    // Could be use std::variant
-    //std::variant<ControlAssetKnob, ControlAssetKnobScale, ControlAssetThumb, ControlAssetTrack, ControlAssetTrackScale> controlAsset;
+
+    bool isSliderHorizontal{ true };
 
 public:
     Asset(const AssetType& type);
@@ -71,8 +71,8 @@ public:
     void setVirtualTopLeftPos(const juce::Point<int> newTopLeftPos, const float scaleFactor);
     void setVirtualCentrePos(const juce::Point<int> newCentrePos, const float scaleFactor);
 
-    void setRealCanvas(const juce::Rectangle<int> realCanvas);
-    void setVirtualCanvas(const juce::Rectangle<int> virtualCanvas);
+    void setRealCanvas(const juce::Rectangle<int> newRealCanvas);
+    void setVirtualCanvas(const juce::Rectangle<int> newVirtualCanvas);
 
     juce::Rectangle<int> getAssetRealBounds() const;
     juce::Point<int> getAssetRealTopLeftPos() const;
@@ -86,4 +86,5 @@ public:
 
     void setAngleOffset(const double newAngleOffset);
     double getAngleOffset() const;
+
 };

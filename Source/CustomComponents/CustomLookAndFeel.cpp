@@ -162,7 +162,7 @@ void CustomLookAndFeel::drawDocumentWindowTitleBar (juce::DocumentWindow& window
 	// Draw and coloring the title text
 	g.setColour(getCurrentTheme().FontTitleBar);
 
-	if (ID == "WINDOW_LIGHTING" || ID == "WINDOW_CANVAS")
+	if (ID == "WINDOW_LIGHTING" || ID == "WINDOW_CANVAS" || ID == "WINDOW_ASSET_COLOR")
 	{
 		g.setFont(getFontRobotoCondensedBold().withHeight(getFontSizeTitle() - 3));
 		g.drawText(window.getName().toUpperCase(), juce::Rectangle{11, 0, w-11, h}.toFloat(), juce::Justification::centredLeft, true);
@@ -498,6 +498,20 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 			outlineThick = 1.2F;
 		}
 	}
+	else if (buttonID == "Buttons_ID_21_ROTATE_ASSET_BUTTON")
+	{
+		cornerSize = 2;
+
+		fillColor = getCurrentTheme().CustomLightGrey.brighter();
+
+		outlineColor = getCurrentTheme().OutlineControl.darker();
+		outlineThick = 0.8F;
+
+		if (shouldDrawButtonAsDown)
+		{
+			outlineThick = 1.2F;
+		}
+	}
 
 	
 
@@ -622,6 +636,52 @@ void CustomLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& bu
 		g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.8F));
 		g.drawImage(
 			iconChain,
+			dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(),
+			source.getX(), source.getY(), source.getWidth(), source.getHeight(),
+			withAlpha
+		);
+	}
+	else if (buttonID == "Buttons_ID_21_ROTATE_ASSET_BUTTON")
+	{
+		auto dest = juce::Rectangle<int>{};
+		auto source = juce::Rectangle<int>{ 0,0,100,100 };
+		bool withAlpha{};
+
+		if (buttonName == "1L")
+		{
+			source.setX(0);
+		}
+		else if (buttonName == "1R")
+		{
+			source.setX(100);
+		}
+		else if (buttonName == "90L")
+		{
+			source.setX(200);
+		}
+		else if (buttonName == "90R")
+		{
+			source.setX(300);
+		}
+		else {
+			source.setX(INT16_MAX);
+		}
+
+		if (shouldDrawButtonAsDown)
+		{
+			dest = imageBounds.toNearestInt().reduced(-4);
+			withAlpha = true;
+			g.setColour(getCurrentTheme().CustomDarkGrey.withAlpha(0.8F));
+		}
+		else
+		{
+			dest = imageBounds.toNearestInt().reduced(-4);
+			withAlpha = true;
+			g.setColour(getCurrentTheme().CustomWhite.withAlpha(0.8F));
+		}
+
+		g.drawImage(
+			iconRotate,
 			dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight(),
 			source.getX(), source.getY(), source.getWidth(), source.getHeight(),
 			withAlpha
@@ -1143,6 +1203,10 @@ void CustomLookAndFeel::drawLabel(juce::Graphics& g, juce::Label& label)
 	{
 		outlineColour = label.findColour(juce::Label::outlineColourId);
 	}
+	else if (ID == "Label_ID_08_ANGLE_INPUT")
+	{
+		outlineColour = label.findColour(juce::Label::outlineColourId);
+	}
 
 	g.setColour(label.findColour(juce::Label::backgroundColourId));
 	g.fillRoundedRectangle(label.getLocalBounds().toFloat(), 1.0F);
@@ -1278,6 +1342,7 @@ void CustomLookAndFeel::loadImages()
 	iconLock      = juce::ImageCache::getFromMemory(BinaryData::icon_Lock_png, BinaryData::icon_Lock_pngSize);
 	iconCopy      = juce::ImageCache::getFromMemory(BinaryData::icon_Copy_png, BinaryData::icon_Copy_pngSize);
 	iconChain     = juce::ImageCache::getFromMemory(BinaryData::icon_Chain_png, BinaryData::icon_Chain_pngSize);
+	iconRotate    = juce::ImageCache::getFromMemory(BinaryData::icon_Rotate_png, BinaryData::icon_Rotate_pngSize);
 
 	knobScale = juce::ImageCache::getFromMemory(BinaryData::small_scale_black_png, BinaryData::small_scale_black_pngSize);
 }

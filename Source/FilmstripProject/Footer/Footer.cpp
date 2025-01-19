@@ -169,7 +169,8 @@ juce::String Footer::updateNotificationText(const int pixels)
     {
         newText = "Quite Big";
     }
-    else {
+    else
+    {
         newText = "Too Big";
     }
 

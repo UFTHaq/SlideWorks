@@ -194,8 +194,9 @@ private:
 	juce::Image iconLock{};
 	juce::Image iconCopy{};
 	juce::Image iconChain{};
+	juce::Image iconRotate{};
 
-	juce::Image knobScale{};
+	juce::Image knobScale{};       // old code for old simulation system, may not needed anymore
 
 	juce::Image simulationKnobImage{};
 	juce::Image simulationKnobScale{};

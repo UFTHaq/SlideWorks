@@ -50,7 +50,7 @@ void CustomSlider::resized()
     bar.setX(barBase.getX());
     bar.setRight(barRight);
 
-    DBG("CUSTOM_SLIDER SET VALUE BAR WIDTH : " << barBase.getRight());
+    //DBG("CUSTOM_SLIDER SET VALUE BAR WIDTH : " << barBase.getRight());
 
     attribute.valueLabel.setBounds(barBase.toNearestInt());
 }
@@ -71,6 +71,8 @@ void CustomSlider::mouseDown(const juce::MouseEvent& event)
 
 void CustomSlider::mouseDrag(const juce::MouseEvent& event)
 {
+    if (isTimerRunning()) stopTimer();                             // Fix some glitch of draw cause sometimes the single click delay process kick in while drag and draw the old value.
+
     bar.setX(barBase.getX());
 
     barRight = (double)event.getPosition().getX();
@@ -94,7 +96,7 @@ void CustomSlider::mouseUp(const juce::MouseEvent& event)
 
 void CustomSlider::mouseWheelMove(const juce::MouseEvent& event, const juce::MouseWheelDetails& wheel)
 {
-    double delta = 25;
+    double delta = stepValue;
 
     if (wheel.deltaY > 0)
     {
@@ -153,18 +155,40 @@ void CustomSlider::setBarWidth()
     barRight = barW + barBase.getX();
     bar.setRight(barRight);
 
-    attribute.valueText = juce::String(juce::roundToInt(attribute.value)) + attribute.postfix;
-    attribute.valueLabel.setText(juce::String(juce::roundToInt(attribute.value)), juce::dontSendNotification);
+    if (isDecimal == false)
+    {
+        attribute.valueText = juce::String(juce::roundToInt(val)) + attribute.postfix;
+        attribute.valueLabel.setText(juce::String(juce::roundToInt(val)), juce::dontSendNotification);
+    }
+    else
+    {
+        juce::String formattedValue = juce::String(val, digitDecimal);
+
+        attribute.valueText = formattedValue + attribute.postfix;
+        attribute.valueLabel.setText(formattedValue, juce::dontSendNotification);
+    }
 }
 
 void CustomSlider::calculateTheValue()
 {
-    auto newValue = static_cast<int>((bar.getWidth() / barBase.getWidth()) * (attribute.range.max - attribute.range.min) + attribute.range.min);
-
-    attribute.value = newValue;
-    attribute.valueText = juce::String(newValue) + attribute.postfix;
-    attribute.valueLabel.setText(attribute.valueText, juce::dontSendNotification);
+    auto newValue = ((bar.getWidth() / barBase.getWidth()) * (attribute.range.max - attribute.range.min) + attribute.range.min);
     
+    if (isDecimal == false)
+    {
+        int newValueInt = static_cast<int>(newValue);
+
+        attribute.value = newValueInt;
+        attribute.valueText = juce::String(newValueInt) + attribute.postfix;
+        attribute.valueLabel.setText(attribute.valueText, juce::dontSendNotification);
+    }
+    else
+    {
+        juce::String formattedValue = juce::String(newValue, digitDecimal);
+
+        attribute.value = newValue;
+        attribute.valueText = formattedValue + attribute.postfix;
+        attribute.valueLabel.setText(formattedValue, juce::dontSendNotification);
+    }
 }
 
 void CustomSlider::setFont(const juce::Font& font)
@@ -242,6 +266,22 @@ double CustomSlider::getValue() const
     return attribute.value;
 }
 
+void CustomSlider::setTextFormatDecimal(bool decimal)
+{
+    isDecimal = decimal;
+}
+
+void CustomSlider::setTextFormatDecimal(bool decimal, int digitDecimalPrecision)
+{
+    isDecimal = decimal;
+    digitDecimal = digitDecimalPrecision;
+}
+
+void CustomSlider::setScrollStep(double step)
+{
+    stepValue = step;
+}
+
 void CustomSlider::setupLabel()
 {
     attribute.valueLabel.setFont(customLookAndFeel->getFontRobotoCondensedRegular().withHeight(16.0F));
@@ -255,17 +295,33 @@ void CustomSlider::setupLabel()
     attribute.valueLabel.onTextChange = [this]()
         {
             auto newText = attribute.valueLabel.getText();
-            auto newVal = juce::roundToInt(newText.getDoubleValue());
 
-            auto min = juce::roundToInt(attribute.range.min);
-            auto max = juce::roundToInt(attribute.range.max);
+            if (isDecimal == false)
+            {
+                auto newVal = juce::roundToInt(newText.getDoubleValue());
+                auto min = juce::roundToInt(attribute.range.min);
+                auto max = juce::roundToInt(attribute.range.max);
 
-            newVal = juce::jlimit(min, max, newVal);
-            newText = juce::String(newVal);
+                newVal = juce::jlimit(min, max, newVal);
+                newText = juce::String(newVal);
 
-            attribute.value = newVal;
-            attribute.valueLabel.setText(newText, juce::dontSendNotification);
-            attribute.valueText = newText + attribute.postfix;
+                attribute.value = newVal;
+                attribute.valueLabel.setText(newText, juce::dontSendNotification);
+                attribute.valueText = newText + attribute.postfix;
+            }
+            else
+            {
+                auto newVal = newText.getDoubleValue();
+                auto min = attribute.range.min;
+                auto max = attribute.range.max;
+
+                newVal = juce::jlimit(min, max, newVal);
+                newText = juce::String(newVal, digitDecimal);
+
+                attribute.value = newVal;
+                attribute.valueLabel.setText(newText, juce::dontSendNotification);
+                attribute.valueText = newText + attribute.postfix;
+            }
 
             attribute.valueLabel.setEnabled(false);
             attribute.valueLabel.setVisible(false);

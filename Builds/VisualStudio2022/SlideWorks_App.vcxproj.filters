@@ -5030,6 +5030,9 @@
     <None Include="..\..\Resources\Icons\icon_On_Visible.png">
       <Filter>SlideWorks\Resources</Filter>
     </None>
+    <None Include="..\..\Resources\Icons\icon_Rotate.png">
+      <Filter>SlideWorks\Resources</Filter>
+    </None>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf">
       <Filter>SlideWorks\Resources</Filter>
     </None>

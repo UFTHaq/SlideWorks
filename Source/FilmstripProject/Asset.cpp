@@ -17,29 +17,53 @@ Asset::Asset(const AssetType& type)
     {
     case AssetType::KNOB:
         assetTypeStr = "Knob";
-        controlAsset = std::make_unique<ControlAssetKnob>();
+        controlAsset = std::make_unique<ControlAssetKnob>( realCanvas
+                                                         , virtualCanvas
+                                                         , assetBoundsRealC
+                                                         , assetBoundsVirtC );
         break;
+
     case AssetType::KNOB_SCALE:
         assetTypeStr = "Scale";
-        controlAsset = std::make_unique<ControlAssetKnobScale>();
+        //controlAsset = std::make_unique<ControlAssetKnobScale>();
+        controlAsset = std::make_unique<ControlAssetKnobScale>( realCanvas
+                                                              , virtualCanvas
+                                                              , assetBoundsRealC
+                                                              , assetBoundsVirtC );
         break;
+
     case AssetType::THUMB:
         assetTypeStr = "Thumb";
-        controlAsset = std::make_unique<ControlAssetThumb>();
+        //controlAsset = std::make_unique<ControlAssetThumb>();
+        controlAsset = std::make_unique<ControlAssetThumb>( realCanvas
+                                                          , virtualCanvas
+                                                          , assetBoundsRealC
+                                                          , assetBoundsVirtC );
         break;
+
     case AssetType::TRACK:
         assetTypeStr = "Track";
-        controlAsset = std::make_unique<ControlAssetTrack>();
+        //controlAsset = std::make_unique<ControlAssetTrack>();
+        controlAsset = std::make_unique<ControlAssetTrack>( realCanvas
+                                                          , virtualCanvas
+                                                          , assetBoundsRealC
+                                                          , assetBoundsVirtC );
         break;
+
     case AssetType::TRACK_SCALE:
         assetTypeStr = "Scale";
-        controlAsset = std::make_unique<ControlAssetTrackScale>();
+        //controlAsset = std::make_unique<ControlAssetTrackScale>();
+        controlAsset = std::make_unique<ControlAssetTrackScale>( realCanvas
+                                                               , virtualCanvas
+                                                               , assetBoundsRealC
+                                                               , assetBoundsVirtC );
         break;
 
     default:
         assetTypeStr = "Error";
         break;
     }
+
 }
 
 Asset::~Asset()
@@ -85,22 +109,32 @@ void Asset::setAssetFilePathAndLoadImage(const juce::File& filePath)
         }
 
         // Default;
-        auto virtualArea = virtualCanvas;
-        if (assetType == AssetType::KNOB)
-        {
-            // set Default size
-            //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,200,200 };
-            auto imageArea = int(virtualArea.getWidth() * 0.85F);
 
-            this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
-        }
-        else if (assetType == AssetType::KNOB_SCALE)
-        {
-            //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,220,220 };
-            auto imageArea = int(virtualArea.getWidth() * 0.9F);
+        //auto virtualArea = virtualCanvas;
 
-            this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
-        }
+        //int w = assetImage.getWidth();
+        //int h = assetImage.getHeight();
+
+
+
+        //if (assetType == AssetType::KNOB)
+        //{
+        //    // set Default size
+        //    //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,200,200 };
+        //    auto imageArea = int(virtualArea.getWidth() * 0.85F);
+
+        //    w = int(w * 0.85);
+        //    h = int(h * 0.85);
+
+        //    this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
+        //}
+        //else if (assetType == AssetType::KNOB_SCALE)
+        //{
+        //    //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,220,220 };
+        //    auto imageArea = int(virtualArea.getWidth() * 0.9F);
+
+        //    this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
+        //}
 
         //this->assetBoundsRealC = juce::Rectangle<int> { 0,0,assetImage.getWidth(), assetImage.getHeight() };
 
@@ -164,32 +198,49 @@ void Asset::setVirtualCentrePos(const juce::Point<int> newCentrePos, const float
     );
 }
 
-void Asset::setRealCanvas(const juce::Rectangle<int> realCanvas)
+void Asset::setRealCanvas(const juce::Rectangle<int> newRealCanvas)
 {
-    this->realCanvas = realCanvas;
+    this->realCanvas = newRealCanvas;
 }
 
-void Asset::setVirtualCanvas(const juce::Rectangle<int> virtualCanvas)
+void Asset::setVirtualCanvas(const juce::Rectangle<int> newVirtualCanvas)
 {
-    this->virtualCanvas = virtualCanvas;
+    this->virtualCanvas = newVirtualCanvas;
 
-    auto virtualArea = virtualCanvas;
+    int w{ virtualCanvas.getWidth() };
+    int h{ virtualCanvas.getHeight() };
+
+    auto virtualCanvasCopy = virtualCanvas;
+    auto virtualAreaOfAsset = virtualCanvasCopy;
+
     if (assetType == AssetType::KNOB)
     {
-        // set Default size
-        //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,200,200 };
-        //auto imageArea = int(virtualArea.getWidth() * 0.9F);
-        auto imageArea = int(virtualArea.getWidth());
+        if (virtualCanvas.getWidth() < virtualCanvas.getHeight())
+        {
+            w = virtualCanvas.getWidth();
+            h = w;
+        }
+        else
+        {
+            h = virtualCanvas.getHeight();
+            w = h;
+        }
 
-        this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
+        virtualCanvasCopy = virtualCanvas;
+        virtualAreaOfAsset = virtualCanvasCopy.withSizeKeepingCentre(w, h);
+
+        auto width = getControlAsset()->getAssetVirtualWidthPercentage() * virtualAreaOfAsset.getWidth();
+        auto height = getControlAsset()->getAssetVirtualHeightPercentage() * virtualAreaOfAsset.getHeight();
+        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre(width, height);
     }
     else if (assetType == AssetType::KNOB_SCALE)
     {
-        //this->assetBoundsVirtC = juce::Rectangle<int>{ 0,0,220,220 };
-        //auto imageArea = int(virtualArea.getWidth() * 0.95F);
-        auto imageArea = int(virtualArea.getWidth());
+        virtualCanvasCopy = virtualCanvas;
+        virtualAreaOfAsset = virtualCanvasCopy.withSizeKeepingCentre(w, h);
 
-        this->assetBoundsVirtC = virtualArea.withSizeKeepingCentre(imageArea, imageArea);
+        auto width = getControlAsset()->getAssetVirtualWidthPercentage() * virtualAreaOfAsset.getWidth();
+        auto height = getControlAsset()->getAssetVirtualHeightPercentage() * virtualAreaOfAsset.getHeight();
+        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre(width, height);
     }
 
     // for Sliders asset will be different with consideration of vertical or horizontal slider

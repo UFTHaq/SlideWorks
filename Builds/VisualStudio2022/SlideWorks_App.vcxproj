@@ -2808,6 +2808,7 @@
     <None Include="..\..\Resources\Icons\icon_HoriVerti.png"/>
     <None Include="..\..\Resources\Icons\icon_Lock.png"/>
     <None Include="..\..\Resources\Icons\icon_On_Visible.png"/>
+    <None Include="..\..\Resources\Icons\icon_Rotate.png"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Medium.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-Regular.ttf"/>
     <None Include="..\..\Resources\Fonts\Roboto_Condensed\static\RobotoCondensed-SemiBold.ttf"/>

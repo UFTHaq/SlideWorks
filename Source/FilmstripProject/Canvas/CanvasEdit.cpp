@@ -10,12 +10,14 @@
 
 #include "CanvasEdit.h"
 
-CanvasEdit::CanvasEdit(const FilmstripType& filmstripType, std::vector<std::unique_ptr<Asset>>& assets)
-    : filmstripType(filmstripType), assets(assets)
+CanvasEdit::CanvasEdit(const FilmstripType& type, std::vector<std::unique_ptr<Asset>>& assets)
+    : filmstripType(type), assets(assets)
 {
-    setupDefaultRealCanvas(filmstripType);
+    setupDefaultRealCanvas(type);
 
     calculateVirtualConstraint();
+
+    setupNewAsset();
 }
 
 CanvasEdit::~CanvasEdit()
@@ -42,10 +44,30 @@ void CanvasEdit::paint(juce::Graphics& g)
     {
         auto& asset = *it;
 
+        //asset->getControlAsset()->onVirtBoundsChange = [this]()
+        //    {
+        //        repaint();
+        //    };
+
         if (asset->getVisible())
         {
+            g.saveState();
+
+            if (asset->getControlAsset()->isAssetCanChangeColor() == true)
+            {
+                g.setColour(asset->getControlAsset()->getAssetAlphaColor());
+                g.drawImage(asset->getAssetImage(), asset->getAssetVirtualBounds().toFloat(), juce::RectanglePlacement::stretchToFit, true);
+            }
+            else
+            {
+                g.drawImage(asset->getAssetImage(), asset->getAssetVirtualBounds().toFloat(), juce::RectanglePlacement::stretchToFit, false);
+            }
+            g.restoreState();
+
             //g.drawImage(asset->getAssetImage(), asset->getAssetVirtualBounds().toFloat(), juce::RectanglePlacement::centred);
-            g.drawImage(asset->getAssetImage(), virtualCanvas.toFloat(), juce::RectanglePlacement::centred);
+            //g.drawImage(asset->getAssetImage(), asset->getAssetVirtualBounds().toFloat(), juce::RectanglePlacement::stretchToFit);
+            //g.drawImage(asset->getAssetImage(), virtualCanvas.toFloat(), juce::RectanglePlacement::centred);
+            // Need to make the getAssetsVirtualBounds to works.
         }
     }
 }
@@ -95,11 +117,21 @@ void CanvasEdit::resized()
 
     //    //asset->setAssetVirtualBounds(assetBoundsHere);
     //}
+
+    calculateAllAssetRealVirtualBounds();
 }
 
-void CanvasEdit::setupDefaultRealCanvas(const FilmstripType& filmstripType)
+void CanvasEdit::calculateAllAssetRealVirtualBounds()
 {
-    switch (filmstripType)
+    for (auto& asset : assets)
+    {
+        asset->getControlAsset()->calculateAssetRealAndVirtualBounds();
+    }
+}
+
+void CanvasEdit::setupDefaultRealCanvas(const FilmstripType& type)
+{
+    switch (type)
     {
     case FilmstripType::KNOB:
         realCanvas = { 0,0,200,200 };
@@ -214,6 +246,8 @@ void CanvasEdit::setRealCanvasWidth(int w)
     calculateScaleFactor();
 
     calculateVirtualCanvas();
+
+    resizeCanvasAssets();
     
     repaint();
 }
@@ -227,6 +261,8 @@ void CanvasEdit::setRealCanvasHeight(int h)
     calculateScaleFactor();
 
     calculateVirtualCanvas();
+
+    resizeCanvasAssets();
 
     repaint();
 }
@@ -247,4 +283,20 @@ void CanvasEdit::setVirtualCanvasOutlineColor(const juce::Colour newColor)
     auto autoColor{ (luminance > 128.0F) ? juce::Colours::black : juce::Colours::white };
 
     this->outlineColor = autoColor;
+}
+
+void CanvasEdit::setupNewAsset()
+{
+    for (auto& asset : assets)
+    {
+        asset->getControlAsset()->onColorChange = [this]()
+            {
+                repaint();
+            };
+
+        asset->getControlAsset()->onVirtBoundsChange = [this]()
+            {
+                repaint();
+            };
+    }
 }

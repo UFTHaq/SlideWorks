@@ -53,13 +53,15 @@ protected:
     double scaleFactor{};
 
 public:
-    CanvasEdit(const FilmstripType& filmstripType, std::vector<std::unique_ptr<Asset>>& assets);
+    CanvasEdit(const FilmstripType& type, std::vector<std::unique_ptr<Asset>>& assets);
     ~CanvasEdit();
 
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-    void setupDefaultRealCanvas(const FilmstripType& filmstripType);
+    void calculateAllAssetRealVirtualBounds();
+
+    void setupDefaultRealCanvas(const FilmstripType& type);
     void resizeCanvasAssets();
     void calculateVirtualConstraint();
     void calculateScaleFactor();
@@ -72,6 +74,8 @@ public:
     void setRealCanvasHeight(int h);
     juce::Point<int> getRealCanvasWH() const;
     void setVirtualCanvasOutlineColor(const juce::Colour newColor);
+
+    void setupNewAsset();
 
     // Make drag system based on mouseDown?
 };

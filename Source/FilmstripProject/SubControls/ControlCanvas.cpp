@@ -43,15 +43,15 @@ void ControlCanvas::resized()
     auto h = bounds.getHeight() - 20;
     bounds = bounds.withSizeKeepingCentre(w, h);
 
-    auto canvasArea = bounds;
-    auto areaH = canvasArea.getHeight() / 4;
+    auto controlArea = bounds;
+    auto areaH = controlArea.getHeight() / 4;
 
-    auto leftSide = int(canvasArea.getWidth() * 0.425F);
+    auto leftSide = int(controlArea.getWidth() * 0.425F);
     auto remove = 3;
 
     {
         // LOCK RATIO
-        auto area = canvasArea.removeFromTop(int(areaH) * 1);
+        auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
 
@@ -66,7 +66,7 @@ void ControlCanvas::resized()
 
     {
         // CANVAS WIDTH
-        auto area = canvasArea.removeFromTop(int(areaH) * 1);
+        auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
 
@@ -82,7 +82,7 @@ void ControlCanvas::resized()
 
     {
         // CANVAS HEIGHT
-        auto area = canvasArea.removeFromTop(int(areaH) * 1);
+        auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
 
@@ -98,7 +98,7 @@ void ControlCanvas::resized()
 
     {
         // COLOR CHOOSER
-        auto area = canvasArea.removeFromTop(int(areaH) * 1);
+        auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
 
@@ -163,9 +163,9 @@ void ControlCanvas::setupLockRatio()
 
             if (lockRatio.getToggleState() == true)
             {
-                ratio = Ratio { 
-                    (int)width.getValue(),
-                    (int)height.getValue()
+                controlRatio = Ratio { 
+                    .w = (int)width.getValue(),
+                    .h = (int)height.getValue()
                 };
             }
         };
@@ -188,6 +188,7 @@ void ControlCanvas::setupWidthSlider()
     width.setOutlineThick(0.8F);
     width.setPostfix("PX");
     width.setRange(50, 1000, 1);
+    width.setScrollStep(25);
     width.setValue(static_cast<double>(canvas.getCanvasEdit().getRealCanvasWH().getX()));
     //width.setValue(300);
     width.onValueChange = [this]()
@@ -197,7 +198,7 @@ void ControlCanvas::setupWidthSlider()
             else
             {
                 int newValueW = (int)width.getValue();
-                int newValueH = int((double)newValueW / ratio.w * ratio.h);
+                int newValueH = int((double)newValueW / controlRatio.w * controlRatio.h);
 
                 int minValueW = (int)width.getMinRange();
                 int maxValueW = (int)width.getMaxRange();
@@ -205,17 +206,17 @@ void ControlCanvas::setupWidthSlider()
                 int minValueH = (int)height.getMinRange();
                 int maxValueH = (int)height.getMaxRange();
 
-                if (ratio.h > ratio.w)
+                if (controlRatio.h > controlRatio.w)
                 {
                     if (newValueW < minValueW)
                     {
                         newValueW = minValueW;
-                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                        newValueH = int((double)newValueW / controlRatio.w * controlRatio.h);
                     }
                     else if (newValueH > maxValueH)
                     {
                         newValueH = maxValueH;
-                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                        newValueW = int((double)newValueH * controlRatio.w / controlRatio.h);
                     }
                 }
                 else
@@ -223,12 +224,12 @@ void ControlCanvas::setupWidthSlider()
                     if (newValueH < minValueH)
                     {
                         newValueH = minValueH;
-                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                        newValueW = int((double)newValueH * controlRatio.w / controlRatio.h);
                     }
                     else if (newValueW > maxValueW)
                     {
                         newValueW = maxValueW;
-                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                        newValueH = int((double)newValueW / controlRatio.w * controlRatio.h);
                     }
                 }
 
@@ -238,6 +239,8 @@ void ControlCanvas::setupWidthSlider()
                 canvas.getCanvasEdit().setRealCanvasHeight(newValueH);
                 canvas.getCanvasEdit().setRealCanvasWidth(newValueW);
             }
+
+            canvas.getCanvasEdit().calculateAllAssetRealVirtualBounds();
 
             if (onSizeChangeForFooter)
                 onSizeChangeForFooter();
@@ -262,6 +265,7 @@ void ControlCanvas::setupHeightSlider()
     height.setOutlineThick(0.8F);
     height.setPostfix("PX");
     height.setRange(50, 1000, 1);
+    height.setScrollStep(25);
     height.setValue(static_cast<double>(canvas.getCanvasEdit().getRealCanvasWH().getY()));
     //height.setValue(300);
     height.onValueChange = [this]()
@@ -271,7 +275,7 @@ void ControlCanvas::setupHeightSlider()
             else
             {
                 int newValueH = (int)height.getValue();
-                int newValueW = int((double)newValueH * ratio.w / ratio.h);
+                int newValueW = int((double)newValueH * controlRatio.w / controlRatio.h);
 
                 int minValueW = (int)width.getMinRange();
                 int maxValueW = (int)width.getMaxRange();
@@ -279,17 +283,17 @@ void ControlCanvas::setupHeightSlider()
                 int minValueH = (int)height.getMinRange();
                 int maxValueH = (int)height.getMaxRange();
 
-                if (ratio.h > ratio.w)
+                if (controlRatio.h > controlRatio.w)
                 {
                     if (newValueW < minValueW)
                     {
                         newValueW = minValueW;
-                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                        newValueH = int((double)newValueW / controlRatio.w * controlRatio.h);
                     } 
                     else if (newValueH > maxValueH)
                     {
                         newValueH = maxValueH;
-                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                        newValueW = int((double)newValueH * controlRatio.w / controlRatio.h);
                     }
                 }
                 else
@@ -297,12 +301,12 @@ void ControlCanvas::setupHeightSlider()
                     if (newValueH < minValueH)
                     {
                         newValueH = minValueH;
-                        newValueW = int((double)newValueH * ratio.w / ratio.h);
+                        newValueW = int((double)newValueH * controlRatio.w / controlRatio.h);
                     }
                     else if (newValueW > maxValueW)
                     {
                         newValueW = maxValueW;
-                        newValueH = int((double)newValueW / ratio.w * ratio.h);
+                        newValueH = int((double)newValueW / controlRatio.w * controlRatio.h);
                     }
                 }
 
@@ -312,6 +316,8 @@ void ControlCanvas::setupHeightSlider()
                 canvas.getCanvasEdit().setRealCanvasHeight(newValueH);
                 canvas.getCanvasEdit().setRealCanvasWidth(newValueW);
             }
+
+            canvas.getCanvasEdit().calculateAllAssetRealVirtualBounds();
 
             if (onSizeChangeForFooter)
                 onSizeChangeForFooter();

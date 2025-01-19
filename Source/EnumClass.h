@@ -60,3 +60,15 @@ enum class SliderSide
     MIN_BOTTOM_AND_MAX_TOP,     // MIN BOTTOM AND MAX TOP
     MIN_TOP_AND_MAX_BOTTOM,     // MIN TOP AND MAX BOTTOM
 };
+
+
+/////////////////////////////////////////////////////////
+////////////////////      STRUCT     ////////////////////
+/////////////////////////////////////////////////////////
+
+
+struct Ratio
+{
+    int w{};
+    int h{};
+};
