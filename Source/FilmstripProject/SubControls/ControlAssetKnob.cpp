@@ -112,7 +112,7 @@ void ControlAssetKnob::resized()
     }
 
     {
-        // CANVAS WIDTH
+        // ASSET WIDTH
         auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
@@ -128,7 +128,7 @@ void ControlAssetKnob::resized()
     }
 
     {
-        // CANVAS HEIGHT
+        // ASSET HEIGHT
         auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
@@ -397,6 +397,8 @@ void ControlAssetKnob::setupRotateComponents()
             recalibrateAngle();
         };
     addAndMakeVisible(turn90R);
+
+    // ROTATE 90 mungkin butuh untuk merotate ratio juce?
 }
 
 void ControlAssetKnob::setupLockRatio()

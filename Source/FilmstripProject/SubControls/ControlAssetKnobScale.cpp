@@ -22,8 +22,8 @@ ControlAssetKnobScale::ControlAssetKnobScale
 {
     setupGroupComponent();
 
-    setupRotateComponents();
     setupAngleOffsetComponents();
+    setupRotateComponents();
     setupLockRatio();
     setupWidthSlider();
     setupHeightSlider();
@@ -114,7 +114,7 @@ void ControlAssetKnobScale::resized()
     }
 
     {
-        // CANVAS WIDTH
+        // ASSET WIDTH
         auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);
@@ -130,7 +130,7 @@ void ControlAssetKnobScale::resized()
     }
 
     {
-        // CANVAS HEIGHT
+        // ASSET HEIGHT
         auto area = controlArea.removeFromTop(int(areaH) * 1);
         area.removeFromTop(remove);
         area.removeFromBottom(remove);

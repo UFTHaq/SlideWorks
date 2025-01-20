@@ -43,7 +43,6 @@ protected:
     // 6. COLOUR SELECTOR
     // 7. ALPHA
 
-
     // padding = 13;
     // componentH = 28;
     // titleH = 20;

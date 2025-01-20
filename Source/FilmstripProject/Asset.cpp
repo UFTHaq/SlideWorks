@@ -231,7 +231,7 @@ void Asset::setVirtualCanvas(const juce::Rectangle<int> newVirtualCanvas)
 
         auto width = getControlAsset()->getAssetVirtualWidthPercentage() * virtualAreaOfAsset.getWidth();
         auto height = getControlAsset()->getAssetVirtualHeightPercentage() * virtualAreaOfAsset.getHeight();
-        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre(width, height);
+        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre((int)width, (int)height);
     }
     else if (assetType == AssetType::KNOB_SCALE)
     {
@@ -240,7 +240,7 @@ void Asset::setVirtualCanvas(const juce::Rectangle<int> newVirtualCanvas)
 
         auto width = getControlAsset()->getAssetVirtualWidthPercentage() * virtualAreaOfAsset.getWidth();
         auto height = getControlAsset()->getAssetVirtualHeightPercentage() * virtualAreaOfAsset.getHeight();
-        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre(width, height);
+        this->assetBoundsVirtC = virtualAreaOfAsset.withSizeKeepingCentre((int)width, (int)height);
     }
 
     // for Sliders asset will be different with consideration of vertical or horizontal slider
